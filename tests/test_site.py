@@ -99,7 +99,7 @@ class SiteIntegrityTests(unittest.TestCase):
     def test_affiliate_and_search_links_use_shared_ceneo_tracking(self):
         exact_airpods_url = "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
         self.assertIn('productUrl:"' + exact_airpods_url + '"', self.app)
-        self.assertIn('const AIRPODS_5_CENEO_URL = "' + exact_airpods_url + '";', self.app)
+        self.assertIn('const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];', self.app)
         self.assertIn('const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;', self.app)
         self.assertIn('"tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"', self.app)
         self.assertIn('„Tanievo – produkt 001” (pierwsza pozycja) -> crid 818404', self.app)
@@ -140,7 +140,8 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn("Cena orientacyjna", self.app)
 
     def test_discovery_catalog_is_not_mislabeled_as_affiliate(self):
-        discovery_ids = re.findall(r'\["tanievo-(\d{3})"', self.app)
+        discovery_block = self.app.split("const discoveryProducts = [[", 1)[1].split("].map(([id,name,category,icon])", 1)[0]
+        discovery_ids = re.findall(r'\["tanievo-(\d{3})"', discovery_block)
         self.assertEqual(len(discovery_ids), 40)
         self.assertEqual(discovery_ids[0], "011")
         self.assertEqual(discovery_ids[-1], "050")
