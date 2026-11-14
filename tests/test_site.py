@@ -97,11 +97,13 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn("og:title", properties)
 
     def test_affiliate_and_search_links_use_shared_ceneo_tracking(self):
-        exact_airpods_url = "https://www.ceneo.pl/199946527#cid=52090&crid=818403&pid=31443"
+        exact_airpods_url = "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
         self.assertIn('productUrl:"' + exact_airpods_url + '"', self.app)
         self.assertIn('const AIRPODS_5_CENEO_URL = "' + exact_airpods_url + '";', self.app)
-        self.assertIn('const CENEO_TRACKING = "cid=52090&crid=818403&pid=31443";', self.app)
-        self.assertIn('url.hash = CENEO_TRACKING;', self.app)
+        self.assertIn('const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;', self.app)
+        self.assertIn('"tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"', self.app)
+        self.assertIn('„Tanievo – produkt 001” (pierwsza pozycja) -> crid 818404', self.app)
+        self.assertIn('url.hash = CENEO_DEFAULT_TRACKING;', self.app)
         self.assertIn('getCeneoUrl(product)', self.app)
         self.assertIn('getAmazonUrl(product)', self.app)
         self.assertIn('rel="nofollow noopener noreferrer"', self.app)
@@ -120,9 +122,9 @@ class SiteIntegrityTests(unittest.TestCase):
                 self.assertEqual(parse_qs(parsed.query).get("tag"), ["tanievo-21"])
 
     def test_ceneo_search_links_receive_shared_tracking_without_changing_search_paths(self):
-        self.assertIn('const CENEO_TRACKING = "cid=52090&crid=818403&pid=31443";', self.app)
+        self.assertIn('url.hash = CENEO_DEFAULT_TRACKING;', self.app)
         self.assertIn('function withCeneoTracking(candidate)', self.app)
-        self.assertIn('url.hash = CENEO_TRACKING;', self.app)
+        self.assertIn('url.hash = CENEO_DEFAULT_TRACKING;', self.app)
         self.assertIn('product.linkType = "search";', self.app)
         self.assertIn('if (!product.productUrl && product.linkType !== "paused")', self.app)
 
