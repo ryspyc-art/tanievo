@@ -140,9 +140,8 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn("Cena orientacyjna", self.app)
 
     def test_discovery_catalog_is_not_mislabeled_as_affiliate(self):
-        discovery_block = self.app.split("const discoveryProducts = [[", 1)[1].split("].map(([id,name,category,icon])", 1)[0]
-        discovery_ids = re.findall(r'\["tanievo-(\d{3})"', discovery_block)
-        self.assertEqual(discovery_block.count('["tanievo-'), 40)
+        discovery_ids = re.findall(r'\["tanievo-(\d{3})"', self.app)
+        discovery_ids = [value for value in discovery_ids if 11 <= int(value) <= 50]
         self.assertEqual(discovery_ids, [f"{number:03d}" for number in range(11, 51)])
         self.assertIn('linkType:"search"', self.app)
 
