@@ -142,9 +142,8 @@ class SiteIntegrityTests(unittest.TestCase):
     def test_discovery_catalog_is_not_mislabeled_as_affiliate(self):
         discovery_block = self.app.split("const discoveryProducts = [[", 1)[1].split("].map(([id,name,category,icon])", 1)[0]
         discovery_ids = re.findall(r'\["tanievo-(\d{3})"', discovery_block)
-        self.assertEqual(len(discovery_ids), 40)
-        self.assertEqual(discovery_ids[0], "011")
-        self.assertEqual(discovery_ids[-1], "050")
+        self.assertEqual(discovery_block.count('["tanievo-'), 40)
+        self.assertEqual(discovery_ids, [f"{number:03d}" for number in range(11, 51)])
         self.assertIn('linkType:"search"', self.app)
 
     def test_live_catalog_loader_is_wired_but_api_is_not_enabled(self):
