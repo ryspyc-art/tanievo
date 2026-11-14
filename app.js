@@ -128,7 +128,6 @@ const CENEO_CREATIVE_URLS = {
   "tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
 };
 const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];
-const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];
 
 function withCeneoTracking(candidate) {
   if (!safeProductUrl(candidate)) return "";
