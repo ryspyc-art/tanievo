@@ -114,8 +114,20 @@ function safeProductUrl(value) {
   return isSafeExternalHttpsUrl(value);
 }
 
-const CENEO_TRACKING = "cid=52090&crid=818403&pid=31443";
-const AIRPODS_5_CENEO_URL = "https://www.ceneo.pl/199946527#cid=52090&crid=818403&pid=31443";
+// Każda kreacja Ceneo ma własny crid. Nie wolno współdzielić go między kreacjami.
+const CENEO_CAMPAIGN = "cid=52090";
+const CENEO_PUBLISHER = "pid=31443";
+const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;
+
+// Podglądy skopiowane z Panelu Partnera:
+// „Tanievo – linki afiliacyjne” -> crid 818403
+// „Tanievo – produkt 001” (pierwsza pozycja) -> crid 818404
+// „Tanievo – produkt 001” (druga pozycja) -> crid 818405
+// Karta AirPods 5 w katalogu odpowiada drugiej pozycji (crid 818405).
+const CENEO_CREATIVE_URLS = {
+  "tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
+};
+const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];
 
 function withCeneoTracking(candidate) {
   if (!safeProductUrl(candidate)) return "";
@@ -124,7 +136,7 @@ function withCeneoTracking(candidate) {
     if (url.hostname !== "www.ceneo.pl") return "";
     // Dla AirPods 5 zachowujemy dokładnie adres wskazany w Panelu Partnera.
     if (url.pathname === "/199946527") return AIRPODS_5_CENEO_URL;
-    url.hash = CENEO_TRACKING;
+    url.hash = CENEO_DEFAULT_TRACKING;
     return url.href;
   } catch {
     return "";
@@ -132,7 +144,7 @@ function withCeneoTracking(candidate) {
 }
 
 function getCeneoUrl(product) {
-  if (String(product.id) === "tanievo-001") return AIRPODS_5_CENEO_URL;
+  if (CENEO_CREATIVE_URLS[String(product.id)]) return CENEO_CREATIVE_URLS[String(product.id)];
   for (const candidate of [product.ceneoUrl, product.productUrl]) {
     const tracked = withCeneoTracking(candidate);
     if (tracked) return tracked;
