@@ -40,6 +40,24 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-081","Garrett ACE 250 — wykrywacz metali","Wykrywacze metali","🧭"],
+  ["tanievo-082","Minelab X-Terra Pro — wykrywacz metali","Wykrywacze metali","🧭"],
+  ["tanievo-083","Nokta Simplex Lite — wykrywacz metali","Wykrywacze metali","🧭"],
+  ["tanievo-084","Garrett Pro-Pointer AT — ręczny pinpointer","Akcesoria do wykrywaczy","📍"],
+  ["tanievo-085","Cewki, osłony i słuchawki do wykrywaczy metali","Akcesoria do wykrywaczy","🎧"],
+  ["tanievo-086","everActive NC-450 — ładowarka AA/AAA","Ładowarki i zasilacze","🔌"],
+  ["tanievo-087","Panasonic Eneloop BQ-CC55 — ładowarka z akumulatorkami AA","Ładowarki i zasilacze","🔋"],
+  ["tanievo-088","Akumulatorki AA Ni-MH 2500 mAh — zestaw 4 szt.","Akumulatory AA i AAA","🔋"],
+  ["tanievo-089","Akumulatorki AAA Ni-MH 800–1000 mAh — zestaw 4 szt.","Akumulatory AA i AAA","🔋"],
+  ["tanievo-090","Akumulatorki AAA Panasonic Eneloop — zestaw 4 szt.","Akumulatory AA i AAA","🔋"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -71,6 +89,10 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("myjki ciśnieniowe")) return "🚿";
   if (value.includes("nagrzewnice garażowe")) return "🔥";
   if (value.includes("ogrzewanie domu")) return "🏠";
+  if (value.includes("wykrywacze metali")) return "🧭";
+  if (value.includes("akcesoria do wykrywaczy")) return "🎒";
+  if (value.includes("ładowarki i zasilacze")) return "🔌";
+  if (value.includes("akumulatory aa i aaa")) return "🔋";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
