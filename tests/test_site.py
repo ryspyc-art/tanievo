@@ -89,6 +89,10 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn("product-image-fallback", self.app)
         self.assertIn(".product-image{", (ROOT / "style.css").read_text(encoding="utf-8"))
 
+    def test_product_image_error_handler_is_registered_once(self):
+        self.assertEqual(self.app.count('grid.addEventListener("error"'), 1)
+        self.assertIn("Zdjęcie chwilowo niedostępne", self.app)
+
     def test_has_search_engine_metadata(self):
         names = {item.get("name") for item in self.parser.meta}
         properties = {item.get("property") for item in self.parser.meta}
