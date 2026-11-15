@@ -235,6 +235,20 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn('Wyszukaj w Ceneo', self.app)
 
 
+    def test_motor_oils_workshop_and_model_car_categories_have_searchable_products(self):
+        expected = {
+            "Oleje i płyny samochodowe": [f"tanievo-{number}" for number in range(133, 140)],
+            "Warsztat i majsterkowanie": [f"tanievo-{number}" for number in range(140, 147)],
+            "Modele i samochodziki": [f"tanievo-{number}" for number in range(147, 153)],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
     def test_cycling_and_skating_categories_have_searchable_products(self):
         expected = {
             "Rowery": ["tanievo-116", "tanievo-117", "tanievo-118", "tanievo-119", "tanievo-120", "tanievo-121"],
