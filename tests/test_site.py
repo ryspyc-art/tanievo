@@ -205,5 +205,20 @@ class SiteIntegrityTests(unittest.TestCase):
 
 
 
+
+    def test_flashlight_18650_and_toy_categories_have_searchable_products(self):
+        expected = {
+            "Latarki LED": ["tanievo-091", "tanievo-092", "tanievo-093", "tanievo-094"],
+            "Akumulatory 18650": ["tanievo-095", "tanievo-096", "tanievo-097"],
+            "Zabawki": ["tanievo-099", "tanievo-100", "tanievo-101", "tanievo-102", "tanievo-103"],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
 if __name__ == "__main__":
     unittest.main()
