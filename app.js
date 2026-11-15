@@ -124,6 +124,34 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-133","Shell Helix Ultra 5W-30 — olej silnikowy 4 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-134","Castrol EDGE 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-135","Mobil 1 ESP 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-136","Motul 8100 X-clean — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-137","Olej przekładniowy 75W-90 — do skrzyni biegów","Oleje i płyny samochodowe","⚙️"],
+  ["tanievo-138","Płyn chłodniczy koncentrat — dobierz specyfikację","Oleje i płyny samochodowe","❄️"],
+  ["tanievo-139","Płyn hamulcowy DOT 4 — opakowanie 1 l","Oleje i płyny samochodowe","🚗"],
+  ["tanievo-140","Zestaw kluczy nasadowych Yato 1/4 i 1/2 cala","Warsztat i majsterkowanie","🔧"],
+  ["tanievo-141","Zestaw precyzyjnych śrubokrętów i bitów","Warsztat i majsterkowanie","🪛"],
+  ["tanievo-142","Szczypce, kombinerki i obcinaki — zestaw warsztatowy","Warsztat i majsterkowanie","🗜️"],
+  ["tanievo-143","Imadło stołowe obrotowe do majsterkowania","Warsztat i majsterkowanie","🧰"],
+  ["tanievo-144","Zestaw lutowniczy z regulacją temperatury","Warsztat i majsterkowanie"," solder"],
+  ["tanievo-145","Zestaw śrub, nakrętek i podkładek w organizerze","Warsztat i majsterkowanie","🔩"],
+  ["tanievo-146","Zestaw konstrukcyjny metalowy do samodzielnego składania","Warsztat i majsterkowanie","🧩"],
+  ["tanievo-147","Welly — metalowy samochodzik kolekcjonerski 1:64","Modele i samochodziki","🚗"],
+  ["tanievo-148","Bburago — model samochodu 1:24 do kolekcji","Modele i samochodziki","🏎️"],
+  ["tanievo-149","Maisto — model samochodu 1:18","Modele i samochodziki","🚙"],
+  ["tanievo-150","Zestaw toru wyścigowego dla samochodzików","Modele i samochodziki","🏁"],
+  ["tanievo-151","LEGO Technic — samochód do składania","Modele i samochodziki","🧱"],
+  ["tanievo-152","Model samochodu RC — zdalnie sterowany","Modele i samochodziki","🎮"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon: icon === " solder" ? "🔌" : icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -155,6 +183,9 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("myjki ciśnieniowe")) return "🚿";
   if (value.includes("nagrzewnice garażowe")) return "🔥";
   if (value.includes("ogrzewanie domu")) return "🏠";
+  if (value.includes("oleje i płyny samochodowe")) return "🛢️";
+  if (value.includes("warsztat i majsterkowanie")) return "🧰";
+  if (value.includes("modele i samochodziki")) return "🚗";
   if (value.includes("wykrywacze metali")) return "🧭";
   if (value.includes("akcesoria do wykrywaczy")) return "🎒";
   if (value.includes("ładowarki i zasilacze")) return "🔌";
