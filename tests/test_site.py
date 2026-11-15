@@ -220,5 +220,19 @@ class SiteIntegrityTests(unittest.TestCase):
                 self.assertIn(f'"{category}"', self.app)
         self.assertIn('Wyszukaj w Ceneo', self.app)
 
+
+    def test_beauty_and_mixer_categories_have_searchable_products(self):
+        expected = {
+            "Uroda i stylizacja": ["tanievo-104", "tanievo-105", "tanievo-106", "tanievo-107", "tanievo-108", "tanievo-109"],
+            "Miksery i blendery": ["tanievo-110", "tanievo-111", "tanievo-112", "tanievo-113", "tanievo-114", "tanievo-115"],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
 if __name__ == "__main__":
     unittest.main()
