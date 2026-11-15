@@ -234,3 +234,17 @@
 .comparison-store a:hover{text-decoration:underline}
 .price-comparison>small{display:block;margin-top:8px;font-size:9px;line-height:1.45;color:#748093}
 @media(max-width:420px){.comparison-stores{gap:5px}.comparison-store{padding:8px 6px}.comparison-store strong{font-size:11px}}
+
+/* Szybkie, klikalne wejścia na grafice głównej */
+.hero.hero-brand-image{position:relative}
+.hero-image-actions{position:absolute;left:50%;bottom:clamp(22px,5vw,48px);transform:translateX(-50%);z-index:2;display:flex;justify-content:center;align-items:center;gap:12px;width:max-content;max-width:calc(100% - 28px);padding:10px;border:1px solid #ffffff35;border-radius:14px;background:#101827d9;box-shadow:0 12px 34px #0006;backdrop-filter:blur(8px)}
+.hero-image-action{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:12px 18px;border:1px solid #ffffff40;border-radius:9px;color:#fff;background:#26364b;font-size:14px;font-weight:800;text-decoration:none;white-space:nowrap;transition:transform .18s,background .18s}
+.hero-image-action span{color:#ff9b42;font-size:18px}
+.hero-image-action:hover,.hero-image-action:focus-visible{transform:translateY(-2px);background:#344a64}
+.hero-image-action-primary{background:#ff8a24;border-color:#ff8a24;color:#101827}
+.hero-image-action-primary span{color:#101827}
+.hero-image-action-primary:hover,.hero-image-action-primary:focus-visible{background:#ffad61}
+@media(max-width:480px){
+ .hero-image-actions{bottom:22px;gap:7px;padding:7px;max-width:calc(100% - 20px)}
+ .hero-image-action{min-height:44px;padding:10px 11px;gap:6px;font-size:12px}
+}
