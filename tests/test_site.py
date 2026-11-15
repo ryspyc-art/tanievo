@@ -173,6 +173,21 @@ class SiteIntegrityTests(unittest.TestCase):
                         self.assertIn("noopener", rel)
                         self.assertIn("noreferrer", rel) if link.get("href", "").startswith("http") else None
 
+    def test_new_category_tiles_have_searchable_catalog_entries(self):
+        expected = {
+            "Oświetlenie samochodowe": ["tanievo-073", "tanievo-074"],
+            "Elektronarzędzia": ["tanievo-075", "tanievo-076", "tanievo-077"],
+            "Ogrzewanie domu": ["tanievo-078", "tanievo-079", "tanievo-080"],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
+
 
 if __name__ == "__main__":
     unittest.main()
