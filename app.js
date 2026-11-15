@@ -99,6 +99,31 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-116","Romet Orkan — rower trekkingowy","Rowery","🚲"],
+  ["tanievo-117","Kross Level — rower górski MTB","Rowery","🚵"],
+  ["tanievo-118","Kross Trans — rower trekkingowy","Rowery","🚲"],
+  ["tanievo-119","Romet Gazela — rower miejski","Rowery","🚲"],
+  ["tanievo-120","Rower gravel Kross Esker","Rowery","🚴"],
+  ["tanievo-121","Rower elektryczny miejski — e-bike","Rowery","⚡"],
+  ["tanievo-122","Raven rolki regulowane dla dzieci","Rolki i wrotki","🛼"],
+  ["tanievo-123","Rollerblade rolki fitness dla dorosłych","Rolki i wrotki","🛼"],
+  ["tanievo-124","Nils Extreme wrotki klasyczne","Rolki i wrotki","🛼"],
+  ["tanievo-125","Rolki freestyle Powerslide","Rolki i wrotki","🛼"],
+  ["tanievo-126","Kask rowerowy Uvex Viva 3","Akcesoria rowerowe","⛑️"],
+  ["tanievo-127","Lampki rowerowe LED przód i tył USB","Akcesoria rowerowe","💡"],
+  ["tanievo-128","Zapięcie rowerowe U-lock","Akcesoria rowerowe","🔒"],
+  ["tanievo-129","Sakwa rowerowa wodoodporna","Akcesoria rowerowe","🎒"],
+  ["tanievo-130","Licznik rowerowy GPS Garmin Edge","Akcesoria rowerowe","📟"],
+  ["tanievo-131","Pompka rowerowa z manometrem","Akcesoria rowerowe","🚲"],
+  ["tanievo-132","Zestaw naprawczy do dętek rowerowych","Akcesoria rowerowe","🔧"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -139,6 +164,9 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("zabawki")) return "🧸";
   if (value.includes("uroda i stylizacja")) return "💇";
   if (value.includes("miksery i blendery")) return "🥣";
+  if (value.includes("rowery")) return "🚲";
+  if (value.includes("rolki i wrotki")) return "🛼";
+  if (value.includes("akcesoria rowerowe")) return "🚴";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
