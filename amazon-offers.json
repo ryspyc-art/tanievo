@@ -1173,6 +1173,21 @@
       "priceSource": "Cena niepotwierdzona — porównaj aktualne oferty, wariant i koszt dostawy",
       "availability": "Sprawdź aktualną cenę i dostępność",
       "image": ""
+    },
+    {
+      "id": "tanievo-135",
+      "name": "HAKU metalowy regał na buty 3 półki 80 × 60 × 30 cm",
+      "category": "Dom",
+      "merchant": "Amazon",
+      "price": 145.15,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-HAKU+regal+na+buty+metalowy+3+polki+80x60x30",
+      "amazonSearchUrl": "https://amzn.to/4sXp0Kh",
+      "linkType": "comparison",
+      "priceSource": "Cena widoczna na zrzucie Amazon: 145,15 zł; wymaga ponownego potwierdzenia przed zakupem",
+      "priceCheckedAt": "",
+      "availability": "Sprawdź aktualną cenę i dostępność",
+      "image": ""
     }
   ]
 }
