@@ -58,6 +58,27 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-091","Sofirn SC18 — latarka LED USB-C z akumulatorem 18650","Latarki LED","🔦"],
+  ["tanievo-092","NEO — latarka akumulatorowa LED USB-C 500 lm","Latarki LED","🔦"],
+  ["tanievo-093","Latarka czołowa LED USB-C z akumulatorem","Latarki LED","🔦"],
+  ["tanievo-094","Lampa warsztatowa LED COB z magnesem i hakiem","Latarki LED","💡"],
+  ["tanievo-095","Akumulator 18650 Li-Ion 2600 mAh z zabezpieczeniem — sprawdź kompatybilność","Akumulatory 18650","🔋"],
+  ["tanievo-096","XTAR 18650 Li-Ion 2600 mAh — ogniwo do latarki","Akumulatory 18650","🔋"],
+  ["tanievo-097","Panasonic NCR18650B 3400 mAh — akumulator Li-Ion","Akumulatory 18650","🔋"],
+  ["tanievo-098","Ładowarka XTAR do ogniw 18650","Ładowarki i zasilacze","🔌"],
+  ["tanievo-099","Marioinex Mini Waffle — klocki konstrukcyjne","Zabawki","🧸"],
+  ["tanievo-100","LEGO DUPLO — kreatywne zwierzaki 3 w 1","Zabawki","🧸"],
+  ["tanievo-101","Zestaw kreatywny do skręcania z narzędziami dla dzieci","Zabawki","🧰"],
+  ["tanievo-102","Kostka edukacyjna Montessori","Zabawki","🧩"],
+  ["tanievo-103","Zestaw małego elektronika — eksperymenty edukacyjne","Zabawki","⚡"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -93,6 +114,9 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("akcesoria do wykrywaczy")) return "🎒";
   if (value.includes("ładowarki i zasilacze")) return "🔌";
   if (value.includes("akumulatory aa i aaa")) return "🔋";
+  if (value.includes("latarki")) return "🔦";
+  if (value.includes("akumulatory 18650")) return "🔋";
+  if (value.includes("zabawki")) return "🧸";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
