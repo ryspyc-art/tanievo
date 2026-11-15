@@ -47,6 +47,10 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("smartwatch") || value.includes("zegark")) return "⌚";
   if (value.includes("ekspres") || value.includes("kaw")) return "☕";
   if (value.includes("ogród")) return "🌱";
+  if (value.includes("konsole")) return "🎮";
+  if (value.includes("pady") || value.includes("kontroler")) return "🕹️";
+  if (value.includes("gry")) return "🎯";
+  if (value.includes("zima")) return "❄️";
   if (value.includes("monitor")) return "📷";
   if (value.includes("dron")) return "🚁";
   if (value.includes("telefon")) return "📱";
