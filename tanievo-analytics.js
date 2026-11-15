@@ -10,7 +10,7 @@ document.addEventListener("click", event => {
 
   const host = destination.hostname.toLowerCase();
   let shop = "";
-  if (/(^|\\.)amazon\\./.test(host)) shop = "amazon";
+  if (host.startsWith("amazon.") || host.includes(".amazon.")) shop = "amazon";
   else if (host === "ceneo.pl" || host.endsWith(".ceneo.pl")) shop = "ceneo";
   if (!shop) return;
 
