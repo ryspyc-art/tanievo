@@ -625,6 +625,9 @@ document.addEventListener("click", event => {
     item.setAttribute("aria-pressed", String(active));
   });
   render();
+  // Po wyborze kategorii pokaż użytkownikowi przefiltrowany katalog.
+  const offersSection = document.getElementById("oferty") || document.getElementById("products");
+  if (offersSection) offersSection.scrollIntoView({ behavior: "smooth", block: "start" });
 }, true);
 
 search.addEventListener("input", render);
