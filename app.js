@@ -587,7 +587,10 @@ document.addEventListener("click", event => {
     item.setAttribute("aria-pressed", String(active));
   });
   render();
-  if (tile) document.getElementById("oferty")?.scrollIntoView({behavior:"smooth", block:"start"});
+  if (tile) {
+    const resultsAnchor = document.getElementById("resultCount") || document.getElementById("productGrid");
+    resultsAnchor?.scrollIntoView({behavior:"smooth", block:"start"});
+  }
 }, true);
 
 search.addEventListener("input", render);
