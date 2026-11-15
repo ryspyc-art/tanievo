@@ -286,7 +286,19 @@ const categoryAliases={
   "Ogród i narzędzia":["Ogród"],"Małe AGD":["AGD"],
   "Ekspresy do kawy":["AGD"],"Roboty sprzątające":["AGD"],
   "Na zimę":["Motoryzacja","Odzież outdoor","Moda"],
-  "Narzędzia warsztatowe":["Narzędzia","Warsztat i majsterkowanie"]
+  "Narzędzia warsztatowe":["Narzędzia","Warsztat i majsterkowanie"],
+  "Elektronarzędzia i warsztat":["Narzędzia","Warsztat i majsterkowanie"],
+  "Motoryzacja i oleje":["Motoryzacja"],
+  "Majsterkowanie i narzędzia":["Narzędzia","Warsztat i majsterkowanie"],
+  "Modelarstwo i zestawy":["Modelarstwo","Zabawki"],
+  "Elektronika DIY":["Elektronika","Komputery"],
+  "Turystyka i outdoor":["Odzież outdoor","Sport"],
+  "Rowery i sport":["Rowery","Sport"],
+  "Dom i ogrzewanie":["Dom","Ogrzewanie domu","AGD"],
+  "Uroda i stylizacja":["Zdrowie","Zdrowie i higiena"],
+  "Miksery i AGD":["Miksery i blendery","AGD","Małe AGD"],
+  "Zabawki":["Zabawki","Dziecko"],
+  "Elektronika i wiele więcej!":["Elektronika","Komputery","RTV","Telefony","Gaming"]
 };
 function getTileCategoryMatches(tile){
   const label=tile.querySelector("strong")?.textContent.trim() || "";
