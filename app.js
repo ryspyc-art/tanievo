@@ -318,7 +318,7 @@ function safeProductUrl(value) {
   return isSafeExternalHttpsUrl(value);
 }
 
-function withCeneoTracking(candidate) {
+function plainCeneoUrl(candidate) {
   if (!safeProductUrl(candidate)) return "";
   try {
     const url = new URL(candidate);
@@ -333,10 +333,10 @@ function withCeneoTracking(candidate) {
 
 function getCeneoUrl(product) {
   for (const candidate of [product.ceneoUrl, product.productUrl]) {
-    const tracked = withCeneoTracking(candidate);
+    const tracked = plainCeneoUrl(candidate);
     if (tracked) return tracked;
   }
-  return withCeneoTracking("https://www.ceneo.pl/;szukaj-" + encodeURIComponent(product.name));
+  return plainCeneoUrl("https://www.ceneo.pl/;szukaj-" + encodeURIComponent(product.name));
 }
 
 function getAmazonUrl(product) {
