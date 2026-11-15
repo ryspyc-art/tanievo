@@ -14,7 +14,7 @@
 1. **Art. XIII ust. 2:** dostęp do API wymaga osobnego wniosku i pozytywnej decyzji Ceneo; dopiero wtedy wydawany jest klucz.
 2. **Art. XIII ust. 4:** dane pobrane przez API można wykorzystywać wyłącznie w celu promowania serwisu Ceneo.pl, zgodnie z regulaminem.
 3. **Art. XIII ust. 7:** partner nie jest uprawniony do modyfikowania treści zwracanych przez metody API.
-4. **Art. V ust. 1 lit. a pkt vi:** regulamin ogranicza publikowanie treści dotyczących ofert w konkretnych sklepach oraz linków do nich, jeżeli nie powstały w ramach współpracy z Ceneo.
+4. **Art. V ust. 1 lit. m:** nie wolno umieszczać kreacji reklamowych ani linków reklamowych, które nie zostały wygenerowane w panelu administracyjnym lub narzędziu API Ceneo, ani ingerować w kod linku odsyłającego do Ceneo. Dodatkowe ograniczenia dotyczące stron docelowych wskazano w art. V ust. 2.
 5. **Art. XIII ust. 8:** w razie zablokowania dostępu trzeba niezwłocznie usunąć dane pobrane przez API.
 
 Dlatego przed uruchomieniem porównywarki trzeba uzyskać od Ceneo pisemną odpowiedź, czy i w jakiej formie dozwolone są: prezentacja ofert na stronie, sortowanie i filtrowanie, przechowywanie kopii danych, aktualizacja katalogu oraz przekierowania do sklepów. Nie zakładamy, że sam klucz API oznacza zgodę na wszystkie te funkcje.
