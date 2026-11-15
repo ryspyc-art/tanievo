@@ -24,6 +24,22 @@ let products = [
 
 // Dodatkowe pozycje katalogowe do wyszukania w Ceneo; nie są potwierdzonymi ofertami afiliacyjnymi.
 const discoveryProducts = [["tanievo-011","Samsung Galaxy A56 5G","Telefony","📱"],["tanievo-012","Apple iPhone 16 128 GB","Telefony","📱"],["tanievo-013","Xiaomi Redmi Note 14 Pro 5G","Telefony","📱"],["tanievo-014","Sony WH-1000XM5","Elektronika","🎧"],["tanievo-015","JBL Tune 770NC","Elektronika","🎧"],["tanievo-016","Powerbank Xiaomi 20000 mAh","Elektronika","🔋"],["tanievo-017","Ładowarka Anker USB-C 30 W","Elektronika","🔌"],["tanievo-018","Monitor Dell 27 cali QHD","Komputery","🖥️"],["tanievo-019","Laptop Lenovo IdeaPad Slim 3","Komputery","💻"],["tanievo-020","SSD Samsung 990 EVO 1 TB","Komputery","💾"],["tanievo-021","Klawiatura Logitech K380","Komputery","⌨️"],["tanievo-022","Mysz Logitech MX Master 3S","Komputery","🖱️"],["tanievo-023","Sony PlayStation 5 Slim","Gaming","🎮"],["tanievo-024","Xbox Wireless Controller","Gaming","🎮"],["tanievo-025","Telewizor Samsung QLED 55 cali","RTV","📺"],["tanievo-026","Soundbar JBL Bar 500","RTV","🔊"],["tanievo-027","DeLonghi Magnifica S","AGD","☕"],["tanievo-028","Xiaomi Robot Vacuum S10","AGD","🤖"],["tanievo-029","Dyson V8","AGD","🧹"],["tanievo-030","Philips Airfryer 3000","AGD","🍟"],["tanievo-031","Blender Bosch VitaPower","AGD","🥤"],["tanievo-032","Czajnik Bosch Styline","AGD","🫖"],["tanievo-033","Zestaw garnków Tefal Ingenio","Dom","🍳"],["tanievo-034","Patelnia Tefal Unlimited 28 cm","Dom","🍳"],["tanievo-035","Pościel bawełniana 160 × 200 cm","Dom","🛏️"],["tanievo-036","Xiaomi Smart Air Purifier 4","Dom","🌬️"],["tanievo-037","Lampa biurkowa LED","Dom","💡"],["tanievo-038","Bosch Professional GSR 18V-55","Narzędzia","🛠️"],["tanievo-039","Szlifierka kątowa Makita 9558HNRG","Narzędzia","⚙️"],["tanievo-040","Zestaw kluczy nasadowych Yato","Narzędzia","🔧"],["tanievo-041","Kosiarka Bosch UniversalRotak","Ogród","🌱"],["tanievo-042","Myjka Kärcher K 4 Power Control","Ogród","🚿"],["tanievo-043","Kurtka trekkingowa softshell","Moda","🧥"],["tanievo-044","Adidas Terrex AX4","Obuwie","🥾"],["tanievo-045","Nike Revolution 7","Obuwie","👟"],["tanievo-046","Garmin Forerunner 165","Sport","⌚"],["tanievo-047","Mata fitness 180 cm","Sport","🧘"],["tanievo-048","Michelin Alpin 6 205/55 R16","Motoryzacja","🚗"],["tanievo-049","Wideorejestrator 70mai A500S","Motoryzacja","📹"],["tanievo-050","Legowisko wodoodporne dla psa","Dla zwierząt","🐾"]].map(([id,name,category,icon]) => ({id,name,category,icon,store:"Wyszukaj w Ceneo",productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),linkType:"search"}));
+
+discoveryProducts.push(
+  ["tanievo-073","Żarówki LED H7 do samochodu — dobierz homologowany wariant","Oświetlenie samochodowe","🚘"],
+  ["tanievo-074","Lampy robocze LED 12/24 V do samochodu i warsztatu","Oświetlenie samochodowe","💡"],
+  ["tanievo-075","Wkrętarka akumulatorowa 18 V do domu i warsztatu","Elektronarzędzia","🛠️"],
+  ["tanievo-076","Szlifierka kątowa 125 mm — elektronarzędzie","Elektronarzędzia","⚙️"],
+  ["tanievo-077","Wiertarko-wkrętarka udarowa akumulatorowa 18 V","Elektronarzędzia","🔩"],
+  ["tanievo-078","Grzejnik konwektorowy elektryczny do domu","Ogrzewanie domu","🔥"],
+  ["tanievo-079","Grzejnik olejowy elektryczny do mieszkania","Ogrzewanie domu","♨️"],
+  ["tanievo-080","Panel grzewczy na podczerwień do domu","Ogrzewanie domu","🌡️"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -54,6 +70,7 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("podnośniki")) return "🚗";
   if (value.includes("myjki ciśnieniowe")) return "🚿";
   if (value.includes("nagrzewnice garażowe")) return "🔥";
+  if (value.includes("ogrzewanie domu")) return "🏠";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
