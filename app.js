@@ -318,13 +318,22 @@ function safeProductUrl(value) {
   return isSafeExternalHttpsUrl(value);
 }
 
-function plainCeneoUrl(candidate) {
+// Wspólne parametry kampanii Ceneo. Identyfikatory kreacji są przypisane do konkretnych pozycji.
+const CENEO_CAMPAIGN = "cid=52090";
+const CENEO_PUBLISHER = "pid=31443";
+const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;
+const CENEO_CREATIVE_URLS = {
+  "tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
+};
+const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];
+
+function withCeneoTracking(candidate) {
   if (!safeProductUrl(candidate)) return "";
   try {
     const url = new URL(candidate);
     if (url.hostname !== "www.ceneo.pl") return "";
-    // Linki Ceneo pozostają zwykłymi odnośnikami do wyszukiwania do czasu potwierdzenia śledzenia afiliacyjnego.
-    url.hash = "";
+    // Zachowaj przypisaną kreację; wspólny tracking dodaj tylko do linków bez fragmentu.
+    if (!url.hash) url.hash = CENEO_DEFAULT_TRACKING;
     return url.href;
   } catch {
     return "";
@@ -332,11 +341,13 @@ function plainCeneoUrl(candidate) {
 }
 
 function getCeneoUrl(product) {
+  const creativeUrl = CENEO_CREATIVE_URLS[String(product.id)];
+  if (creativeUrl) return creativeUrl;
   for (const candidate of [product.ceneoUrl, product.productUrl]) {
-    const tracked = plainCeneoUrl(candidate);
+    const tracked = withCeneoTracking(candidate);
     if (tracked) return tracked;
   }
-  return plainCeneoUrl("https://www.ceneo.pl/;szukaj-" + encodeURIComponent(product.name));
+  return withCeneoTracking("https://www.ceneo.pl/;szukaj-" + encodeURIComponent(product.name));
 }
 
 function getAmazonUrl(product) {
