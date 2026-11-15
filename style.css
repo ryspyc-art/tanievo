@@ -273,3 +273,15 @@
   .hero-image-action{font-size:8px;padding:5px 3px;gap:2px}
   .hero-image-action span{font-size:10px}
 }
+
+
+/* Grafika główna Tanievo z prawdziwymi, responsywnymi obszarami kategorii */
+.hero.hero-brand-image{display:flex;justify-content:center;align-items:flex-start;min-height:0;padding:0;background:#101827;overflow:hidden}
+.hero-artwork{position:relative;width:min(100%,900px);aspect-ratio:1/1;margin:0 auto;line-height:0}
+.hero-artwork>img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;margin:0;border-radius:0;box-shadow:none}
+.hero-category-hotspots{position:absolute;inset:0;z-index:4}
+.hero-category-hotspot{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);padding:0;border:1px solid transparent;border-radius:12px;background:transparent;cursor:pointer;line-height:normal;touch-action:manipulation}
+.hero-category-hotspot:hover,.hero-category-hotspot:focus-visible{background:#ff790026;border-color:#ff8a24;box-shadow:0 0 0 2px #ff8a2455;outline:none}
+.hotspot-accessible-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:800px){.hero.hero-brand-image{padding:0}.hero-artwork{width:100%;max-width:none}.hero-category-hotspot{border-radius:8px}}
+@media(max-width:420px){.hero-category-hotspot{border-radius:6px}}
