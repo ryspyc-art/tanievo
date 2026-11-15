@@ -578,39 +578,26 @@ function render() {
   if (favoritesCount) favoritesCount.textContent = String(favorites.length);
 }
 
-// Delegowana obsługa kafelków kategorii — działa również dla elementów dodanych dynamicznie.
+// Jedna obsługa kategorii w fazie capture: obejmuje kafelki strony i chipy katalogu,
+// także po przebudowaniu ich przez katalog dodatkowy lub live.
 document.addEventListener("click", event => {
   const tile = event.target.closest("[data-category-jump]");
-  if (!tile) return;
-  event.preventDefault();
-  const selectedCategory = tile.dataset.categoryJump;
-  if (!products.some(product => product.category === selectedCategory)) {
-    category = "Wszystkie";
-  } else {
-    category = selectedCategory;
-  }
+  const chip = event.target.closest("[data-category]");
+  if (!tile && !chip) return;
+  if (tile) event.preventDefault();
+  const selectedCategory = tile ? tile.dataset.categoryJump : chip.dataset.category;
+  category = selectedCategory === "Wszystkie" || products.some(product => product.category === selectedCategory)
+    ? selectedCategory : "Wszystkie";
   favoritesOnly = false;
   search.value = "";
-  document.querySelectorAll(".chip").forEach(chip => {
-    const active = chip.dataset.category === category;
-    chip.classList.toggle("active", active);
-    chip.setAttribute("aria-pressed", String(active));
+  document.querySelectorAll(".chip").forEach(item => {
+    const active = item.dataset.category === category;
+    item.classList.toggle("active", active);
+    item.setAttribute("aria-pressed", String(active));
   });
   render();
-  document.getElementById("oferty")?.scrollIntoView({behavior:"smooth", block:"start"});
+  if (tile) document.getElementById("oferty")?.scrollIntoView({behavior:"smooth", block:"start"});
 }, true);
-
-document.getElementById("categoryChips").addEventListener("click", event => {
-  const button = event.target.closest("[data-category]");
-  if (!button) return;
-  category = button.dataset.category;
-  document.querySelectorAll(".chip").forEach(chip => {
-    const active = chip === button;
-    chip.classList.toggle("active", active);
-    chip.setAttribute("aria-pressed", String(active));
-  });
-  render();
-});
 
 search.addEventListener("input", render);
 sort.addEventListener("change", render);
