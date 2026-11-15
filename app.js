@@ -278,6 +278,22 @@ const favoritesToggle = document.getElementById("favoritesToggle");
 let catalogCategories = [...new Set(products.map(p => p.category))].sort((a,b) => a.localeCompare(b,"pl"));
 let category = "Wszystkie";
 let favoritesOnly = false;
+const categoryAliases={
+  "Telewizory i RTV":["RTV"],"Sport i rekreacja":["Sport"],
+  "Dom i kuchnia":["Dom","AGD","Małe AGD","Miksery i blendery","Ogrzewanie domu"],
+  "Komputery i akcesoria":["Komputery"],"Kamery i monitoring":["Monitoring"],
+  "Zdrowie i uroda":["Zdrowie","Zdrowie i higiena"],
+  "Ogród i narzędzia":["Ogród"],"Małe AGD":["AGD"],
+  "Ekspresy do kawy":["AGD"],"Roboty sprzątające":["AGD"],
+  "Na zimę":["Motoryzacja","Odzież outdoor","Moda"],
+  "Narzędzia warsztatowe":["Narzędzia","Warsztat i majsterkowanie"]
+};
+function getTileCategoryMatches(tile){
+  const label=tile.querySelector("strong")?.textContent.trim() || "";
+  const raw=tile.dataset.categoryJump || "";
+  const candidates=[raw,label,...(categoryAliases[label]||[]),...(categoryAliases[raw]||[])];
+  return [...new Set(candidates.map(normalizeCategory))];
+}
 function buildCategoryNavigation(){
   catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
   if(category !== "Wszystkie" && !catalogCategories.includes(category)) category = "Wszystkie";
@@ -286,22 +302,6 @@ function buildCategoryNavigation(){
     const active=name===category;
     return '<button type="button" class="chip '+(active?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+String(active)+'">'+escapeHTML(name)+'</button>';
   }).join("");
-  const categoryAliases={
-    "Telewizory i RTV":["RTV"],"Sport i rekreacja":["Sport"],
-    "Dom i kuchnia":["Dom","AGD","Małe AGD","Miksery i blendery","Ogrzewanie domu"],
-    "Komputery i akcesoria":["Komputery"],"Kamery i monitoring":["Monitoring"],
-    "Zdrowie i uroda":["Zdrowie","Zdrowie i higiena"],
-    "Ogród i narzędzia":["Ogród"],"Małe AGD":["AGD"],
-    "Ekspresy do kawy":["AGD"],"Roboty sprzątające":["AGD"],
-    "Na zimę":["Motoryzacja","Odzież outdoor","Moda"],
-    "Narzędzia warsztatowe":["Narzędzia","Warsztat i majsterkowanie"]
-  };
-  function getTileCategoryMatches(tile){
-    const label=tile.querySelector("strong")?.textContent.trim() || "";
-    const raw=tile.dataset.categoryJump || "";
-    const candidates=[raw,label,...(categoryAliases[label]||[]),...(categoryAliases[raw]||[])];
-    return [...new Set(candidates.map(normalizeCategory))];
-  }
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
     const categoryNames=getTileCategoryMatches(tile);
