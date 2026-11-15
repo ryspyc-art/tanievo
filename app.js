@@ -284,15 +284,21 @@ function buildCategoryNavigation(){
   const chips=document.getElementById("categoryChips");
   if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map(name=>{
     const active=name===category;
-    return '<button class="chip '+(active?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+String(active)+'">'+escapeHTML(name)+'</button>';
+    return '<button type="button" class="chip '+(active?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+String(active)+'">'+escapeHTML(name)+'</button>';
   }).join("");
-  const categoryAliases={"Małe AGD":["AGD"],"Kamery i monitoring":["Monitoring"]};
+  const categoryAliases={
+    "Telewizory i RTV":["RTV"],"Sport i rekreacja":["Sport"],
+    "Rowery":["Rowery"],"Dom i kuchnia":["Dom","AGD","Małe AGD","Miksery i blendery","Ogrzewanie domu"],
+    "Komputery i akcesoria":["Komputery"],"Kamery i monitoring":["Monitoring"]
+  };
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
-    const categoryNames=[tile.dataset.categoryJump,...(categoryAliases[tile.querySelector("strong")?.textContent.trim()]||[])];
+    const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
+    const categoryNames=[...new Set([tile.dataset.categoryJump,...(categoryAliases[key]||[])])];
     const n=products.filter(p=>categoryNames.includes(p.category)).length;
-    tile.hidden=n===0;
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
+    tile.hidden=false;
+    tile.setAttribute("aria-label",key+": "+countLabel?.textContent);
   });
   const statusCount=document.getElementById("catalogStatusCount");
   if(statusCount)statusCount.textContent=products.length;
@@ -572,25 +578,29 @@ function render() {
 // Jedna obsługa kategorii w fazie capture: obejmuje kafelki strony i chipy katalogu,
 // także po przebudowaniu ich przez katalog dodatkowy lub live.
 document.addEventListener("click", event => {
-  const tile = event.target.closest("[data-category-jump]");
-  const chip = event.target.closest("[data-category]");
+  const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+  const tile = target?.closest("[data-category-jump]");
+  const chip = target?.closest("[data-category]");
   if (!tile && !chip) return;
-  if (tile) event.preventDefault();
+  event.preventDefault();
+  event.stopPropagation();
   const selectedCategory = tile ? tile.dataset.categoryJump : chip.dataset.category;
-  category = selectedCategory === "Wszystkie" || products.some(product => product.category === selectedCategory)
-    ? selectedCategory : "Wszystkie";
+  if (!products.some(product => product.category === selectedCategory) && selectedCategory !== "Wszystkie") {
+    const label = tile?.querySelector("strong")?.textContent.trim();
+    const aliases = {"Telewizory i RTV":"RTV","Sport i rekreacja":"Sport","Dom i kuchnia":"Dom","Komputery i akcesoria":"Komputery","Małe AGD":"AGD"};
+    category = aliases[label] || selectedCategory;
+  } else {
+    category = selectedCategory;
+  }
   favoritesOnly = false;
   search.value = "";
+  if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed","false");
   document.querySelectorAll(".chip").forEach(item => {
     const active = item.dataset.category === category;
     item.classList.toggle("active", active);
     item.setAttribute("aria-pressed", String(active));
   });
   render();
-  if (tile) {
-    const resultsAnchor = document.getElementById("resultCount") || document.getElementById("productGrid");
-    resultsAnchor?.scrollIntoView({behavior:"smooth", block:"start"});
-  }
 }, true);
 
 search.addEventListener("input", render);
