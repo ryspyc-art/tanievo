@@ -248,3 +248,28 @@
  .hero-image-actions{bottom:18px;gap:7px;padding:8px;width:calc(100% - 18px)}
  .hero-image-action{flex:1 1 calc(50% - 7px);min-height:42px;padding:9px 8px;gap:5px;font-size:11px}
 }
+
+
+/* Mobile: mniejsze przyciski na grafice głównej, aby odsłonić hasło marki */
+@media(max-width:700px){
+  .hero-image-actions{
+    bottom:10px;
+    gap:5px;
+    padding:6px;
+    width:calc(100% - 14px);
+    border-radius:10px;
+  }
+  .hero-image-action{
+    flex:1 1 calc(33.333% - 5px);
+    min-height:32px;
+    padding:6px 5px;
+    gap:3px;
+    font-size:9px;
+    border-radius:7px;
+  }
+  .hero-image-action span{font-size:12px}
+}
+@media(max-width:380px){
+  .hero-image-action{font-size:8px;padding:5px 3px;gap:2px}
+  .hero-image-action span{font-size:10px}
+}
