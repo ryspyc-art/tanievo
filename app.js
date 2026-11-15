@@ -475,6 +475,39 @@ function money(value) {
   return value.toFixed(2).replace(".", ",") + " zł";
 }
 
+// Pokazujemy kwoty porównawcze wyłącznie wtedy, gdy mają własne źródło i świeżą datę.
+function getFreshComparisonPrice(product, shop) {
+  const key = shop === "amazon" ? "amazonPrice" : "ceneoPrice";
+  const dateKey = shop === "amazon" ? "amazonPriceCheckedAt" : "ceneoPriceCheckedAt";
+  const value = Number(product[key]);
+  const checked = Date.parse(product[dateKey] || "");
+  if (!Number.isFinite(value) || value <= 0 || !Number.isFinite(checked)) return null;
+  const age = Date.now() - checked;
+  return age >= 0 && age <= 72 * 60 * 60 * 1000 ? value : null;
+}
+function comparisonPanel(product) {
+  const amazon = getFreshComparisonPrice(product, "amazon");
+  const ceneo = getFreshComparisonPrice(product, "ceneo");
+  let summary = "Sprawdź aktualne ceny w obu sklepach";
+  if (amazon !== null && ceneo !== null) {
+    const diff = Math.abs(amazon - ceneo);
+    summary = diff < 0.01 ? "Taka sama cena w obu sklepach" :
+      (amazon < ceneo ? "Amazon taniej o " : "Ceneo taniej o ") + money(diff);
+  } else if (amazon !== null) {
+    summary = "Cena Amazon potwierdzona · Ceneo do sprawdzenia";
+  } else if (ceneo !== null) {
+    summary = "Cena Ceneo potwierdzona · Amazon do sprawdzenia";
+  }
+  return `<div class="price-comparison" aria-label="Porównanie cen Amazon i Ceneo">
+    <div class="comparison-heading"><strong>Porównaj ceny</strong><span>${escapeHTML(summary)}</span></div>
+    <div class="comparison-stores">
+      <div class="comparison-store"><span class="comparison-store-name">Amazon</span><strong>${amazon === null ? "Sprawdź cenę" : money(amazon)}</strong><a href="${escapeHTML(getAmazonUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę ↗</a></div>
+      <div class="comparison-store"><span class="comparison-store-name">Ceneo</span><strong>${ceneo === null ? "Sprawdź cenę" : money(ceneo)}</strong><a href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer">Zobacz oferty ↗</a></div>
+    </div>
+    <small>Ceny porównujemy tylko dla zgodnego modelu i wariantu. Kwoty bez świeżego potwierdzenia nie są wyświetlane.</small>
+  </div>`;
+}
+
 
 // Obsługa niedziałających zdjęć: zamieniamy je na lokalny, estetyczny placeholder.
 grid.addEventListener("error", event => {
@@ -515,8 +548,7 @@ function render() {
       ${Number.isFinite(product.price) ? `<div class="price-row"><span class="price">${money(product.price)}</span></div>${product.priceSource || product.priceCheckedAt || product.linkType === "comparison" ? `<div class="demo-price-note">${product.linkType === "comparison" ? "Cena orientacyjna · " : ""}${escapeHTML(product.priceSource || "Cena sprawdzona")}${product.priceCheckedAt ? " · sprawdzono: " + escapeHTML(product.priceCheckedAt) : ""}</div>` : ""}` : `<div class="demo-price-note">${product.priceSource ? "Cena niepotwierdzona — sprawdź u sprzedawcy" : "Sprawdź aktualną cenę u partnera"}</div>`}
       <div class="store">${safeStore} · ${product.linkType === "paused" ? "oferta chwilowo niedostępna" : product.linkType === "search" ? "wyszukiwanie produktu" : product.linkType === "comparison" ? "porównanie cen" : product.linkType === "affiliate" ? "link partnerski" : product.productUrl ? "link zewnętrzny" : "weryfikacja linku w toku"}</div>
       ${liveCatalog && product.availability ? `<div class="store">Dostępność: ${escapeHTML(product.availability)}</div>` : ""}
-      <a class="offer-link" href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer"><span>Sprawdź w Ceneo ↗</span></a>
-      <a class="offer-link" href="${escapeHTML(getAmazonUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer"><span>${getAmazonUrl(product).includes("/dp/") ? "Sprawdź na Amazon ↗" : "Szukaj na Amazon ↗"}</span></a>
+      ${comparisonPanel(product)}
       ${getDirectOfferUrl(product) ? `<a class="offer-link" href="${escapeHTML(getDirectOfferUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer"><span>Sprawdź ofertę partnera ↗</span></a>` : ""}
     </article>`;
   }).join("");
