@@ -318,21 +318,6 @@ function safeProductUrl(value) {
   return isSafeExternalHttpsUrl(value);
 }
 
-// Każda kreacja Ceneo ma własny crid. Nie wolno współdzielić go między kreacjami.
-const CENEO_CAMPAIGN = "cid=52090";
-const CENEO_PUBLISHER = "pid=31443";
-const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;
-
-// Podglądy skopiowane z Panelu Partnera:
-// „Tanievo – linki afiliacyjne” -> crid 818403
-// „Tanievo – produkt 001” (pierwsza pozycja) -> crid 818404
-// „Tanievo – produkt 001” (druga pozycja) -> crid 818405
-// Karta AirPods 5 w katalogu odpowiada drugiej pozycji (crid 818405).
-const CENEO_CREATIVE_URLS = {
-  "tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
-};
-const AIRPODS_5_CENEO_URL = CENEO_CREATIVE_URLS["tanievo-001"];
-
 function withCeneoTracking(candidate) {
   if (!safeProductUrl(candidate)) return "";
   try {
@@ -388,7 +373,7 @@ async function loadAmazonOffers() {
     const imported = payload.offers.filter(item => {
       if (!item || typeof item.id !== "string" || typeof item.name !== "string" || typeof item.productUrl !== "string" || !isSafeExternalHttpsUrl(item.productUrl)) return false;
       const url = new URL(item.productUrl);
-      if (item.linkType === "comparison") return url.hostname === "www.ceneo.pl" && typeof item.amazonSearchUrl === "string" && isSafeExternalHttpsUrl(item.amazonSearchUrl) && ((new URL(item.amazonSearchUrl).hostname === "www.amazon.pl" && new URL(item.amazonSearchUrl).searchParams.get("tag") === "tanievo-21") || (new URL(item.amazonSearchUrl).hostname === "amzn.to" || new URL(item.amazonSearchUrl).hostname === "link.amazon")) && (item.price == null || (Number.isFinite(Number(item.price)) && Number(item.price) > 0));
+      if (item.linkType === "comparison") return (url.hostname === "www.ceneo.pl" || (url.hostname === "www.amazon.pl" && url.searchParams.get("tag") === "tanievo-21") || ["allegro.pl","www.allegro.pl","mrkapitan.pl","www.mrkapitan.pl","www.x-kom.pl"].includes(url.hostname)) && typeof item.amazonSearchUrl === "string" && isSafeExternalHttpsUrl(item.amazonSearchUrl) && ((new URL(item.amazonSearchUrl).hostname === "www.amazon.pl" && new URL(item.amazonSearchUrl).searchParams.get("tag") === "tanievo-21") || ["amzn.to","link.amazon"].includes(new URL(item.amazonSearchUrl).hostname)) && (item.price == null || (Number.isFinite(Number(item.price)) && Number(item.price) > 0));
       return url.hostname === "www.amazon.pl" && url.searchParams.get("tag") === "tanievo-21" && typeof item.asin === "string" && url.pathname.includes("/dp/" + item.asin);
     }).map(item => ({
       id:item.id, name:item.name, category:normalizeCategory(item.category || "Inne"),
