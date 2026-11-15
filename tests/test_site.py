@@ -188,6 +188,22 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn('Wyszukaj w Ceneo', self.app)
 
 
+    def test_metal_detector_and_battery_categories_have_searchable_products(self):
+        expected = {
+            "Wykrywacze metali": ["tanievo-081", "tanievo-082", "tanievo-083"],
+            "Akcesoria do wykrywaczy": ["tanievo-084", "tanievo-085"],
+            "Ładowarki i zasilacze": ["tanievo-086", "tanievo-087"],
+            "Akumulatory AA i AAA": ["tanievo-088", "tanievo-089", "tanievo-090"],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
+
 
 if __name__ == "__main__":
     unittest.main()
