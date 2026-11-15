@@ -41,6 +41,22 @@ for (const product of products) {
 }
 
 // Ujednolicenie nazw kategorii: kafelki i filtry muszą wskazywać te same pozycje.
+function categoryProductIcon(category, name = "") {
+  const value = String(category || "").toLocaleLowerCase("pl");
+  if (value.includes("robot") || value.includes("sprząt")) return "🤖";
+  if (value.includes("smartwatch") || value.includes("zegark")) return "⌚";
+  if (value.includes("ekspres") || value.includes("kaw")) return "☕";
+  if (value.includes("ogród")) return "🌱";
+  if (value.includes("monitor")) return "📷";
+  if (value.includes("dron")) return "🚁";
+  if (value.includes("telefon")) return "📱";
+  if (value.includes("komputer")) return "💻";
+  if (value.includes("rtv") || value.includes("telewiz")) return "📺";
+  if (value.includes("agd")) return "🏠";
+  if (value.includes("elektron")) return "🎧";
+  return "🛍️";
+}
+
 function normalizeCategory(value) {
   const aliases = {
     "Odzież outdoor": "Moda",
@@ -192,7 +208,7 @@ async function loadAmazonOffers() {
       id:item.id, name:item.name, category:normalizeCategory(item.category || "Inne"),
       price:Number.isFinite(Number(item.price)) && Number(item.price) > 0 && item.priceCheckedAt && (Date.now() - Date.parse(item.priceCheckedAt) <= 72 * 60 * 60 * 1000) && Date.now() >= Date.parse(item.priceCheckedAt) ? Number(item.price) : null, priceSource:item.priceSource || (item.priceCheckedAt ? "Cena sprawdzona: " + item.priceCheckedAt : "Cena niepotwierdzona — sprawdź u sprzedawcy"), priceCheckedAt:item.priceCheckedAt || "", store:item.merchant || "Amazon", productUrl:item.productUrl,
       linkType:item.linkType === "comparison" ? "comparison" : "affiliate", amazonSearchUrl:item.amazonSearchUrl || "", ceneoUrl:item.ceneoUrl || "",
-      image:safeImage(item.image) ? item.image : "", availability:item.availability || "Sprawdź u sprzedawcy", icon:"🛍️"
+      image:safeImage(item.image) ? item.image : "", availability:item.availability || "Sprawdź u sprzedawcy", icon:categoryProductIcon(item.category, item.name)
     }));
     for (const offer of imported) {
       const index = products.findIndex(product => String(product.id) === offer.id);
@@ -284,7 +300,7 @@ grid.addEventListener("error", event => {
   const fallback = document.createElement("span");
   fallback.className = "product-image-fallback";
   fallback.setAttribute("aria-label", "Zdjęcie produktu niedostępne");
-  fallback.textContent = image.closest(".product-visual")?.querySelector(".fav")?.getAttribute("aria-label")?.includes("słuch") ? "🎧" : "🛍️";
+  fallback.classList.add("product-image-fallback"); fallback.setAttribute("role","img"); fallback.setAttribute("aria-label","Podgląd kategorii produktu"); const icon=document.createElement("span"); icon.className="product-fallback-icon"; icon.textContent="🛍️"; const label=document.createElement("small"); label.textContent="Podgląd produktu"; fallback.append(icon,label);
   image.replaceWith(fallback);
 }, true);
 
@@ -308,7 +324,7 @@ function render() {
     return `<article class="product-card">
       <div class="product-visual">
         ${Number.isFinite(product.discount) ? `<span class="discount-pill">−${product.discount}%</span>` : ""}
-        ${safeImage(product.image) ? `<img class="product-image" src="${escapeHTML(product.image)}" alt="${safeName}" loading="lazy" decoding="async">` : `<span aria-hidden="true">${escapeHTML(product.icon || "🛍️")}</span>`}
+        ${safeImage(product.image) ? `<img class="product-image" src="${escapeHTML(product.image)}" alt="${safeName}" loading="lazy" decoding="async">` : `<span class="product-image-fallback" role="img" aria-label="Podgląd kategorii produktu"><span class="product-fallback-icon" aria-hidden="true">${escapeHTML(product.icon || categoryProductIcon(product.category, product.name))}</span><small>Podgląd produktu</small></span>`}
         <button class="fav ${saved ? "saved" : ""}" data-fav="${escapeHTML(String(product.id))}" aria-label="${saved ? "Usuń z" : "Dodaj do"} ulubionych: ${safeName}" aria-pressed="${saved}">${saved ? "♥" : "♡"}</button>
       </div>
       <div class="product-category">${safeCategory}</div>
