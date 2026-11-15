@@ -280,8 +280,12 @@ let category = "Wszystkie";
 let favoritesOnly = false;
 function buildCategoryNavigation(){
   catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
+  if(category !== "Wszystkie" && !catalogCategories.includes(category)) category = "Wszystkie";
   const chips=document.getElementById("categoryChips");
-  if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map((name,i)=>'<button class="chip '+(i===0?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+(i===0?"true":"false")+'">'+escapeHTML(name)+'</button>').join("");
+  if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map(name=>{
+    const active=name===category;
+    return '<button class="chip '+(active?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+String(active)+'">'+escapeHTML(name)+'</button>';
+  }).join("");
   const categoryAliases={"Małe AGD":["AGD"],"Kamery i monitoring":["Monitoring"]};
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const categoryNames=[tile.dataset.categoryJump,...(categoryAliases[tile.querySelector("strong")?.textContent.trim()]||[])];
@@ -464,14 +468,8 @@ async function loadLiveCatalog() {
     liveCatalog = true;
     const note = document.querySelector(".demo-note");
     if (note) note.textContent = "Oferty partnerskie • " + normalized.length + " aktualnych produktów";
-    const chipContainer = document.getElementById("categoryChips");
-    if (chipContainer) {
-      const categories = ["Wszystkie", ...new Set(normalized.map(item => item.category).filter(Boolean))];
-      chipContainer.innerHTML = categories.map((name, index) =>
-        '<button class="chip ' + (index === 0 ? 'active' : '') + '" data-category="' + escapeHTML(name) + '" aria-pressed="' + (index === 0 ? 'true' : 'false') + '">' + escapeHTML(name) + '</button>'
-      ).join("");
-      category = "Wszystkie";
-    }
+    // Odśwież kategorie bez kasowania wyboru użytkownika.
+    buildCategoryNavigation();
     ["price-asc", "price-desc", "discount"].forEach(value => {
       const option = sort.querySelector('option[value="' + value + '"]');
       if (option) option.hidden = false;
