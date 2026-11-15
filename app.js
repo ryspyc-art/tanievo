@@ -152,6 +152,33 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-153","Revell — plastikowy model samolotu do sklejania","Modelarstwo","✈️"],
+  ["tanievo-154","Revell — model samochodu do sklejania 1:24","Modelarstwo","🚗"],
+  ["tanievo-155","Tamiya — model samochodu do sklejania","Modelarstwo","🏎️"],
+  ["tanievo-156","Zestaw farbek akrylowych do modeli","Modelarstwo","🎨"],
+  ["tanievo-157","Pędzle modelarskie — zestaw precyzyjny","Modelarstwo","🖌️"],
+  ["tanievo-158","Klej modelarski do plastiku","Modelarstwo","🧴"],
+  ["tanievo-159","Aerograf modelarski z kompresorem — zestaw","Modelarstwo","🖌️"],
+  ["tanievo-160","Mata, nożyk i narzędzia do modelarstwa","Modelarstwo","🧰"],
+  ["tanievo-161","Arduino Uno — zestaw startowy elektroniki","Elektronika DIY","🔌"],
+  ["tanievo-162","Raspberry Pi — zestaw akcesoriów i obudowa","Elektronika DIY","💻"],
+  ["tanievo-163","Płytka stykowa i przewody połączeniowe — zestaw","Elektronika DIY","🔗"],
+  ["tanievo-164","Zestaw elementów elektronicznych: rezystory i kondensatory","Elektronika DIY","⚡"],
+  ["tanievo-165","Moduły LED i czujniki do projektów Arduino","Elektronika DIY","💡"],
+  ["tanievo-166","Multimetr cyfrowy do elektroniki i domu","Pomiary i diagnostyka","📟"],
+  ["tanievo-167","Suwmiarka cyfrowa 150 mm","Pomiary i diagnostyka","📏"],
+  ["tanievo-168","Mikrometr zewnętrzny — narzędzie pomiarowe","Pomiary i diagnostyka","📐"],
+  ["tanievo-169","Tester akumulatora samochodowego 12 V","Pomiary i diagnostyka","🔋"],
+  ["tanievo-170","Czytnik diagnostyczny OBD2 Bluetooth","Pomiary i diagnostyka","🚘"],
+  ["tanievo-171","Miernik temperatury i wilgotności z sondą","Pomiary i diagnostyka","🌡️"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -183,6 +210,9 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("myjki ciśnieniowe")) return "🚿";
   if (value.includes("nagrzewnice garażowe")) return "🔥";
   if (value.includes("ogrzewanie domu")) return "🏠";
+  if (value.includes("modelarstwo")) return "🎨";
+  if (value.includes("elektronika diy")) return "🔌";
+  if (value.includes("pomiary i diagnostyka")) return "📏";
   if (value.includes("oleje i płyny samochodowe")) return "🛢️";
   if (value.includes("warsztat i majsterkowanie")) return "🧰";
   if (value.includes("modele i samochodziki")) return "🚗";
