@@ -578,10 +578,17 @@ function render() {
   if (favoritesCount) favoritesCount.textContent = String(favorites.length);
 }
 
-document.querySelector(".category-grid")?.addEventListener("click", event => {
+// Delegowana obsługa kafelków kategorii — działa również dla elementów dodanych dynamicznie.
+document.addEventListener("click", event => {
   const tile = event.target.closest("[data-category-jump]");
   if (!tile) return;
-  category = tile.dataset.categoryJump;
+  event.preventDefault();
+  const selectedCategory = tile.dataset.categoryJump;
+  if (!products.some(product => product.category === selectedCategory)) {
+    category = "Wszystkie";
+  } else {
+    category = selectedCategory;
+  }
   favoritesOnly = false;
   search.value = "";
   document.querySelectorAll(".chip").forEach(chip => {
@@ -590,8 +597,8 @@ document.querySelector(".category-grid")?.addEventListener("click", event => {
     chip.setAttribute("aria-pressed", String(active));
   });
   render();
-  document.getElementById("oferty").scrollIntoView({behavior:"smooth", block:"start"});
-});
+  document.getElementById("oferty")?.scrollIntoView({behavior:"smooth", block:"start"});
+}, true);
 
 document.getElementById("categoryChips").addEventListener("click", event => {
   const button = event.target.closest("[data-category]");
