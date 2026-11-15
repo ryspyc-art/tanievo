@@ -218,3 +218,18 @@
 .category-hub{padding-bottom:24px}
 .search-panel{scroll-margin-top:18px}
 @media(max-width:600px){.catalog-status{padding:13px 14px}.catalog-status summary{font-size:11px}.catalog-status p{font-size:11px}}
+
+
+/* Porównanie Amazon i Ceneo — ceny tylko z odrębnie potwierdzonych źródeł. */
+.price-comparison{margin-top:12px;padding:11px;border:1px solid #dfe5ed;border-radius:11px;background:#f8fafc}
+.comparison-heading{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+.comparison-heading strong{font-size:12px;color:#172235;font-weight:900}
+.comparison-heading span{font-size:10px;line-height:1.4;color:#536174}
+.comparison-stores{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.comparison-store{min-width:0;padding:9px 8px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;display:flex;flex-direction:column;gap:5px}
+.comparison-store-name{font-size:10px;color:#64748b;font-weight:800}
+.comparison-store strong{font-size:12px;line-height:1.25;color:#152238;overflow-wrap:anywhere}
+.comparison-store a{font-size:10px;font-weight:850;color:#075bb5;text-decoration:none}
+.comparison-store a:hover{text-decoration:underline}
+.price-comparison>small{display:block;margin-top:8px;font-size:9px;line-height:1.45;color:#748093}
+@media(max-width:420px){.comparison-stores{gap:5px}.comparison-store{padding:8px 6px}.comparison-store strong{font-size:11px}}
