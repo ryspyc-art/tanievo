@@ -48,6 +48,12 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("ekspres") || value.includes("kaw")) return "☕";
   if (value.includes("ogród")) return "🌱";
   if (value.includes("oświetlenie samochodowe")) return "🚘";
+  if (value.includes("akumulatory")) return "🔋";
+  if (value.includes("prostowniki")) return "⚡";
+  if (value.includes("kompresory")) return "💨";
+  if (value.includes("podnośniki")) return "🚗";
+  if (value.includes("myjki ciśnieniowe")) return "🚿";
+  if (value.includes("nagrzewnice garażowe")) return "🔥";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
