@@ -338,9 +338,8 @@ function withCeneoTracking(candidate) {
   try {
     const url = new URL(candidate);
     if (url.hostname !== "www.ceneo.pl") return "";
-    // Dla AirPods 5 zachowujemy dokładnie adres wskazany w Panelu Partnera.
-    if (url.pathname === "/199946527") return AIRPODS_5_CENEO_URL;
-    url.hash = CENEO_DEFAULT_TRACKING;
+    // Linki Ceneo pozostają zwykłymi odnośnikami do wyszukiwania do czasu potwierdzenia śledzenia afiliacyjnego.
+    url.hash = "";
     return url.href;
   } catch {
     return "";
@@ -348,7 +347,6 @@ function withCeneoTracking(candidate) {
 }
 
 function getCeneoUrl(product) {
-  if (CENEO_CREATIVE_URLS[String(product.id)]) return CENEO_CREATIVE_URLS[String(product.id)];
   for (const candidate of [product.ceneoUrl, product.productUrl]) {
     const tracked = withCeneoTracking(candidate);
     if (tracked) return tracked;
@@ -361,7 +359,7 @@ function getAmazonUrl(product) {
     if (!safeProductUrl(candidate)) continue;
     try {
       const url = new URL(candidate);
-      if ((url.hostname === "www.amazon.pl" && url.searchParams.get("tag") === "tanievo-21") || url.hostname === "amzn.to") return candidate;
+      if ((url.hostname === "www.amazon.pl" && url.searchParams.get("tag") === "tanievo-21") || url.hostname === "amzn.to" || url.hostname === "link.amazon") return candidate;
     } catch {}
   }
   return "https://www.amazon.pl/s?k=" + encodeURIComponent(product.name) + "&tag=tanievo-21";
@@ -390,7 +388,7 @@ async function loadAmazonOffers() {
     const imported = payload.offers.filter(item => {
       if (!item || typeof item.id !== "string" || typeof item.name !== "string" || typeof item.productUrl !== "string" || !isSafeExternalHttpsUrl(item.productUrl)) return false;
       const url = new URL(item.productUrl);
-      if (item.linkType === "comparison") return url.hostname === "www.ceneo.pl" && typeof item.amazonSearchUrl === "string" && isSafeExternalHttpsUrl(item.amazonSearchUrl) && ((new URL(item.amazonSearchUrl).hostname === "www.amazon.pl" && new URL(item.amazonSearchUrl).searchParams.get("tag") === "tanievo-21") || new URL(item.amazonSearchUrl).hostname === "amzn.to") && (item.price == null || (Number.isFinite(Number(item.price)) && Number(item.price) > 0));
+      if (item.linkType === "comparison") return url.hostname === "www.ceneo.pl" && typeof item.amazonSearchUrl === "string" && isSafeExternalHttpsUrl(item.amazonSearchUrl) && ((new URL(item.amazonSearchUrl).hostname === "www.amazon.pl" && new URL(item.amazonSearchUrl).searchParams.get("tag") === "tanievo-21") || (new URL(item.amazonSearchUrl).hostname === "amzn.to" || new URL(item.amazonSearchUrl).hostname === "link.amazon")) && (item.price == null || (Number.isFinite(Number(item.price)) && Number(item.price) > 0));
       return url.hostname === "www.amazon.pl" && url.searchParams.get("tag") === "tanievo-21" && typeof item.asin === "string" && url.pathname.includes("/dp/" + item.asin);
     }).map(item => ({
       id:item.id, name:item.name, category:normalizeCategory(item.category || "Inne"),
