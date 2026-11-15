@@ -288,13 +288,24 @@ function buildCategoryNavigation(){
   }).join("");
   const categoryAliases={
     "Telewizory i RTV":["RTV"],"Sport i rekreacja":["Sport"],
-    "Rowery":["Rowery"],"Dom i kuchnia":["Dom","AGD","Małe AGD","Miksery i blendery","Ogrzewanie domu"],
-    "Komputery i akcesoria":["Komputery"],"Kamery i monitoring":["Monitoring"]
+    "Dom i kuchnia":["Dom","AGD","Małe AGD","Miksery i blendery","Ogrzewanie domu"],
+    "Komputery i akcesoria":["Komputery"],"Kamery i monitoring":["Monitoring"],
+    "Zdrowie i uroda":["Zdrowie","Zdrowie i higiena"],
+    "Ogród i narzędzia":["Ogród"],"Małe AGD":["AGD"],
+    "Ekspresy do kawy":["AGD"],"Roboty sprzątające":["AGD"],
+    "Na zimę":["Motoryzacja","Odzież outdoor","Moda"],
+    "Narzędzia warsztatowe":["Narzędzia","Warsztat i majsterkowanie"]
   };
+  function getTileCategoryMatches(tile){
+    const label=tile.querySelector("strong")?.textContent.trim() || "";
+    const raw=tile.dataset.categoryJump || "";
+    const candidates=[raw,label,...(categoryAliases[label]||[]),...(categoryAliases[raw]||[])];
+    return [...new Set(candidates.map(normalizeCategory))];
+  }
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
-    const categoryNames=[...new Set([tile.dataset.categoryJump,...(categoryAliases[key]||[])])];
-    const n=products.filter(p=>categoryNames.includes(p.category)).length;
+    const categoryNames=getTileCategoryMatches(tile);
+    const n=products.filter(p=>categoryNames.includes(normalizeCategory(p.category))).length;
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
     tile.hidden=false;
@@ -472,6 +483,7 @@ async function loadLiveCatalog() {
     if (!normalized.length) return;
     products = normalized;
     liveCatalog = true;
+    if(category !== "Wszystkie" && !products.some(product => normalizeCategory(product.category) === normalizeCategory(category))) category = "Wszystkie";
     const note = document.querySelector(".demo-note");
     if (note) note.textContent = "Oferty partnerskie • " + normalized.length + " aktualnych produktów";
     // Odśwież kategorie bez kasowania wyboru użytkownika.
@@ -585,12 +597,12 @@ document.addEventListener("click", event => {
   event.preventDefault();
   event.stopPropagation();
   const selectedCategory = tile ? tile.dataset.categoryJump : chip.dataset.category;
-  if (!products.some(product => product.category === selectedCategory) && selectedCategory !== "Wszystkie") {
-    const label = tile?.querySelector("strong")?.textContent.trim();
-    const aliases = {"Telewizory i RTV":"RTV","Sport i rekreacja":"Sport","Dom i kuchnia":"Dom","Komputery i akcesoria":"Komputery","Małe AGD":"AGD"};
-    category = aliases[label] || selectedCategory;
+  if(tile){
+    const candidates=getTileCategoryMatches(tile);
+    const matchingCategory=catalogCategories.find(name=>candidates.includes(normalizeCategory(name)) && products.some(product=>normalizeCategory(product.category)===normalizeCategory(name)));
+    category=matchingCategory || selectedCategory;
   } else {
-    category = selectedCategory;
+    category=selectedCategory;
   }
   favoritesOnly = false;
   search.value = "";
