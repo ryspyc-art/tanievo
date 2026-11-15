@@ -234,5 +234,20 @@ class SiteIntegrityTests(unittest.TestCase):
                 self.assertIn(f'"{category}"', self.app)
         self.assertIn('Wyszukaj w Ceneo', self.app)
 
+
+    def test_cycling_and_skating_categories_have_searchable_products(self):
+        expected = {
+            "Rowery": ["tanievo-116", "tanievo-117", "tanievo-118", "tanievo-119", "tanievo-120", "tanievo-121"],
+            "Rolki i wrotki": ["tanievo-122", "tanievo-123", "tanievo-124", "tanievo-125"],
+            "Akcesoria rowerowe": ["tanievo-126", "tanievo-127", "tanievo-128", "tanievo-129", "tanievo-130", "tanievo-131", "tanievo-132"],
+        }
+        for category, product_ids in expected.items():
+            with self.subTest(category=category):
+                self.assertIn(f'data-category-jump="{category}"', self.html)
+                for product_id in product_ids:
+                    self.assertIn(f'"{product_id}"', self.app)
+                self.assertIn(f'"{category}"', self.app)
+        self.assertIn('Wyszukaj w Ceneo', self.app)
+
 if __name__ == "__main__":
     unittest.main()
