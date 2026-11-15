@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-15",
   "offers": [
     {
       "id": "tanievo-058",
@@ -19,7 +19,7 @@
     {
       "id": "tanievo-066",
       "name": "Apple iPhone 18 Pro 256 GB Burgundy",
-      "category": "Smartfony",
+      "category": "Telefony",
       "merchant": "Amazon",
       "price": null,
       "currency": "PLN",
@@ -36,7 +36,7 @@
     {
       "id": "tanievo-067",
       "name": "Samsung Galaxy Buds3 Pro",
-      "category": "Słuchawki",
+      "category": "Elektronika",
       "merchant": "Cena orientacyjna",
       "price": 599.7,
       "currency": "PLN",
@@ -51,7 +51,7 @@
     {
       "id": "tanievo-061",
       "name": "Sony WF-1000XM5",
-      "category": "Słuchawki",
+      "category": "Elektronika",
       "merchant": "Cena orientacyjna",
       "price": 738,
       "currency": "PLN",
@@ -66,7 +66,7 @@
     {
       "id": "tanievo-062",
       "name": "Samsung Galaxy S26 Ultra 256 GB",
-      "category": "Smartfony",
+      "category": "Telefony",
       "merchant": "Ceneo — najniższa widoczna oferta",
       "price": 3279,
       "currency": "PLN",
@@ -81,7 +81,7 @@
     {
       "id": "tanievo-063",
       "name": "Google Pixel 10 Pro 256 GB",
-      "category": "Smartfony",
+      "category": "Telefony",
       "merchant": "Cena orientacyjna",
       "price": 3949.75,
       "currency": "PLN",
@@ -96,7 +96,7 @@
     {
       "id": "tanievo-064",
       "name": "Samsung Galaxy S26 256 GB",
-      "category": "Smartfony",
+      "category": "Telefony",
       "merchant": "x-kom — cena z porównania ofert",
       "price": 3499,
       "currency": "PLN",
@@ -111,7 +111,7 @@
     {
       "id": "tanievo-065",
       "name": "Apple iPhone 17 Pro 256 GB",
-      "category": "Smartfony",
+      "category": "Telefony",
       "merchant": "Lantre — cena z wyników zakupowych",
       "price": 4599,
       "currency": "PLN",
@@ -121,6 +121,86 @@
       "linkType": "comparison",
       "priceSource": "Wynik zakupowy wskazał 4 599 zł w Lantre; pojemność i aktualną ofertę należy potwierdzić",
       "availability": "Cena orientacyjna — sprawdź aktualną ofertę",
+      "image": ""
+    },
+    {
+      "id": "tanievo-068",
+      "name": "Anker Zolo 25000 mAh 165 W A1695H11",
+      "category": "Elektronika",
+      "merchant": "Ceneo — cena od",
+      "price": 256,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-Anker+Zolo+25000mAh+A1695H11#cid=52090&crid=818403&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/;szukaj-Anker+Zolo+25000mAh+A1695H11#cid=52090&crid=818403&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Anker+Zolo+25000mAh+A1695H11&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Ceneo: oferta od 256 zł; sprawdź wariant, sprzedawcę i dostawę",
+      "priceCheckedAt": "2026-11-15",
+      "availability": "Cena od — potwierdź aktualną dostępność",
+      "image": ""
+    },
+    {
+      "id": "tanievo-069",
+      "name": "Logitech MX Master 4 Grafitowy",
+      "category": "Komputery",
+      "merchant": "Ceneo — cena od",
+      "price": 399,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-Logitech+MX+Master+4+Grafitowy#cid=52090&crid=818403&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/;szukaj-Logitech+MX+Master+4+Grafitowy#cid=52090&crid=818403&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Logitech+MX+Master+4+Grafitowy&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Ceneo: oferta od 399 zł; sprawdź wariant, sprzedawcę i dostawę",
+      "priceCheckedAt": "2026-11-15",
+      "availability": "Cena od — potwierdź aktualną dostępność",
+      "image": ""
+    },
+    {
+      "id": "tanievo-070",
+      "name": "Philips AirFryer Ovi mini HD9255/30",
+      "category": "AGD",
+      "merchant": "Ceneo — cena od",
+      "price": 269,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-Philips+AirFryer+HD9255%2F30#cid=52090&crid=818403&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/;szukaj-Philips+AirFryer+HD9255%2F30#cid=52090&crid=818403&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Philips+AirFryer+HD9255%2F30&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Ceneo: oferta od 269 zł; sprawdź dokładny wariant, sprzedawcę i dostawę",
+      "priceCheckedAt": "2026-11-15",
+      "availability": "Cena od — potwierdź aktualną dostępność",
+      "image": ""
+    },
+    {
+      "id": "tanievo-071",
+      "name": "Samsung Galaxy S25 12/128 GB",
+      "category": "Telefony",
+      "merchant": "Ceneo — cena od",
+      "price": 2999,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-Samsung+Galaxy+S25+12%2F128GB#cid=52090&crid=818403&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/;szukaj-Samsung+Galaxy+S25+12%2F128GB#cid=52090&crid=818403&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Samsung+Galaxy+S25+12%2F128GB&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Ceneo: oferta od 2 999 zł; potwierdź pamięć, kolor i dostępność",
+      "priceCheckedAt": "2026-11-15",
+      "availability": "Cena od — potwierdź aktualną dostępność",
+      "image": ""
+    },
+    {
+      "id": "tanievo-072",
+      "name": "Telewizor Sharp QLED 50HM5746E 50 cali",
+      "category": "RTV",
+      "merchant": "Ceneo — cena od",
+      "price": 1399,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/;szukaj-Sharp+50HM5746E#cid=52090&crid=818403&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/;szukaj-Sharp+50HM5746E#cid=52090&crid=818403&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Sharp+50HM5746E&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Ceneo: oferta od 1 399 zł; sprawdź przekątną, wariant i dostawę",
+      "priceCheckedAt": "2026-11-15",
+      "availability": "Cena od — potwierdź aktualną dostępność",
       "image": ""
     }
   ]
