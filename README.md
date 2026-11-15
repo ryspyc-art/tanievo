@@ -14,7 +14,7 @@ Responsywna, statyczna strona publikowana przez GitHub Pages z repozytorium `rys
 ## Pliki
 - `index.html` — struktura strony, treści i metadane SEO,
 - `style.css` — wygląd i układ responsywny,
-- `app.js` — katalog demonstracyjny, wyszukiwanie, filtrowanie, linki do wyszukiwania w Ceneo ze wspólnymi parametrami partnera i ulubione,
+- `app.js` — katalog demonstracyjny, wyszukiwanie, filtrowanie, zwykłe linki do wyszukiwania w Ceneo (bez aktywnego śledzenia afiliacyjnego) i ulubione,
 - `site.js` — wspólne drobne funkcje stron informacyjnych,
 - `robots.txt` i `sitemap.xml` — podstawowa konfiguracja indeksowania,
 - `favicon.svg` — ikona strony,
