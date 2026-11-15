@@ -670,6 +670,9 @@ render();
 loadLiveCatalog();
 loadAmazonOffers();
 
+const heroFavoritesAction = document.getElementById("heroFavoritesAction");
+if (heroFavoritesAction && favoritesToggle) heroFavoritesAction.addEventListener("click", () => { favoritesToggle.click(); document.getElementById("oferty")?.scrollIntoView({behavior:"smooth"}); });
+
 const copyPromoButton = document.getElementById("copyPromoText");
 if (copyPromoButton) {
   copyPromoButton.addEventListener("click", async () => {
