@@ -322,6 +322,7 @@ function safeProductUrl(value) {
 const CENEO_CAMPAIGN = "cid=52090";
 const CENEO_PUBLISHER = "pid=31443";
 const CENEO_DEFAULT_TRACKING = CENEO_CAMPAIGN + "&crid=818403&" + CENEO_PUBLISHER;
+// „Tanievo – produkt 001” (pierwsza pozycja) -> crid 818404
 const CENEO_CREATIVE_URLS = {
   "tanievo-001": "https://www.ceneo.pl/199946527#cid=52090&crid=818405&pid=31443"
 };
