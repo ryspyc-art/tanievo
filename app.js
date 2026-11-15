@@ -523,16 +523,7 @@ function comparisonPanel(product) {
 }
 
 
-// Obsługa niedziałających zdjęć: zamieniamy je na lokalny, estetyczny placeholder.
-grid.addEventListener("error", event => {
-  const image = event.target;
-  if (!(image instanceof HTMLImageElement) || !image.classList.contains("product-image")) return;
-  const fallback = document.createElement("span");
-  fallback.className = "product-image-fallback";
-  fallback.setAttribute("aria-label", "Zdjęcie produktu niedostępne");
-  fallback.classList.add("product-image-fallback"); fallback.setAttribute("role","img"); fallback.setAttribute("aria-label","Podgląd kategorii produktu"); const icon=document.createElement("span"); icon.className="product-fallback-icon"; icon.textContent="🛍️"; const label=document.createElement("small"); label.textContent="Podgląd produktu"; fallback.append(icon,label);
-  image.replaceWith(fallback);
-}, true);
+
 
 function render() {
   let list = products.filter(product => {
