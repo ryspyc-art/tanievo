@@ -47,6 +47,10 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("smartwatch") || value.includes("zegark")) return "⌚";
   if (value.includes("ekspres") || value.includes("kaw")) return "☕";
   if (value.includes("ogród")) return "🌱";
+  if (value.includes("oświetlenie samochodowe")) return "🚘";
+  if (value.includes("elektronarzędzia")) return "🛠️";
+  if (value.includes("narzędzia warsztatowe")) return "🔧";
+  if (value.includes("ogrzewanie postojowe")) return "🔥";
   if (value.includes("konsole")) return "🎮";
   if (value.includes("pady") || value.includes("kontroler")) return "🕹️";
   if (value.includes("gry")) return "🎯";
