@@ -625,6 +625,31 @@ document.getElementById("resetFilters").addEventListener("click", () => {
   render();
 });
 
+// Jeśli zewnętrzny serwer zdjęć odrzuci hotlink lub zwróci 404, pokaż czytelny fallback zamiast pustego pola.
+grid.addEventListener("error", event => {
+  const image = event.target;
+  if (!image || image.tagName !== "IMG" || !image.classList.contains("product-image")) return;
+  const card = image.closest(".product-visual");
+  if (!card || image.dataset.fallbackApplied === "true") return;
+  image.dataset.fallbackApplied = "true";
+  const productName = image.alt || "Produkt";
+  const cardCategory = card.parentElement?.querySelector(".product-category")?.textContent || "";
+  const product = products.find(item => item.name === productName);
+  const icon = product ? (product.icon || categoryProductIcon(product.category, product.name)) : categoryProductIcon(cardCategory, productName);
+  const fallback = document.createElement("span");
+  fallback.className = "product-image-fallback";
+  fallback.setAttribute("role", "img");
+  fallback.setAttribute("aria-label", "Brak zdjęcia produktu — podgląd kategorii");
+  const symbol = document.createElement("span");
+  symbol.className = "product-fallback-icon";
+  symbol.setAttribute("aria-hidden", "true");
+  symbol.textContent = icon;
+  const label = document.createElement("small");
+  label.textContent = "Zdjęcie chwilowo niedostępne";
+  fallback.append(symbol, label);
+  image.replaceWith(fallback);
+}, true);
+
 grid.addEventListener("click", event => {
   const button = event.target.closest("[data-fav]");
   if (!button) return;
