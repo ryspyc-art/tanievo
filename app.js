@@ -79,6 +79,26 @@ discoveryProducts.push(
   linkType:"search"
 }));
 
+
+discoveryProducts.push(
+  ["tanievo-104","Philips Series 5000 — suszarka do włosów z jonizacją","Uroda i stylizacja","💨"],
+  ["tanievo-105","Remington Pro Soft Curl — lokówka ceramiczna","Uroda i stylizacja","💇"],
+  ["tanievo-106","BaByliss Pro Rotating 800 — obrotowa suszarko-lokówka","Uroda i stylizacja","💇"],
+  ["tanievo-107","Remington Shine Therapy — prostownica do włosów","Uroda i stylizacja","✨"],
+  ["tanievo-108","Philips Series 7000 — multistyler do włosów","Uroda i stylizacja","💇"],
+  ["tanievo-109","Szczotka susząco-modelująca 4w1 z jonizacją","Uroda i stylizacja","🪮"],
+  ["tanievo-110","Bosch MFQ 36400 — mikser ręczny","Miksery i blendery","🥣"],
+  ["tanievo-111","Zelmer ZHM 1650 — mikser ręczny","Miksery i blendery","🥣"],
+  ["tanievo-112","Bosch ErgoMixx — blender ręczny z końcówkami","Miksery i blendery","🥤"],
+  ["tanievo-113","Tefal Quickchef — blender ręczny","Miksery i blendery","🥤"],
+  ["tanievo-114","Kenwood Prospero — mikser planetarny","Miksery i blendery","🍰"],
+  ["tanievo-115","Bosch MUM — robot kuchenny z misą","Miksery i blendery","🍰"]
+).forEach(([id,name,category,icon]) => discoveryProducts.push({
+  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+}));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
@@ -117,6 +137,8 @@ function categoryProductIcon(category, name = "") {
   if (value.includes("latarki")) return "🔦";
   if (value.includes("akumulatory 18650")) return "🔋";
   if (value.includes("zabawki")) return "🧸";
+  if (value.includes("uroda i stylizacja")) return "💇";
+  if (value.includes("miksery i blendery")) return "🥣";
   if (value.includes("elektronarzędzia")) return "🛠️";
   if (value.includes("narzędzia warsztatowe")) return "🔧";
   if (value.includes("ogrzewanie postojowe")) return "🔥";
