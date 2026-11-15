@@ -277,6 +277,7 @@ const sort = document.getElementById("sortSelect");
 const favoritesToggle = document.getElementById("favoritesToggle");
 let catalogCategories = [...new Set(products.map(p => p.category))].sort((a,b) => a.localeCompare(b,"pl"));
 let category = "Wszystkie";
+let activeCategoryMatches = null;
 let favoritesOnly = false;
 const categoryAliases={
   "Telewizory i RTV":["RTV"],"Sport i rekreacja":["Sport"],
@@ -557,7 +558,7 @@ function comparisonPanel(product) {
 
 function render() {
   let list = products.filter(product => {
-    const matchesCategory = category === "Wszystkie" || product.category === category;
+    const matchesCategory = category === "Wszystkie" || (activeCategoryMatches ? activeCategoryMatches.includes(normalizeCategory(product.category)) : product.category === category);
     const matchesSearch = (product.name + " " + product.category).toLocaleLowerCase("pl").includes(search.value.trim().toLocaleLowerCase("pl"));
     const matchesFavorites = !favoritesOnly || favorites.includes(String(product.id));
     return matchesCategory && matchesSearch && matchesFavorites;
@@ -606,28 +607,40 @@ document.addEventListener("click", event => {
   const tile = target?.closest("[data-category-jump]");
   const chip = target?.closest("[data-category]");
   if (!tile && !chip) return;
+
   event.preventDefault();
   event.stopPropagation();
-  const selectedCategory = tile ? tile.dataset.categoryJump : chip.dataset.category;
-  if(tile){
-    const candidates=getTileCategoryMatches(tile);
-    const matchingCategory=catalogCategories.find(name=>candidates.includes(normalizeCategory(name)) && products.some(product=>normalizeCategory(product.category)===normalizeCategory(name)));
-    category=matchingCategory || selectedCategory;
-  } else {
-    category=selectedCategory;
-  }
   favoritesOnly = false;
   search.value = "";
-  if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed","false");
+  if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed", "false");
+
+  if (tile) {
+    const candidates = getTileCategoryMatches(tile);
+    activeCategoryMatches = [...new Set(products
+      .map(product => normalizeCategory(product.category))
+      .filter(productCategory => candidates.includes(productCategory)))];
+    category = activeCategoryMatches[0] || "Wszystkie";
+    if (!activeCategoryMatches.length) {
+      const label = tile.getAttribute("aria-label") || tile.dataset.categoryJump || "Ta kategoria";
+      const status = document.getElementById("catalogStatus");
+      if (status) status.textContent = label + " — w katalogu nie ma jeszcze produktów.";
+    }
+  } else {
+    category = chip.dataset.category;
+    activeCategoryMatches = null;
+  }
+
   document.querySelectorAll(".chip").forEach(item => {
     const active = item.dataset.category === category;
     item.classList.toggle("active", active);
     item.setAttribute("aria-pressed", String(active));
   });
   render();
-  // Po wyborze kategorii pokaż użytkownikowi przefiltrowany katalog.
-  const offersSection = document.getElementById("oferty") || document.getElementById("products");
-  if (offersSection) offersSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const targetSection = document.getElementById("productGrid");
+  if (targetSection) {
+    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }, true);
 
 search.addEventListener("input", render);
@@ -645,6 +658,7 @@ document.getElementById("clearSearch").addEventListener("click", () => {
 
 document.getElementById("resetFilters").addEventListener("click", () => {
   category = "Wszystkie";
+  activeCategoryMatches = null;
   favoritesOnly = false;
   search.value = "";
   sort.value = "recommended";
