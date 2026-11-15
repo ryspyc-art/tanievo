@@ -278,7 +278,23 @@ const favoritesToggle = document.getElementById("favoritesToggle");
 let catalogCategories = [...new Set(products.map(p => p.category))].sort((a,b) => a.localeCompare(b,"pl"));
 let category = "Wszystkie";
 let favoritesOnly = false;
-function buildCategoryNavigation(){catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));const chips=document.getElementById("categoryChips");if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map((name,i)=>'<button class="chip '+(i===0?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+(i===0?"true":"false")+'">'+escapeHTML(name)+'</button>').join("");document.querySelectorAll("[data-category-jump]").forEach(tile=>{const n=products.filter(p=>p.category===tile.dataset.categoryJump).length;tile.hidden=n===0;const s=tile.querySelector("small");if(s)s.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów")});const statusCount=document.getElementById("catalogStatusCount");if(statusCount)statusCount.textContent=products.length;const note=document.querySelector(".demo-note");if(note)note.textContent=products.length+" produktów w katalogu";}
+function buildCategoryNavigation(){
+  catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
+  const chips=document.getElementById("categoryChips");
+  if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map((name,i)=>'<button class="chip '+(i===0?"active":"") + '" data-category="'+escapeHTML(name)+'" aria-pressed="'+(i===0?"true":"false")+'">'+escapeHTML(name)+'</button>').join("");
+  const categoryAliases={"Małe AGD":["AGD"],"Kamery i monitoring":["Monitoring"]};
+  document.querySelectorAll("[data-category-jump]").forEach(tile=>{
+    const categoryNames=[tile.dataset.categoryJump,...(categoryAliases[tile.querySelector("strong")?.textContent.trim()]||[])];
+    const n=products.filter(p=>categoryNames.includes(p.category)).length;
+    tile.hidden=n===0;
+    const countLabel=tile.querySelector("small");
+    if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
+  });
+  const statusCount=document.getElementById("catalogStatusCount");
+  if(statusCount)statusCount.textContent=products.length;
+  const note=document.querySelector(".demo-note");
+  if(note)note.textContent=products.length+" produktów w katalogu";
+}
 
 function loadFavorites() {
   try {
