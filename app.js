@@ -583,7 +583,7 @@ function comparisonPanel(product) {
 function render() {
   let list = products.filter(product => {
     const matchesCategory = category === "Wszystkie" || (activeCategoryMatches ? activeCategoryMatches.includes(normalizeCategory(product.category)) : product.category === category);
-    const matchesSearch = (product.name + " " + product.category).toLocaleLowerCase("pl").includes(search.value.trim().toLocaleLowerCase("pl"));
+    const matchesSearch = !search || (product.name + " " + product.category).toLocaleLowerCase("pl").includes(search.value.trim().toLocaleLowerCase("pl"));
     const matchesFavorites = !favoritesOnly || favorites.includes(String(product.id));
     return matchesCategory && matchesSearch && matchesFavorites;
   });
@@ -661,19 +661,20 @@ document.addEventListener("click", event => {
     item.setAttribute("aria-pressed", String(active));
   });
   render();
-  const section = document.getElementById("oferty") || document.getElementById("productGrid");
+  const section = document.getElementById("productGrid") || document.getElementById("oferty");
   if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
 }, true);
 
-search.addEventListener("input", render);
+if (search) search.addEventListener("input", render);
 sort.addEventListener("change", render);
 favoritesToggle.addEventListener("click", () => {
   favoritesOnly = !favoritesOnly;
   render();
 });
 
-document.getElementById("clearSearch").addEventListener("click", () => {
-  search.value = "";
+const clearSearch = document.getElementById("clearSearch");
+if (clearSearch && search) clearSearch.addEventListener("click", () => {
+  if (search) search.value = "";
   render();
   search.focus();
 });
