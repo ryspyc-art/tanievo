@@ -285,3 +285,5 @@
 .hotspot-accessible-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:800px){.hero.hero-brand-image{padding:0}.hero-artwork{width:100%;max-width:none}.hero-category-hotspot{border-radius:8px}}
 @media(max-width:420px){.hero-category-hotspot{border-radius:6px}}
+
+.product-title-link{color:inherit;text-decoration:none;display:inline-block}.product-title-link:hover{color:#e56b00;text-decoration:underline}.product-title-link span{font-size:11px;color:#e56b00;white-space:nowrap}
