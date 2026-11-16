@@ -179,6 +179,55 @@ discoveryProducts.push(...[
   linkType:"search"
 })));
 
+// Dodatkowe produkty katalogowe — rozszerzenie listopad 2026.
+// To pozycje do wyszukania w Ceneo, nie potwierdzone oferty ani ceny.
+discoveryProducts.push(...[
+  ["tanievo-172","Einhell CE-BC 6 M — prostownik automatyczny","Prostowniki","🔋"],
+  ["tanievo-173","NEO 10A — prostownik automatyczny 12 V","Prostowniki","🔋"],
+  ["tanievo-174","NOCO GENIUS1EU — ładowarka akumulatorów 6/12 V","Prostowniki","⚡"],
+  ["tanievo-175","Bosch C1 — ładowarka akumulatora samochodowego","Prostowniki","🔋"],
+  ["tanievo-176","BLOW 12V/10A — prostownik automatyczny","Prostowniki","🔌"],
+  ["tanievo-177","DeWalt DCK2020P2T — zestaw elektronarzędzi 18 V","Elektronarzędzia","🛠️"],
+  ["tanievo-178","Makita DHP486 — wiertarko-wkrętarka udarowa 18 V","Elektronarzędzia","🔩"],
+  ["tanievo-179","Bosch GWS 18V-10 — szlifierka kątowa 18 V","Elektronarzędzia","⚙️"],
+  ["tanievo-180","DeWalt DCF887 — zakrętarka udarowa 18 V","Elektronarzędzia","🛠️"],
+  ["tanievo-181","Bosch GSR 12V-35 — wiertarko-wkrętarka 12 V","Elektronarzędzia","🔧"],
+  ["tanievo-182","Parkside Performance — klucz udarowy akumulatorowy 20 V","Elektronarzędzia","🔩"],
+  ["tanievo-183","Kärcher WD 3 — odkurzacz uniwersalny","Warsztat i majsterkowanie","🧹"],
+  ["tanievo-184","Yato YT-38841 — zestaw kluczy nasadowych","Warsztat i majsterkowanie","🔧"],
+  ["tanievo-185","Stanley FatMax — skrzynka narzędziowa","Warsztat i majsterkowanie","🧰"],
+  ["tanievo-186","Vorel — zestaw szczypiec i kombinerek","Warsztat i majsterkowanie","🗜️"],
+  ["tanievo-187","Wera Kraftform — zestaw wkrętaków","Warsztat i majsterkowanie","🪛"],
+  ["tanievo-188","Shell Helix HX8 5W-30 — olej silnikowy 4 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-189","Total Quartz Ineo ECS 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-190","Valvoline SynPower 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
+  ["tanievo-191","Febi Bilstein — płyn chłodniczy G12/G13","Oleje i płyny samochodowe","❄️"],
+  ["tanievo-192","Webasto Air Top 2000 STC — ogrzewanie postojowe 12 V","Ogrzewanie postojowe","🔥"],
+  ["tanievo-193","Eberspächer Airtronic D2 — ogrzewanie postojowe","Ogrzewanie postojowe","🔥"],
+  ["tanievo-194","Webasto Thermo Top Evo — ogrzewanie wodne","Ogrzewanie postojowe","♨️"],
+  ["tanievo-195","Grzejnik olejowy 9-żebrowy z termostatem","Ogrzewanie domu","🌡️"],
+  ["tanievo-196","Grzejnik konwektorowy z termostatem i timerem","Ogrzewanie domu","🔥"],
+  ["tanievo-197","Panel grzewczy na podczerwień 600 W","Ogrzewanie domu","♨️"],
+  ["tanievo-198","Termowentylator ceramiczny z regulacją temperatury","Ogrzewanie domu","🌡️"],
+  ["tanievo-199","Kamera samochodowa 70mai A510","Motoryzacja","📹"],
+  ["tanievo-200","Kompresor samochodowy Xiaomi Portable Electric Air Compressor 2","Motoryzacja","💨"],
+  ["tanievo-201","Ładowarka samochodowa USB-C Power Delivery 45 W","Motoryzacja","🔌"],
+  ["tanievo-202","Zestaw dywaników gumowych dopasowanych do modelu auta","Motoryzacja","🚗"],
+  ["tanievo-203","Philips Airfryer 3000 Series — frytkownica beztłuszczowa","AGD","🍟"],
+  ["tanievo-204","Bosch Serie 2 — odkurzacz workowy","AGD","🧹"],
+  ["tanievo-205","Xiaomi Smart Air Purifier 4 Lite — oczyszczacz powietrza","Dom","🌬️"],
+  ["tanievo-206","TP-Link Tapo P110 — inteligentne gniazdko Wi-Fi","Dom","🔌"],
+  ["tanievo-207","Philips Hue White — inteligentna żarówka LED","Dom","💡"],
+  ["tanievo-208","Kärcher K 5 Power Control — myjka ciśnieniowa","Myjki ciśnieniowe","🚿"],
+  ["tanievo-209","Bosch UniversalAquatak 135 — myjka ciśnieniowa","Myjki ciśnieniowe","🚿"],
+  ["tanievo-210","Einhell TE-AC 24 Silent — kompresor 24 l","Kompresory","💨"],
+  ["tanievo-211","Stanley DST 100/8/6 — kompresor bezolejowy","Kompresory","💨"]
+].map(([id,name,category,icon]) => ({
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
+  productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
+  linkType:"search"
+})));
+
 products = [...products, ...discoveryProducts];
 
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
