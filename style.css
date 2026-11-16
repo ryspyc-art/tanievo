@@ -352,3 +352,11 @@
   .comparison-store strong{font-size:12px}
   .comparison-store a{font-size:9px}
 }
+
+/* Kontrast i czytelność panelu porównania cen */
+.price-comparison{background:linear-gradient(145deg,#f1f5fa 0%,#e7edf5 100%);border-color:#c7d2e0}
+.comparison-heading strong{color:#101d31}
+.comparison-heading span{color:#3f4e62}
+.comparison-store-name{background:#e4ebf4;color:#26364b}
+.comparison-store strong{color:#101d31}
+.price-comparison>small{color:#4b596d}
