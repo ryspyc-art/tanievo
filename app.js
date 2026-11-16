@@ -314,7 +314,7 @@ function categoryMatchKey(value){
 }
 function hasActiveProductLink(product){
   const url=String(product.productUrl || "").trim();
-  return product.linkType !== "paused" && /^https:\\/\\//i.test(url);
+  return product.linkType !== "paused" && url.toLowerCase().startsWith("https://");
 }
 function getLinkedProductsForTile(tile){
   const matches=new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
