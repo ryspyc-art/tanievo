@@ -23,7 +23,7 @@ let products = [
 ];
 
 // Dodatkowe pozycje katalogowe do wyszukania w Ceneo; nie są potwierdzonymi ofertami afiliacyjnymi.
-const discoveryProducts = [["tanievo-011","Samsung Galaxy A56 5G","Telefony","📱"],["tanievo-012","Apple iPhone 16 128 GB","Telefony","📱"],["tanievo-013","Xiaomi Redmi Note 14 Pro 5G","Telefony","📱"],["tanievo-014","Sony WH-1000XM5","Elektronika","🎧"],["tanievo-015","JBL Tune 770NC","Elektronika","🎧"],["tanievo-016","Powerbank Xiaomi 20000 mAh","Elektronika","🔋"],["tanievo-017","Ładowarka Anker USB-C 30 W","Elektronika","🔌"],["tanievo-018","Monitor Dell 27 cali QHD","Komputery","🖥️"],["tanievo-019","Laptop Lenovo IdeaPad Slim 3","Komputery","💻"],["tanievo-020","SSD Samsung 990 EVO 1 TB","Komputery","💾"],["tanievo-021","Klawiatura Logitech K380","Komputery","⌨️"],["tanievo-022","Mysz Logitech MX Master 3S","Komputery","🖱️"],["tanievo-023","Sony PlayStation 5 Slim","Gaming","🎮"],["tanievo-024","Xbox Wireless Controller","Gaming","🎮"],["tanievo-025","Telewizor Samsung QLED 55 cali","RTV","📺"],["tanievo-026","Soundbar JBL Bar 500","RTV","🔊"],["tanievo-027","DeLonghi Magnifica S","AGD","☕"],["tanievo-028","Xiaomi Robot Vacuum S10","AGD","🤖"],["tanievo-029","Dyson V8","AGD","🧹"],["tanievo-030","Philips Airfryer 3000","AGD","🍟"],["tanievo-031","Blender Bosch VitaPower","AGD","🥤"],["tanievo-032","Czajnik Bosch Styline","AGD","🫖"],["tanievo-033","Zestaw garnków Tefal Ingenio","Dom","🍳"],["tanievo-034","Patelnia Tefal Unlimited 28 cm","Dom","🍳"],["tanievo-035","Pościel bawełniana 160 × 200 cm","Dom","🛏️"],["tanievo-036","Xiaomi Smart Air Purifier 4","Dom","🌬️"],["tanievo-037","Lampa biurkowa LED","Dom","💡"],["tanievo-038","Bosch Professional GSR 18V-55","Narzędzia","🛠️"],["tanievo-039","Szlifierka kątowa Makita 9558HNRG","Narzędzia","⚙️"],["tanievo-040","Zestaw kluczy nasadowych Yato","Narzędzia","🔧"],["tanievo-041","Kosiarka Bosch UniversalRotak","Ogród","🌱"],["tanievo-042","Myjka Kärcher K 4 Power Control","Ogród","🚿"],["tanievo-043","Kurtka trekkingowa softshell","Moda","🧥"],["tanievo-044","Adidas Terrex AX4","Obuwie","🥾"],["tanievo-045","Nike Revolution 7","Obuwie","👟"],["tanievo-046","Garmin Forerunner 165","Sport","⌚"],["tanievo-047","Mata fitness 180 cm","Sport","🧘"],["tanievo-048","Michelin Alpin 6 205/55 R16","Motoryzacja","🚗"],["tanievo-049","Wideorejestrator 70mai A500S","Motoryzacja","📹"],["tanievo-050","Legowisko wodoodporne dla psa","Dla zwierząt","🐾"]].map(([id,name,category,icon]) => ({id,name,category,icon,store:"Wyszukaj w Ceneo",productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),linkType:"search"}));
+const discoveryProducts = [["tanievo-011","Samsung Galaxy A56 5G","Telefony","📱"],["tanievo-012","Apple iPhone 16 128 GB","Telefony","📱"],["tanievo-013","Xiaomi Redmi Note 14 Pro 5G","Telefony","📱"],["tanievo-014","Sony WH-1000XM5","Elektronika","🎧"],["tanievo-015","JBL Tune 770NC","Elektronika","🎧"],["tanievo-016","Powerbank Xiaomi 20000 mAh","Elektronika","🔋"],["tanievo-017","Ładowarka Anker USB-C 30 W","Elektronika","🔌"],["tanievo-018","Monitor Dell 27 cali QHD","Komputery","🖥️"],["tanievo-019","Laptop Lenovo IdeaPad Slim 3","Komputery","💻"],["tanievo-020","SSD Samsung 990 EVO 1 TB","Komputery","💾"],["tanievo-021","Klawiatura Logitech K380","Komputery","⌨️"],["tanievo-022","Mysz Logitech MX Master 3S","Komputery","🖱️"],["tanievo-023","Sony PlayStation 5 Slim","Gaming","🎮"],["tanievo-024","Xbox Wireless Controller","Gaming","🎮"],["tanievo-025","Telewizor Samsung QLED 55 cali","RTV","📺"],["tanievo-026","Soundbar JBL Bar 500","RTV","🔊"],["tanievo-027","DeLonghi Magnifica S","AGD","☕"],["tanievo-028","Xiaomi Robot Vacuum S10","AGD","🤖"],["tanievo-029","Dyson V8","AGD","🧹"],["tanievo-030","Philips Airfryer 3000","AGD","🍟"],["tanievo-031","Blender Bosch VitaPower","AGD","🥤"],["tanievo-032","Czajnik Bosch Styline","AGD","🫖"],["tanievo-033","Zestaw garnków Tefal Ingenio","Dom","🍳"],["tanievo-034","Patelnia Tefal Unlimited 28 cm","Dom","🍳"],["tanievo-035","Pościel bawełniana 160 × 200 cm","Dom","🛏️"],["tanievo-036","Xiaomi Smart Air Purifier 4","Dom","🌬️"],["tanievo-037","Lampa biurkowa LED","Dom","💡"],["tanievo-038","Bosch Professional GSR 18V-55","Narzędzia","🛠️"],["tanievo-039","Szlifierka kątowa Makita 9558HNRG","Narzędzia","⚙️"],["tanievo-040","Zestaw kluczy nasadowych Yato","Narzędzia","🔧"],["tanievo-041","Kosiarka Bosch UniversalRotak","Ogród","🌱"],["tanievo-042","Myjka Kärcher K 4 Power Control","Ogród","🚿"],["tanievo-043","Kurtka trekkingowa softshell","Moda","🧥"],["tanievo-044","Adidas Terrex AX4","Obuwie","🥾"],["tanievo-045","Nike Revolution 7","Obuwie","👟"],["tanievo-046","Garmin Forerunner 165","Sport","⌚"],["tanievo-047","Mata fitness 180 cm","Sport","🧘"],["tanievo-048","Michelin Alpin 6 205/55 R16","Motoryzacja","🚗"],["tanievo-049","Wideorejestrator 70mai A500S","Motoryzacja","📹"],["tanievo-050","Legowisko wodoodporne dla psa","Dla zwierząt","🐾"]].map(([id,name,category,icon]) => ({id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),linkType:"search"}));
 
 discoveryProducts.push(...[
 ["tanievo-073","Żarówki LED H7 do samochodu — dobierz homologowany wariant","Oświetlenie samochodowe","🚘"],
@@ -35,7 +35,7 @@ discoveryProducts.push(...[
   ["tanievo-079","Grzejnik olejowy elektryczny do mieszkania","Ogrzewanie domu","♨️"],
   ["tanievo-080","Panel grzewczy na podczerwień do domu","Ogrzewanie domu","🌡️"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -53,7 +53,7 @@ discoveryProducts.push(...[
   ["tanievo-089","Akumulatorki AAA Ni-MH 800–1000 mAh — zestaw 4 szt.","Akumulatory AA i AAA","🔋"],
   ["tanievo-090","Akumulatorki AAA Panasonic Eneloop — zestaw 4 szt.","Akumulatory AA i AAA","🔋"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -74,7 +74,7 @@ discoveryProducts.push(...[
   ["tanievo-102","Kostka edukacyjna Montessori","Zabawki","🧩"],
   ["tanievo-103","Zestaw małego elektronika — eksperymenty edukacyjne","Zabawki","⚡"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -94,7 +94,7 @@ discoveryProducts.push(...[
   ["tanievo-114","Kenwood Prospero — mikser planetarny","Miksery i blendery","🍰"],
   ["tanievo-115","Bosch MUM — robot kuchenny z misą","Miksery i blendery","🍰"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -119,7 +119,7 @@ discoveryProducts.push(...[
   ["tanievo-131","Pompka rowerowa z manometrem","Akcesoria rowerowe","🚲"],
   ["tanievo-132","Zestaw naprawczy do dętek rowerowych","Akcesoria rowerowe","🔧"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -147,7 +147,7 @@ discoveryProducts.push(...[
   ["tanievo-151","LEGO Technic — samochód do składania","Modele i samochodziki","🧱"],
   ["tanievo-152","Model samochodu RC — zdalnie sterowany","Modele i samochodziki","🎮"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon: icon === " solder" ? "🔌" : icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon: icon === " solder" ? "🔌" : icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
@@ -174,7 +174,7 @@ discoveryProducts.push(...[
   ["tanievo-170","Czytnik diagnostyczny OBD2 Bluetooth","Pomiary i diagnostyka","🚘"],
   ["tanievo-171","Miernik temperatury i wilgotności z sondą","Pomiary i diagnostyka","🌡️"]
 ].map(([id,name,category,icon]) => ({
-  id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
