@@ -619,6 +619,10 @@ function getFreshComparisonPrice(product, shop) {
 function comparisonPanel(product) {
   const amazon = getFreshComparisonPrice(product, "amazon");
   const ceneo = getFreshComparisonPrice(product, "ceneo");
+  const productLabel = String(product.name || "").toLocaleLowerCase("pl");
+  const categoryLabel = String(product.category || "").toLocaleLowerCase("pl");
+  const isAppleProduct = /apple|iphone|ipad|airpods|macbook|imac/.test(productLabel);
+  const isOutdoorProduct = /outdoor|trekking|turyst|camping|kemping|namiot|plecak|śpiwor|latark|termos|rower|sport/.test(productLabel + " " + categoryLabel);
   let summary = "Sprawdź aktualne ceny w obu sklepach";
   if (amazon !== null && ceneo !== null) {
     const diff = Math.abs(amazon - ceneo);
@@ -635,6 +639,8 @@ function comparisonPanel(product) {
       <div class="comparison-store"><span class="comparison-store-name">Amazon</span><strong>${amazon === null ? "Sprawdź cenę" : money(amazon)}</strong><a href="${escapeHTML(getAmazonUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę ↗</a></div>
       <div class="comparison-store"><span class="comparison-store-name">Ceneo</span><strong>${ceneo === null ? "Sprawdź cenę" : money(ceneo)}</strong><a href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer">Zobacz oferty ↗</a></div>
     </div>
+    ${isAppleProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Lantre · autoryzowany sklep Apple</span><strong>Oferta Apple</strong><a href="https://webep1.com/c/13508/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9pcW8ubGFudHJlLnBsLz9QNTExNzQ5NTdGMDYxMTkxJnJlZGlyPWh0dHBzOi8vbGFudHJlLnBsLw" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Lantre ↗</a></div>` : ""}
+    ${isOutdoorProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">RG CAMP · sprzęt outdoor</span><strong>Turystyka i rekreacja</strong><a href="https://webep1.com/go/62ec4abd01" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz RG CAMP ↗</a></div>` : ""}
     <small>Ceny porównujemy tylko dla zgodnego modelu i wariantu. Kwoty bez świeżego potwierdzenia nie są wyświetlane.</small>
   </div>`;
 }
