@@ -309,8 +309,8 @@ function getTileCategoryMatches(tile){
 }
 function categoryMatchKey(value){
   return normalizeCategory(String(value || "").trim())
-    .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
-    .toLocaleLowerCase("pl").replace(/\\s+/g, " ");
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("pl").replace(/\s+/g, " ");
 }
 function hasActiveProductLink(product){
   const url=String(product.productUrl || "").trim();
@@ -627,31 +627,31 @@ function render() {
 // Jedna obsługa kategorii w fazie capture: obejmuje kafelki strony i chipy katalogu,
 // także po przebudowaniu ich przez katalog dodatkowy lub live.
 document.addEventListener("click", event => {
-  const target = event.target instanceof Element ? event.target : event.target?.parentElement;
-  const tile = target?.closest("[data-category-jump]");
-  const chip = target?.closest("[data-category]");
+  const target = event.target && typeof event.target.closest === "function"
+    ? event.target
+    : event.composedPath?.().find(node => node && typeof node.closest === "function");
+  if (!target) return;
+  const tile = target.closest("[data-category-jump]");
+  const chip = target.closest("[data-category]");
   if (!tile && !chip) return;
 
   event.preventDefault();
-  event.stopPropagation();
   favoritesOnly = false;
-  search.value = "";
+  if (search) search.value = "";
   if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed", "false");
 
   if (tile) {
-    const linkedProducts=getLinkedProductsForTile(tile);
-    activeCategoryMatches=[...new Set(linkedProducts.map(product => normalizeCategory(product.category)))];
-    category=activeCategoryMatches[0] || "Wszystkie";
-    if (!activeCategoryMatches.length) {
-      const label=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump || "Ta kategoria";
-      const status=document.getElementById("catalogStatus");
-      if(status) status.textContent=label+" — brak produktów z aktywnym linkiem.";
-    } else {
-      const status=document.getElementById("catalogStatus");
-      if(status) status.textContent="Wybrana kategoria: "+(tile.querySelector("strong")?.textContent.trim() || category)+" · "+linkedProducts.length+" produktów.";
-    }
+    const matches = new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
+    const matchingProducts = products.filter(product => matches.has(categoryMatchKey(product.category)));
+    activeCategoryMatches = [...new Set(matchingProducts.map(product => normalizeCategory(product.category)))];
+    category = activeCategoryMatches[0] || "Wszystkie";
+    const label = tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump || "Wybrana kategoria";
+    const status = document.getElementById("catalogStatus");
+    if (status) status.textContent = matchingProducts.length
+      ? label + " — " + matchingProducts.length + " produktów."
+      : label + " — brak produktów w katalogu.";
   } else {
-    category = chip.dataset.category;
+    category = chip.dataset.category || "Wszystkie";
     activeCategoryMatches = null;
   }
 
@@ -661,9 +661,8 @@ document.addEventListener("click", event => {
     item.setAttribute("aria-pressed", String(active));
   });
   render();
-
-  const targetSection=document.getElementById("oferty") || document.getElementById("productGrid");
-  if(targetSection) targetSection.scrollIntoView({behavior:"smooth",block:"start"});
+  const section = document.getElementById("oferty") || document.getElementById("productGrid");
+  if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
 }, true);
 
 search.addEventListener("input", render);
