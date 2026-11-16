@@ -25,8 +25,8 @@ let products = [
 // Dodatkowe pozycje katalogowe do wyszukania w Ceneo; nie są potwierdzonymi ofertami afiliacyjnymi.
 const discoveryProducts = [["tanievo-011","Samsung Galaxy A56 5G","Telefony","📱"],["tanievo-012","Apple iPhone 16 128 GB","Telefony","📱"],["tanievo-013","Xiaomi Redmi Note 14 Pro 5G","Telefony","📱"],["tanievo-014","Sony WH-1000XM5","Elektronika","🎧"],["tanievo-015","JBL Tune 770NC","Elektronika","🎧"],["tanievo-016","Powerbank Xiaomi 20000 mAh","Elektronika","🔋"],["tanievo-017","Ładowarka Anker USB-C 30 W","Elektronika","🔌"],["tanievo-018","Monitor Dell 27 cali QHD","Komputery","🖥️"],["tanievo-019","Laptop Lenovo IdeaPad Slim 3","Komputery","💻"],["tanievo-020","SSD Samsung 990 EVO 1 TB","Komputery","💾"],["tanievo-021","Klawiatura Logitech K380","Komputery","⌨️"],["tanievo-022","Mysz Logitech MX Master 3S","Komputery","🖱️"],["tanievo-023","Sony PlayStation 5 Slim","Gaming","🎮"],["tanievo-024","Xbox Wireless Controller","Gaming","🎮"],["tanievo-025","Telewizor Samsung QLED 55 cali","RTV","📺"],["tanievo-026","Soundbar JBL Bar 500","RTV","🔊"],["tanievo-027","DeLonghi Magnifica S","AGD","☕"],["tanievo-028","Xiaomi Robot Vacuum S10","AGD","🤖"],["tanievo-029","Dyson V8","AGD","🧹"],["tanievo-030","Philips Airfryer 3000","AGD","🍟"],["tanievo-031","Blender Bosch VitaPower","AGD","🥤"],["tanievo-032","Czajnik Bosch Styline","AGD","🫖"],["tanievo-033","Zestaw garnków Tefal Ingenio","Dom","🍳"],["tanievo-034","Patelnia Tefal Unlimited 28 cm","Dom","🍳"],["tanievo-035","Pościel bawełniana 160 × 200 cm","Dom","🛏️"],["tanievo-036","Xiaomi Smart Air Purifier 4","Dom","🌬️"],["tanievo-037","Lampa biurkowa LED","Dom","💡"],["tanievo-038","Bosch Professional GSR 18V-55","Narzędzia","🛠️"],["tanievo-039","Szlifierka kątowa Makita 9558HNRG","Narzędzia","⚙️"],["tanievo-040","Zestaw kluczy nasadowych Yato","Narzędzia","🔧"],["tanievo-041","Kosiarka Bosch UniversalRotak","Ogród","🌱"],["tanievo-042","Myjka Kärcher K 4 Power Control","Ogród","🚿"],["tanievo-043","Kurtka trekkingowa softshell","Moda","🧥"],["tanievo-044","Adidas Terrex AX4","Obuwie","🥾"],["tanievo-045","Nike Revolution 7","Obuwie","👟"],["tanievo-046","Garmin Forerunner 165","Sport","⌚"],["tanievo-047","Mata fitness 180 cm","Sport","🧘"],["tanievo-048","Michelin Alpin 6 205/55 R16","Motoryzacja","🚗"],["tanievo-049","Wideorejestrator 70mai A500S","Motoryzacja","📹"],["tanievo-050","Legowisko wodoodporne dla psa","Dla zwierząt","🐾"]].map(([id,name,category,icon]) => ({id,name,category,icon,store:"Wyszukaj w Ceneo",productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),linkType:"search"}));
 
-discoveryProducts.push(
-  ["tanievo-073","Żarówki LED H7 do samochodu — dobierz homologowany wariant","Oświetlenie samochodowe","🚘"],
+discoveryProducts.push(...[
+["tanievo-073","Żarówki LED H7 do samochodu — dobierz homologowany wariant","Oświetlenie samochodowe","🚘"],
   ["tanievo-074","Lampy robocze LED 12/24 V do samochodu i warsztatu","Oświetlenie samochodowe","💡"],
   ["tanievo-075","Wkrętarka akumulatorowa 18 V do domu i warsztatu","Elektronarzędzia","🛠️"],
   ["tanievo-076","Szlifierka kątowa 125 mm — elektronarzędzie","Elektronarzędzia","⚙️"],
@@ -34,15 +34,15 @@ discoveryProducts.push(
   ["tanievo-078","Grzejnik konwektorowy elektryczny do domu","Ogrzewanie domu","🔥"],
   ["tanievo-079","Grzejnik olejowy elektryczny do mieszkania","Ogrzewanie domu","♨️"],
   ["tanievo-080","Panel grzewczy na podczerwień do domu","Ogrzewanie domu","🌡️"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-081","Garrett ACE 250 — wykrywacz metali","Wykrywacze metali","🧭"],
+discoveryProducts.push(...[
+["tanievo-081","Garrett ACE 250 — wykrywacz metali","Wykrywacze metali","🧭"],
   ["tanievo-082","Minelab X-Terra Pro — wykrywacz metali","Wykrywacze metali","🧭"],
   ["tanievo-083","Nokta Simplex Lite — wykrywacz metali","Wykrywacze metali","🧭"],
   ["tanievo-084","Garrett Pro-Pointer AT — ręczny pinpointer","Akcesoria do wykrywaczy","📍"],
@@ -52,15 +52,15 @@ discoveryProducts.push(
   ["tanievo-088","Akumulatorki AA Ni-MH 2500 mAh — zestaw 4 szt.","Akumulatory AA i AAA","🔋"],
   ["tanievo-089","Akumulatorki AAA Ni-MH 800–1000 mAh — zestaw 4 szt.","Akumulatory AA i AAA","🔋"],
   ["tanievo-090","Akumulatorki AAA Panasonic Eneloop — zestaw 4 szt.","Akumulatory AA i AAA","🔋"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-091","Sofirn SC18 — latarka LED USB-C z akumulatorem 18650","Latarki LED","🔦"],
+discoveryProducts.push(...[
+["tanievo-091","Sofirn SC18 — latarka LED USB-C z akumulatorem 18650","Latarki LED","🔦"],
   ["tanievo-092","NEO — latarka akumulatorowa LED USB-C 500 lm","Latarki LED","🔦"],
   ["tanievo-093","Latarka czołowa LED USB-C z akumulatorem","Latarki LED","🔦"],
   ["tanievo-094","Lampa warsztatowa LED COB z magnesem i hakiem","Latarki LED","💡"],
@@ -73,15 +73,15 @@ discoveryProducts.push(
   ["tanievo-101","Zestaw kreatywny do skręcania z narzędziami dla dzieci","Zabawki","🧰"],
   ["tanievo-102","Kostka edukacyjna Montessori","Zabawki","🧩"],
   ["tanievo-103","Zestaw małego elektronika — eksperymenty edukacyjne","Zabawki","⚡"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-104","Philips Series 5000 — suszarka do włosów z jonizacją","Uroda i stylizacja","💨"],
+discoveryProducts.push(...[
+["tanievo-104","Philips Series 5000 — suszarka do włosów z jonizacją","Uroda i stylizacja","💨"],
   ["tanievo-105","Remington Pro Soft Curl — lokówka ceramiczna","Uroda i stylizacja","💇"],
   ["tanievo-106","BaByliss Pro Rotating 800 — obrotowa suszarko-lokówka","Uroda i stylizacja","💇"],
   ["tanievo-107","Remington Shine Therapy — prostownica do włosów","Uroda i stylizacja","✨"],
@@ -93,15 +93,15 @@ discoveryProducts.push(
   ["tanievo-113","Tefal Quickchef — blender ręczny","Miksery i blendery","🥤"],
   ["tanievo-114","Kenwood Prospero — mikser planetarny","Miksery i blendery","🍰"],
   ["tanievo-115","Bosch MUM — robot kuchenny z misą","Miksery i blendery","🍰"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-116","Romet Orkan — rower trekkingowy","Rowery","🚲"],
+discoveryProducts.push(...[
+["tanievo-116","Romet Orkan — rower trekkingowy","Rowery","🚲"],
   ["tanievo-117","Kross Level — rower górski MTB","Rowery","🚵"],
   ["tanievo-118","Kross Trans — rower trekkingowy","Rowery","🚲"],
   ["tanievo-119","Romet Gazela — rower miejski","Rowery","🚲"],
@@ -118,15 +118,15 @@ discoveryProducts.push(
   ["tanievo-130","Licznik rowerowy GPS Garmin Edge","Akcesoria rowerowe","📟"],
   ["tanievo-131","Pompka rowerowa z manometrem","Akcesoria rowerowe","🚲"],
   ["tanievo-132","Zestaw naprawczy do dętek rowerowych","Akcesoria rowerowe","🔧"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-133","Shell Helix Ultra 5W-30 — olej silnikowy 4 l","Oleje i płyny samochodowe","🛢️"],
+discoveryProducts.push(...[
+["tanievo-133","Shell Helix Ultra 5W-30 — olej silnikowy 4 l","Oleje i płyny samochodowe","🛢️"],
   ["tanievo-134","Castrol EDGE 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
   ["tanievo-135","Mobil 1 ESP 5W-30 — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
   ["tanievo-136","Motul 8100 X-clean — olej silnikowy 5 l","Oleje i płyny samochodowe","🛢️"],
@@ -146,15 +146,15 @@ discoveryProducts.push(
   ["tanievo-150","Zestaw toru wyścigowego dla samochodzików","Modele i samochodziki","🏁"],
   ["tanievo-151","LEGO Technic — samochód do składania","Modele i samochodziki","🧱"],
   ["tanievo-152","Model samochodu RC — zdalnie sterowany","Modele i samochodziki","🎮"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon: icon === " solder" ? "🔌" : icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 
-discoveryProducts.push(
-  ["tanievo-153","Revell — plastikowy model samolotu do sklejania","Modelarstwo","✈️"],
+discoveryProducts.push(...[
+["tanievo-153","Revell — plastikowy model samolotu do sklejania","Modelarstwo","✈️"],
   ["tanievo-154","Revell — model samochodu do sklejania 1:24","Modelarstwo","🚗"],
   ["tanievo-155","Tamiya — model samochodu do sklejania","Modelarstwo","🏎️"],
   ["tanievo-156","Zestaw farbek akrylowych do modeli","Modelarstwo","🎨"],
@@ -173,11 +173,11 @@ discoveryProducts.push(
   ["tanievo-169","Tester akumulatora samochodowego 12 V","Pomiary i diagnostyka","🔋"],
   ["tanievo-170","Czytnik diagnostyczny OBD2 Bluetooth","Pomiary i diagnostyka","🚘"],
   ["tanievo-171","Miernik temperatury i wilgotności z sondą","Pomiary i diagnostyka","🌡️"]
-).forEach(([id,name,category,icon]) => discoveryProducts.push({
+].map(([id,name,category,icon]) => ({
   id,name,category,icon,store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
-}));
+})));
 
 products = [...products, ...discoveryProducts];
 
