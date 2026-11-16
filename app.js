@@ -233,6 +233,9 @@ products = [...products, ...discoveryProducts];
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
 // Pozostałe karty zachowują czytelny placeholder zamiast przypadkowej fotografii.
 const verifiedProductImages = {
+  "Einhell CE-BC 6 M — prostownik automatyczny": "https://einhell.pl/wp-content/uploads/2024/12/Zrzut-ekranu-2022-10-6-o-13.47.36-324x324.png",
+  "Webasto Air Top 2000 STC — ogrzewanie postojowe 12 V": "https://www.webasto.com/adobe/dynamicmedia/deliver/dm-aid--1e1fd815-6448-4612-abe3-a1f62fc71907/air-top-2000-stc-header.jpg?preferwebp=true&quality=85",
+
   "Apple AirPods Pro 3": "https://cdn.newtime.ua/upload/2025-09/navushniki-apple-airpods-pro-3_2400.webp",
   "Samsung Galaxy Buds3 Pro": "https://www.callme.dk/globalassets/olympus/inriver/samsung-galaxy-buds3-pro-silver_1.png?w=480",
   "Apple iPhone 17 Pro 256 GB": "https://www.mediazone.ma/product/images/18044-O4NyMHRz/apple-iphone-17-pro-256go-bleu-intense-maroc.webp",
