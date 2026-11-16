@@ -305,7 +305,16 @@ function getTileCategoryMatches(tile){
   const label=tile.querySelector("strong")?.textContent.trim() || "";
   const raw=tile.dataset.categoryJump || "";
   const candidates=[raw,label,...(categoryAliases[label]||[]),...(categoryAliases[raw]||[])];
-  return [...new Set(candidates.map(normalizeCategory))];
+  return [...new Set(candidates.map(value => normalizeCategory(String(value).trim())).filter(Boolean))];
+}
+function hasActiveProductLink(product){
+  return product.linkType !== "paused" && safeProductUrl(product.productUrl);
+}
+function getLinkedProductsForTile(tile){
+  const matches=getTileCategoryMatches(tile);
+  return products.filter(product =>
+    matches.includes(normalizeCategory(product.category)) && hasActiveProductLink(product)
+  );
 }
 function buildCategoryNavigation(){
   catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
@@ -317,8 +326,8 @@ function buildCategoryNavigation(){
   }).join("");
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
-    const categoryNames=getTileCategoryMatches(tile);
-    const n=products.filter(p=>categoryNames.includes(normalizeCategory(p.category))).length;
+    const linkedProducts=getLinkedProductsForTile(tile);
+    const n=linkedProducts.length;
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
 
@@ -625,9 +634,8 @@ document.addEventListener("click", event => {
 
   if (tile) {
     const candidates = getTileCategoryMatches(tile);
-    activeCategoryMatches = [...new Set(products
-      .map(product => normalizeCategory(product.category))
-      .filter(productCategory => candidates.includes(productCategory)))];
+    activeCategoryMatches = [...new Set(getLinkedProductsForTile(tile)
+      .map(product => normalizeCategory(product.category)))];
     category = activeCategoryMatches[0] || "Wszystkie";
     if (!activeCategoryMatches.length) {
       const label = tile.getAttribute("aria-label") || tile.dataset.categoryJump || "Ta kategoria";
