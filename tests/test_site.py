@@ -35,10 +35,13 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertEqual(len(self.parser.ids), len(set(self.parser.ids)))
 
     def test_main_interaction_targets_exist(self):
-        required = {"main-content", "searchInput", "productGrid", "favoritesToggle",
+        required = {"main-content", "productGrid", "favoritesToggle",
                     "favoritesCount", "resultCount", "emptyState", "copyPromoText",
                     "shareFeedback", "year"}
         self.assertTrue(required.issubset(set(self.parser.ids)))
+        # The old search panel was intentionally removed; category tiles jump directly to the product grid.
+        self.assertNotIn("searchInput", self.parser.ids)
+        self.assertIn('id="productGrid"', self.html)
 
     def test_comparison_navigation_points_to_comparison_hub(self):
         self.assertIn('href="#aktualne-porownania">Porównania</a>', self.html)
