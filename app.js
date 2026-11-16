@@ -321,13 +321,22 @@ function buildCategoryNavigation(){
     const n=products.filter(p=>categoryNames.includes(normalizeCategory(p.category))).length;
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
-    tile.hidden=false;
-    tile.setAttribute("aria-label",key+": "+countLabel?.textContent);
+
+    // Ukrywamy kafelki katalogu bez produktów, aby nie prowadzić do pustych wyników.
+    const isCatalogTile=Boolean(tile.closest(".category-grid"));
+    tile.hidden=isCatalogTile && n===0;
+    tile.setAttribute("aria-label",key+": "+(countLabel?.textContent || (n+" produktów")));
+    tile.dataset.productCount=String(n);
   });
   const statusCount=document.getElementById("catalogStatusCount");
   if(statusCount)statusCount.textContent=products.length;
   const note=document.querySelector(".demo-note");
   if(note)note.textContent=products.length+" produktów w katalogu";
+  const categoryGrid=document.querySelector(".category-grid");
+  if(categoryGrid){
+    const visibleTiles=categoryGrid.querySelectorAll("[data-category-jump]:not([hidden])").length;
+    categoryGrid.setAttribute("aria-label","Dostępne kategorie: "+visibleTiles);
+  }
 }
 
 function loadFavorites() {
