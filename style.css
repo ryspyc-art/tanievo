@@ -287,3 +287,68 @@
 @media(max-width:420px){.hero-category-hotspot{border-radius:6px}}
 
 .product-title-link{color:inherit;text-decoration:none;display:inline-block}.product-title-link:hover{color:#e56b00;text-decoration:underline}.product-title-link span{font-size:11px;color:#e56b00;white-space:nowrap}
+
+
+/* Porównanie cen — wyraźne kafelki sklepów i pełne CTA */
+.price-comparison{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid #d8e0eb;
+  border-radius:14px;
+  background:linear-gradient(145deg,#f4f7fb 0%,#eaf0f7 100%);
+  box-shadow:0 5px 16px #1725360d;
+}
+.comparison-heading{gap:5px;margin-bottom:12px}
+.comparison-heading strong{font-size:13px;letter-spacing:-.2px}
+.comparison-heading span{font-size:10px;line-height:1.45}
+.comparison-stores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.comparison-store{
+  min-height:126px;
+  padding:12px 10px;
+  border:1px solid #cbd6e4;
+  border-radius:11px;
+  background:#fff;
+  box-shadow:0 3px 9px #17253612;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:7px;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.comparison-store:hover{transform:translateY(-2px);border-color:#ff9a42;box-shadow:0 7px 16px #17253618}
+.comparison-store-name{
+  display:inline-flex;
+  align-items:center;
+  min-height:23px;
+  padding:3px 8px;
+  border-radius:6px;
+  background:#edf2f8;
+  color:#26364b;
+  font-size:10px;
+  font-weight:900;
+}
+.comparison-store strong{font-size:14px;line-height:1.3;color:#152238}
+.comparison-store a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:34px;
+  margin-top:auto;
+  padding:7px 8px;
+  border-radius:7px;
+  background:#142238;
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  text-align:center;
+}
+.comparison-store a:hover{background:#ff7900;color:#101827;text-decoration:none}
+.price-comparison>small{font-size:9px;line-height:1.5}
+@media(max-width:420px){
+  .price-comparison{padding:10px}
+  .comparison-stores{gap:7px}
+  .comparison-store{min-height:120px;padding:9px 7px}
+  .comparison-store strong{font-size:12px}
+  .comparison-store a{font-size:9px}
+}
