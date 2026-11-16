@@ -640,7 +640,7 @@ function comparisonPanel(product) {
       <div class="comparison-store"><span class="comparison-store-name">Ceneo</span><strong>${ceneo === null ? "Sprawdź cenę" : money(ceneo)}</strong><a href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer">Zobacz oferty ↗</a></div>
     </div>
     ${isAppleProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Lantre · autoryzowany sklep Apple</span><strong>Oferta Apple</strong><a href="https://webep1.com/c/13508/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9pcW8ubGFudHJlLnBsLz9QNTExNzQ5NTdGMDYxMTkxJnJlZGlyPWh0dHBzOi8vbGFudHJlLnBsLw" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Lantre ↗</a></div>` : ""}
-    ${isOutdoorProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">RG CAMP · sprzęt outdoor</span><strong>Turystyka i rekreacja</strong><a href="https://webep1.com/go/62ec4abd01" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz RG CAMP ↗</a></div>` : ""}
+    ${isOutdoorProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">RG CAMP · sprzęt outdoor</span><strong>Turystyka i rekreacja</strong><a href="https://webep1.com/c/13574/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9yZ2NhbXAuZXUv" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do sklepu RG CAMP ↗</a><a href="https://webep1.com/go/4833aa708e" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę partnerską ↗</a></div>` : ""}
     <small>Ceny porównujemy tylko dla zgodnego modelu i wariantu. Kwoty bez świeżego potwierdzenia nie są wyświetlane.</small>
   </div>`;
 }
