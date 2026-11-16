@@ -360,3 +360,14 @@
 .comparison-store-name{background:#e4ebf4;color:#26364b}
 .comparison-store strong{color:#101d31}
 .price-comparison>small{color:#4b596d}
+
+
+/* Tanievo — subtelne tło strony */
+body{
+  background-color:#edf1f5;
+  background-image:
+    radial-gradient(ellipse at 12% 18%,rgba(255,121,0,.075) 0,rgba(255,121,0,0) 34%),
+    radial-gradient(ellipse at 88% 72%,rgba(72,105,143,.075) 0,rgba(72,105,143,0) 38%),
+    linear-gradient(135deg,#edf1f5 0%,#f4f3f0 48%,#e9eef4 100%);
+  background-attachment:fixed;
+}
