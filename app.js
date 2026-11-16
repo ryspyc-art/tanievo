@@ -307,13 +307,19 @@ function getTileCategoryMatches(tile){
   const candidates=[raw,label,...(categoryAliases[label]||[]),...(categoryAliases[raw]||[])];
   return [...new Set(candidates.map(value => normalizeCategory(String(value).trim())).filter(Boolean))];
 }
+function categoryMatchKey(value){
+  return normalizeCategory(String(value || "").trim())
+    .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
+    .toLocaleLowerCase("pl").replace(/\\s+/g, " ");
+}
 function hasActiveProductLink(product){
-  return product.linkType !== "paused" && safeProductUrl(product.productUrl);
+  const url=String(product.productUrl || "").trim();
+  return product.linkType !== "paused" && /^https:\\/\\//i.test(url);
 }
 function getLinkedProductsForTile(tile){
-  const matches=getTileCategoryMatches(tile);
+  const matches=new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
   return products.filter(product =>
-    matches.includes(normalizeCategory(product.category)) && hasActiveProductLink(product)
+    matches.has(categoryMatchKey(product.category)) && hasActiveProductLink(product)
   );
 }
 function buildCategoryNavigation(){
@@ -633,14 +639,16 @@ document.addEventListener("click", event => {
   if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed", "false");
 
   if (tile) {
-    const candidates = getTileCategoryMatches(tile);
-    activeCategoryMatches = [...new Set(getLinkedProductsForTile(tile)
-      .map(product => normalizeCategory(product.category)))];
-    category = activeCategoryMatches[0] || "Wszystkie";
+    const linkedProducts=getLinkedProductsForTile(tile);
+    activeCategoryMatches=[...new Set(linkedProducts.map(product => normalizeCategory(product.category)))];
+    category=activeCategoryMatches[0] || "Wszystkie";
     if (!activeCategoryMatches.length) {
-      const label = tile.getAttribute("aria-label") || tile.dataset.categoryJump || "Ta kategoria";
-      const status = document.getElementById("catalogStatus");
-      if (status) status.textContent = label + " — w katalogu nie ma jeszcze produktów.";
+      const label=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump || "Ta kategoria";
+      const status=document.getElementById("catalogStatus");
+      if(status) status.textContent=label+" — brak produktów z aktywnym linkiem.";
+    } else {
+      const status=document.getElementById("catalogStatus");
+      if(status) status.textContent="Wybrana kategoria: "+(tile.querySelector("strong")?.textContent.trim() || category)+" · "+linkedProducts.length+" produktów.";
     }
   } else {
     category = chip.dataset.category;
@@ -654,10 +662,8 @@ document.addEventListener("click", event => {
   });
   render();
 
-  const targetSection = document.getElementById("productGrid");
-  if (targetSection) {
-    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  const targetSection=document.getElementById("oferty") || document.getElementById("productGrid");
+  if(targetSection) targetSection.scrollIntoView({behavior:"smooth",block:"start"});
 }, true);
 
 search.addEventListener("input", render);
