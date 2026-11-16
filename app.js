@@ -187,7 +187,10 @@ const verifiedProductImages = {
   "Apple AirPods Pro 3": "https://cdn.newtime.ua/upload/2025-09/navushniki-apple-airpods-pro-3_2400.webp",
   "Samsung Galaxy Buds3 Pro": "https://www.callme.dk/globalassets/olympus/inriver/samsung-galaxy-buds3-pro-silver_1.png?w=480",
   "Apple iPhone 17 Pro 256 GB": "https://www.mediazone.ma/product/images/18044-O4NyMHRz/apple-iphone-17-pro-256go-bleu-intense-maroc.webp",
-  "Wkrętarka akumulatorowa DeWALT DCD800N 18 V": "https://narzedziownia.shop/701169-large_default/wkretarka-18v-xr-90nm-2-biegowa-dewalt-dcd800n.jpg"
+  "Wkrętarka akumulatorowa DeWALT DCD800N 18 V": "https://narzedziownia.shop/701169-large_default/wkretarka-18v-xr-90nm-2-biegowa-dewalt-dcd800n.jpg",
+  "Sony WH-1000XM5": "https://www.sony.ie/image/6145c1d32e6ac8e63a46c912dc33c5bb?fmt=png-alpha&hei=660&wid=660",
+  "Sony WF-1000XM5": "https://store.sony.com.tw/resource/file/product_files/WF-1000XM5/05_73f1c2306.jpg",
+  "Anker Zolo 25000 mAh 165 W A1695H11": "https://cdn.hstatic.net/products/200000868777/a1695_b19a9fa039694abfb189e6de6250c2c4_master.png"
 };
 for (const product of products) {
   if (!product.image && verifiedProductImages[product.name]) {
