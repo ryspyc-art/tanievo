@@ -448,6 +448,13 @@ function getDirectOfferUrl(product) {
     return "";
   }
 }
+
+function getPrimaryProductUrl(product) {
+  const direct = getDirectOfferUrl(product);
+  if (direct) return direct;
+  if (product.linkType === "affiliate") return getAmazonUrl(product);
+  return getCeneoUrl(product);
+}
 let liveCatalog = false;
 ["price-asc", "price-desc", "discount"].forEach(value => {
   const option = sort.querySelector('option[value="' + value + '"]');
@@ -607,7 +614,7 @@ function render() {
         <button class="fav ${saved ? "saved" : ""}" data-fav="${escapeHTML(String(product.id))}" aria-label="${saved ? "Usuń z" : "Dodaj do"} ulubionych: ${safeName}" aria-pressed="${saved}">${saved ? "♥" : "♡"}</button>
       </div>
       <div class="product-category">${safeCategory}</div>
-      <h3>${safeName}</h3>
+      <h3><a class="product-title-link" href="${escapeHTML(getPrimaryProductUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer">${safeName} <span aria-hidden="true">↗</span></a></h3>
       ${Number.isFinite(product.price) ? `<div class="price-row"><span class="price">${money(product.price)}</span></div>${product.priceSource || product.priceCheckedAt || product.linkType === "comparison" ? `<div class="demo-price-note">${product.linkType === "comparison" ? "Cena orientacyjna · " : ""}${escapeHTML(product.priceSource || "Cena sprawdzona")}${product.priceCheckedAt ? " · sprawdzono: " + escapeHTML(product.priceCheckedAt) : ""}</div>` : ""}` : `<div class="demo-price-note">${product.priceSource ? "Cena niepotwierdzona — sprawdź u sprzedawcy" : "Sprawdź aktualną cenę u partnera"}</div>`}
       <div class="store">${safeStore} · ${product.linkType === "paused" ? "oferta chwilowo niedostępna" : product.linkType === "search" ? "wyszukiwanie produktu" : product.linkType === "comparison" ? "porównanie cen" : product.linkType === "affiliate" ? "link partnerski" : product.productUrl ? "link zewnętrzny" : "weryfikacja linku w toku"}</div>
       ${liveCatalog && product.availability ? `<div class="store">Dostępność: ${escapeHTML(product.availability)}</div>` : ""}
