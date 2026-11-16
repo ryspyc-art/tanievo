@@ -462,7 +462,7 @@ let liveCatalog = false;
 });
 async function loadAmazonOffers() {
   try {
-    const response = await fetch("./amazon-offers.json?cache=" + Date.now(), {cache:"no-store"});
+    const response = await fetch("./amazon-offers.json", {cache:"default"});
     if (!response.ok) return;
     const payload = await response.json();
     if (!payload || !Array.isArray(payload.offers)) return;
@@ -499,7 +499,7 @@ async function loadAmazonOffers() {
 
 async function loadLiveCatalog() {
   try {
-    const response = await fetch("./products.json?cache=" + Date.now(), {cache:"no-store"});
+    const response = await fetch("./products.json", {cache:"default"});
     if (!response.ok) return;
     const payload = await response.json();
     const items = Array.isArray(payload) ? payload : payload.items;
