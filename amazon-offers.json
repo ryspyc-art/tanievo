@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-15",
+  "updatedAt": "2026-11-17",
   "offers": [
     {
       "id": "tanievo-058",
@@ -864,7 +864,7 @@
       "priceSource": "Wynik Amazon.pl: 339,76 zł; sprawdź dopuszczenie do ruchu i zgodność z reflektorem",
       "priceCheckedAt": "2026-11-15",
       "availability": "Sprawdź zgodność z pojazdem",
-      "image": ""
+      "image": "https://images.carpartstuning.com/6002896/6109321/osram-night-breaker-h7-led-smart-64210dwnbsm-2hb.webp"
     },
     {
       "id": "tanievo-115",
@@ -896,7 +896,7 @@
       "priceSource": "Wynik zakupowy: 279 zł za ofertę; zweryfikuj, czy to sam korpus czy zestaw z akumulatorami",
       "priceCheckedAt": "2026-11-15",
       "availability": "Sprawdź wariant zestawu",
-      "image": ""
+      "image": "https://bilder.obi.sk/fcf6d3c6-7af7-4843-9c81-df49979992bb/prZZH/774_3058_gsr_18v55_2ah_dyn.jpg"
     },
     {
       "id": "tanievo-117",
@@ -912,7 +912,7 @@
       "priceSource": "Wynik zakupowy: 511,50 zł; porównaj wersję BODY z zestawem akumulatorów",
       "priceCheckedAt": "2026-11-15",
       "availability": "Sprawdź wariant zestawu",
-      "image": ""
+      "image": "https://media.hornbach.de/mp/packshot/934b3082-55b2-4b6b-b20d-56e1e3b440c4?size=1400"
     },
     {
       "id": "tanievo-118",
