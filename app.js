@@ -35,7 +35,9 @@ discoveryProducts.push(...[
   ["tanievo-079","Grzejnik olejowy elektryczny do mieszkania","Ogrzewanie domu","♨️"],
   ["tanievo-080","Panel grzewczy na podczerwień do domu","Ogrzewanie domu","🌡️"]
 ].map(([id,name,category,icon]) => ({
-  id:"catalog-"+id,name,category,icon,store:"Wyszukaj w Ceneo",
+  id:"catalog-"+id,name,category,icon:id==="tanievo-020"?"🔩":icon,
+  image:id==="tanievo-020"?"https://images.samsung.com/kdp/goods/2024/01/10/72bda001-f4f4-4f7a-9a3d-0707974271a0.png":"",
+  store:"Wyszukaj w Ceneo",
   productUrl:"https://www.ceneo.pl/;szukaj-" + encodeURIComponent(name),
   linkType:"search"
 })));
