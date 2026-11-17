@@ -3,6 +3,21 @@
   "updatedAt": "2026-11-17",
   "offers": [
     {
+      "id": "tanievo-139",
+      "name": "Fiprex Kot Spot-On przeciw pchłom i kleszczom 0,7 ml",
+      "category": "Higiena kotów",
+      "merchant": "Porównanie ofert",
+      "price": null,
+      "currency": "PLN",
+      "productUrl": "https://www.ceneo.pl/13230841#crid=819307&pid=31443",
+      "ceneoUrl": "https://www.ceneo.pl/13230841#crid=819307&pid=31443",
+      "amazonSearchUrl": "https://www.amazon.pl/s?k=Fiprex+Kot+Spot-On+0%2C7+ml&tag=tanievo-21",
+      "linkType": "comparison",
+      "priceSource": "Cena niepotwierdzona — sprawdź aktualną ofertę i koszt dostawy",
+      "availability": "Sprawdź aktualną cenę i dostępność",
+      "image": "https://image.ceneostatic.pl/data/article_picture/56/c3/0aee-28ea-4a69-b7ed-a340b1a56cf1_large.png"
+    },
+    {
       "id": "tanievo-058",
       "name": "Apple AirPods Pro 3",
       "category": "Elektronika",
