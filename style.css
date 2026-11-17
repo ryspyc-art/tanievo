@@ -556,3 +556,39 @@ body{
 .price-comparison>.comparison-heading>span:nth-child(2){grid-column:1;grid-row:2;justify-self:stretch;width:100%;min-width:0;text-align:left;white-space:normal;overflow-wrap:normal;word-break:normal;line-height:1.35}
 .price-comparison>.comparison-heading .comparison-toggle{grid-column:2;grid-row:1 / span 2;justify-self:center;align-self:center;width:24px;text-align:center;font-size:19px}
 @media(max-width:600px){.price-comparison>.comparison-heading{padding:10px 11px;column-gap:8px}.price-comparison>.comparison-heading strong{font-size:13px}.price-comparison>.comparison-heading>span:nth-child(2){font-size:10px}}
+
+
+/* Opis porównania jest osobnym pełnoszerokim wierszem pod nagłówkiem. */
+.price-comparison>.comparison-heading{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+  width:100%;
+  min-width:0;
+}
+.price-comparison>.comparison-heading strong{
+  flex:1 1 auto !important;
+  min-width:0;
+}
+.price-comparison>.comparison-heading .comparison-toggle{
+  flex:0 0 24px !important;
+  margin-left:auto;
+}
+.price-comparison .comparison-summary{
+  display:block;
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+  margin:0 0 9px;
+  padding:8px 10px;
+  border-radius:7px;
+  background:#fff4e6;
+  color:#744b25;
+  font-size:11px;
+  font-weight:650;
+  line-height:1.4;
+  text-align:left;
+  overflow-wrap:break-word;
+}
