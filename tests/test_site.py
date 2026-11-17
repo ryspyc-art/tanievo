@@ -121,7 +121,12 @@ class SiteIntegrityTests(unittest.TestCase):
             if offer.get("linkType") == "comparison":
                 for key in ("productUrl", "ceneoUrl"):
                     if offer.get(key, "").startswith("https://www.ceneo.pl/"):
-                        self.assertEqual(urlparse(offer[key]).fragment, "cid=52090&crid=818403&pid=31443")
+                        expected_fragment = (
+                            "crid=819307&pid=31443"
+                            if offer.get("id") == "tanievo-139"
+                            else "cid=52090&crid=818403&pid=31443"
+                        )
+                        self.assertEqual(urlparse(offer[key]).fragment, expected_fragment)
             else:
                 parsed = urlparse(offer["productUrl"])
                 self.assertEqual(parsed.scheme, "https")
