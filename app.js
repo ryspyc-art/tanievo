@@ -634,8 +634,9 @@ function comparisonPanel(product) {
   } else if (ceneo !== null) {
     summary = "Cena Ceneo potwierdzona · Amazon do sprawdzenia";
   }
-  return `<div class="price-comparison" aria-label="Porównanie cen Amazon i Ceneo">
-    <div class="comparison-heading"><strong>Porównaj ceny</strong><span>${escapeHTML(summary)}</span></div>
+  return `<details class="price-comparison" aria-label="Porównanie cen Amazon i Ceneo">
+    <summary class="comparison-heading"><strong>Porównaj ceny</strong><span>${escapeHTML(summary)}</span><span class="comparison-toggle" aria-hidden="true">＋</span></summary>
+    <div class="comparison-content">
     <div class="comparison-stores">
       <div class="comparison-store"><span class="comparison-store-name">Amazon</span><strong>${amazon === null ? "Sprawdź cenę" : money(amazon)}</strong><a href="${escapeHTML(getAmazonUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę ↗</a></div>
       <div class="comparison-store"><span class="comparison-store-name">Ceneo</span><strong>${ceneo === null ? "Sprawdź cenę" : money(ceneo)}</strong><a href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer">Zobacz oferty ↗</a></div>
@@ -644,7 +645,8 @@ function comparisonPanel(product) {
     ${isOutdoorProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">RG CAMP · sprzęt outdoor</span><strong>Turystyka i rekreacja</strong><a href="https://webep1.com/c/13574/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9yZ2NhbXAuZXUv" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do sklepu RG CAMP ↗</a><a href="https://webep1.com/go/4833aa708e" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę partnerską ↗</a></div>` : ""}
     ${isHomeEnergyProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Solve24 · rozwiązania energetyczne</span><strong>Dom i energia</strong><a href="https://webep1.com/c/5400/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly93d3cuc29sdmUyNC5wbA" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Solve24 ↗</a><a href="https://webep1.com/go/103fc5f5a0" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę partnerską ↗</a></div>` : ""}
     <small>Ceny porównujemy tylko dla zgodnego modelu i wariantu. Kwoty bez świeżego potwierdzenia nie są wyświetlane.</small>
-  </div>`;
+    </div>
+  </details>`;
 }
 
 
