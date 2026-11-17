@@ -639,3 +639,28 @@ body{
   }
   .partner-store{gap:8px !important}
 }
+
+
+/* Charakterystyczna identyfikacja Tanievo — limonkowy akcent zamiast aukcyjnego pomarańczu */
+:root{--lime:#b8f34b;--paper:#f4f7f0;--line:#dfe8d7}
+.topbar{background:#14251f}
+.brand-mark{background:var(--lime);color:#14251f;border-radius:11px;box-shadow:0 0 0 4px #b8f34b20}
+.topbar nav a:hover,.top-cta span,.eyebrow,.hero h1 em,.how h2 em{color:var(--lime)}
+.top-cta{background:#20372d;border-color:#365442}
+.category-all{border-color:#b8f34b}
+.category-all span,.category-arrow{color:#648f25}
+.category-tile:hover,.category-tile:focus-visible{border-color:#b8f34b;box-shadow:0 12px 28px #456b2518}
+.category-symbol{background:#eef6df}
+:where(a,button,input,select,summary):focus-visible{outline-color:#83bd2c}
+.brand-promise{padding:25px max(5vw,22px);background:linear-gradient(110deg,#14251f,#203a2c);color:#fff;border-top:3px solid #b8f34b}
+.brand-promise-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:22px;align-items:center}
+.brand-promise-intro{display:flex;flex-direction:column;gap:8px}
+.brand-promise-kicker{font-size:9px;letter-spacing:2px;font-weight:900;color:#b8f34b}
+.brand-promise-intro strong{font-size:clamp(16px,2vw,22px);line-height:1.25;letter-spacing:-.5px}
+.brand-promise-point{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-promise-point>span{display:grid;place-items:center;flex:0 0 34px;height:34px;border:1px solid #b8f34b70;border-radius:50%;color:#b8f34b;font-size:11px;font-weight:900}
+.brand-promise-point div{display:flex;flex-direction:column;gap:4px}
+.brand-promise-point b{font-size:13px}
+.brand-promise-point small{font-size:10px;line-height:1.4;color:#b9c8bd}
+@media(max-width:760px){.brand-promise{padding:22px 18px}.brand-promise-inner{grid-template-columns:1fr 1fr;gap:18px}.brand-promise-intro{grid-column:1/-1}.brand-promise-intro strong br{display:none}}
+@media(max-width:390px){.brand-promise-inner{grid-template-columns:1fr}.brand-promise-intro{grid-column:auto}.brand-promise-point{padding-left:2px}}
