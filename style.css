@@ -592,3 +592,50 @@ body{
   text-align:left;
   overflow-wrap:break-word;
 }
+
+
+/* Czytelne kafle sklepów na telefonie: nazwa, opis i przycisk w osobnych wierszach. */
+@media(max-width:600px){
+  .comparison-stores{grid-template-columns:minmax(0,1fr);gap:8px}
+  .comparison-store{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    gap:7px !important;
+    min-width:0;
+    width:100%;
+    box-sizing:border-box;
+    padding:10px !important;
+  }
+  .comparison-store-name{
+    display:inline-flex;
+    align-self:flex-start;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    font-size:11px !important;
+    line-height:1.35 !important;
+    padding:4px 8px !important;
+  }
+  .comparison-store strong{
+    display:block;
+    width:100%;
+    font-size:12px !important;
+    line-height:1.35 !important;
+    overflow-wrap:anywhere;
+  }
+  .comparison-store a{
+    display:flex !important;
+    width:100% !important;
+    min-width:0 !important;
+    min-height:40px !important;
+    box-sizing:border-box;
+    padding:9px 10px !important;
+    font-size:11px !important;
+    line-height:1.25 !important;
+    white-space:normal;
+    text-align:center;
+  }
+  .partner-store{gap:8px !important}
+}
