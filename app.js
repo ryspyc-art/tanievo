@@ -670,7 +670,7 @@ function render() {
     return `<article class="product-card">
       <div class="product-visual">
         ${Number.isFinite(product.discount) ? `<span class="discount-pill">−${product.discount}%</span>` : ""}
-        ${safeImage(product.image) ? `<img class="product-image" src="${escapeHTML(product.image)}" alt="${safeName}" loading="lazy" decoding="async">` : `<span class="product-image-fallback" role="img" aria-label="Podgląd kategorii produktu"><span class="product-fallback-icon" aria-hidden="true">${escapeHTML(product.icon || categoryProductIcon(product.category, product.name))}</span><small>Podgląd produktu</small></span>`}
+        ${safeImage(product.image) ? `<img class="product-image" src="${escapeHTML(product.image)}" alt="${safeName}" data-fallback-icon="${escapeHTML(product.icon || categoryProductIcon(product.category, product.name))}" loading="lazy" decoding="async">` : `<span class="product-image-fallback" role="img" aria-label="Podgląd kategorii produktu"><span class="product-fallback-icon" aria-hidden="true">${escapeHTML(product.icon || categoryProductIcon(product.category, product.name))}</span><small>Podgląd produktu</small></span>`}
         <button class="fav ${saved ? "saved" : ""}" data-fav="${escapeHTML(String(product.id))}" aria-label="${saved ? "Usuń z" : "Dodaj do"} ulubionych: ${safeName}" aria-pressed="${saved}">${saved ? "♥" : "♡"}</button>
       </div>
       <div class="product-category">${safeCategory}</div>
@@ -682,6 +682,24 @@ function render() {
       ${getDirectOfferUrl(product) ? `<a class="offer-link" href="${escapeHTML(getDirectOfferUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer"><span>Sprawdź ofertę partnera ↗</span></a>` : ""}
     </article>`;
   }).join("");
+
+  // Obsłuż błędy zewnętrznych serwerów zdjęć, aby karta nie zostawała pusta.
+  grid.querySelectorAll("img.product-image").forEach(img => {
+    img.addEventListener("error", () => {
+      const fallback = document.createElement("span");
+      fallback.className = "product-image-fallback";
+      fallback.setAttribute("role", "img");
+      fallback.setAttribute("aria-label", "Zdjęcie produktu niedostępne");
+      const icon = document.createElement("span");
+      icon.className = "product-fallback-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = img.dataset.fallbackIcon || "📦";
+      const label = document.createElement("small");
+      label.textContent = "Zdjęcie niedostępne";
+      fallback.append(icon, label);
+      img.replaceWith(fallback);
+    }, {once:true});
+  });
 
   const count = list.length;
   document.getElementById("resultCount").textContent = `${count} ${count === 1 ? "produkt" : count < 5 ? "produkty" : "produktów"}`;
