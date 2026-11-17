@@ -637,8 +637,9 @@ function comparisonPanel(product) {
     summary = "Cena Ceneo potwierdzona · Amazon do sprawdzenia";
   }
   return `<details class="price-comparison" aria-label="Porównanie cen Amazon i Ceneo">
-    <summary class="comparison-heading"><strong>Porównaj ceny</strong><span>${escapeHTML(summary)}</span><span class="comparison-toggle" aria-hidden="true">＋</span></summary>
+    <summary class="comparison-heading"><strong>Porównaj ceny</strong><span class="comparison-toggle" aria-hidden="true">＋</span></summary>
     <div class="comparison-content">
+    <p class="comparison-summary">${escapeHTML(summary)}</p>
     <div class="comparison-stores">
       <div class="comparison-store"><span class="comparison-store-name">Amazon</span><strong>${amazon === null ? "Sprawdź cenę" : money(amazon)}</strong><a href="${escapeHTML(getAmazonUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę ↗</a></div>
       <div class="comparison-store"><span class="comparison-store-name">Ceneo</span><strong>${ceneo === null ? "Sprawdź cenę" : money(ceneo)}</strong><a href="${escapeHTML(getCeneoUrl(product))}" target="_blank" rel="nofollow noopener noreferrer">Zobacz oferty ↗</a></div>
