@@ -553,10 +553,18 @@ async function loadAmazonOffers() {
 
 async function loadLiveCatalog() {
   try {
-    const response = await fetch("./products.json", {cache:"default"});
-    if (!response.ok) return;
-    const payload = await response.json();
-    const items = Array.isArray(payload) ? payload : payload.items;
+    const manifestResponse = await fetch("./data/catalog/manifest.json", {cache:"no-store"});
+    if (!manifestResponse.ok) return;
+    const manifest = await manifestResponse.json();
+    if (!Array.isArray(manifest.files) || !manifest.files.length) return;
+    const chunks = await Promise.all(manifest.files.map(async entry => {
+      const response = await fetch("./data/catalog/" + encodeURIComponent(entry.file), {cache:"default"});
+      if (!response.ok) throw new Error("Brak części katalogu: " + entry.file);
+      const payload = await response.json();
+      return Array.isArray(payload.items) ? payload.items : [];
+    }));
+    const items = chunks.flat();
+    const payload = {fetchedAt: manifest.generatedAt};
     if (!Array.isArray(items) || !items.length) return;
     const now = Date.now();
     const maxAgeMs = 72 * 60 * 60 * 1000;
@@ -668,7 +676,7 @@ function render() {
   if (liveCatalog && sort.value === "price-desc") list.sort((a,b) => b.price - a.price);
   if (liveCatalog && sort.value === "discount") list.sort((a,b) => a.price - b.price);
 
-  grid.innerHTML = list.map(product => {
+  grid.innerHTML = list.slice(0, 120).map(product => {
     const safeName = escapeHTML(product.name);
     const safeCategory = escapeHTML(product.category);
     const safeStore = escapeHTML(product.store || product.merchant || "Sklep partnerski");
@@ -688,6 +696,10 @@ function render() {
       ${getDirectOfferUrl(product) ? `<a class="offer-link" href="${escapeHTML(getDirectOfferUrl(product))}" target="_blank" rel="sponsored nofollow noopener noreferrer"><span>Sprawdź ofertę partnera ↗</span></a>` : ""}
     </article>`;
   }).join("");
+  const resultCount = document.getElementById("resultCount");
+  if (resultCount) resultCount.textContent = list.length > 120
+    ? "Wyświetlono 120 z " + list.length.toLocaleString("pl-PL") + " wyników. Użyj wyszukiwarki lub kategorii, aby zawęzić listę."
+    : list.length.toLocaleString("pl-PL") + (list.length === 1 ? " produkt" : " produktów");
 
   // Obsłuż błędy zewnętrznych serwerów zdjęć, aby karta nie zostawała pusta.
   grid.querySelectorAll("img.product-image").forEach(img => {
