@@ -7,7 +7,8 @@ from pathlib import Path
 CATALOG = Path("products.json")
 HISTORY = Path("price-history.json")
 HISTORY_SHARDS = Path("data/price-history")
-RETENTION_DAYS = 365
+RETENTION_DAYS = 90
+MAX_TRACKED_PRODUCTS = 10000
 
 
 def load_json(path, default):
@@ -59,6 +60,8 @@ def update_history(now=None):
         product_id = str(item.get("id", "")).strip()
         name = str(item.get("name", "")).strip()
         if not product_id or not name:
+            continue
+        if product_id not in products and len(products) >= MAX_TRACKED_PRODUCTS:
             continue
         points = products.setdefault(product_id, [])
         if not isinstance(points, list):
