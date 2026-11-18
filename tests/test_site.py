@@ -293,5 +293,12 @@ class SiteIntegrityTests(unittest.TestCase):
                 self.assertIn(f'"{category}"', self.app)
         self.assertIn('Wyszukaj w Ceneo', self.app)
 
+    def test_price_history_cards_render_product_images(self):
+        script = (ROOT / "price-features.js").read_text(encoding="utf-8")
+        self.assertIn("latest.image", script)
+        self.assertIn("history-product-visual", script)
+        self.assertIn('loading="lazy"', script)
+        self.assertIn(".history-product-visual img", (ROOT / "style.css").read_text(encoding="utf-8"))
+
 if __name__ == "__main__":
     unittest.main()
