@@ -2,14 +2,13 @@
 """Publish large partner data as bounded static JSON shards for GitHub Pages."""
 import hashlib
 import json
-import shutil
 from pathlib import Path
 
 CATALOG_SOURCE = Path("products.json")
 HISTORY_SOURCE = Path("price-history.json")
 CATALOG_DIR = Path("data/catalog")
 HISTORY_DIR = Path("data/price-history")
-CATALOG_CHUNK_SIZE = 5000
+CATALOG_CHUNK_SIZE = 1000
 HISTORY_BUCKETS = 32
 
 
@@ -40,16 +39,27 @@ def publish_catalog():
     if not items:
         raise RuntimeError("Katalog jest pusty — publikacja została przerwana, aby nie usunąć ofert.")
     clean_json_shards(CATALOG_DIR, "products")
+    for path in CATALOG_DIR.glob("category-*.json"):
+        path.unlink()
     files = []
-    for offset in range(0, len(items), CATALOG_CHUNK_SIZE):
-        name = f"products-{offset // CATALOG_CHUNK_SIZE:04d}.json"
-        chunk = items[offset:offset + CATALOG_CHUNK_SIZE]
-        write_json(CATALOG_DIR / name, {"items": chunk})
-        files.append({"file": name, "count": len(chunk)})
     categories = {}
+    grouped = {}
     for item in items:
         category = str(item.get("category") or "Inne")
         categories[category] = categories.get(category, 0) + 1
+        grouped.setdefault(category, []).append(item)
+    category_files = {}
+    for category, category_items in sorted(grouped.items()):
+        category_key = hashlib.sha256(category.encode("utf-8")).hexdigest()[:10]
+        category_files[category] = []
+        for offset in range(0, len(category_items), CATALOG_CHUNK_SIZE):
+            part = offset // CATALOG_CHUNK_SIZE
+            name = f"category-{category_key}-{part:03d}.json"
+            chunk = category_items[offset:offset + CATALOG_CHUNK_SIZE]
+            write_json(CATALOG_DIR / name, {"items": chunk})
+            entry = {"file": name, "count": len(chunk), "category": category}
+            files.append(entry)
+            category_files[category].append(entry)
     manifest = {
         "version": 1,
         "generatedAt": payload.get("fetchedAt"),
@@ -57,6 +67,7 @@ def publish_catalog():
         "chunkSize": CATALOG_CHUNK_SIZE,
         "files": files,
         "categories": categories,
+        "categoryFiles": category_files,
     }
     write_json(CATALOG_DIR / "manifest.json", manifest)
     print(f"Katalog: {len(items)} produktów w {len(files)} plikach.")
