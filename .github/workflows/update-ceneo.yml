@@ -25,6 +25,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/update_ceneo.py scripts/update_awin.py scripts/update_price_history.py
           python3 -m unittest discover -s tests -v
+          python3 -m py_compile scripts/publish_catalog.py
           node --check app.js
           node --check price-features.js
 
@@ -47,13 +48,17 @@ jobs:
       - name: Zapisz dzienną historię cen
         run: python3 scripts/update_price_history.py
 
+      - name: Podziel katalog i historię na pliki publikacyjne
+        run: python3 scripts/publish_catalog.py
+
       - name: Zapisz zaktualizowany katalog i historię
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add products.json price-history.json
+          git rm -f --ignore-unmatch products.json price-history.json
+          git add -A data/catalog data/price-history
           if ! git diff --cached --quiet; then
-            git commit -m "Aktualizacja katalogu i historii cen"
+            git commit -m "Aktualizacja katalogu i historii cen (podzielone dane)"
             git push
           else
             echo "Brak zmian w katalogu i historii cen."
