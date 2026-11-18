@@ -8,10 +8,15 @@
   const safeUrl=value=>{try{const u=new URL(value);return u.protocol==="https:"?u.href:""}catch{return""}};
   const dateLabel=value=>{const d=new Date(value);return Number.isFinite(d.getTime())?d.toLocaleDateString("pl-PL"):"data nieznana"};
   Promise.all([
-    fetch("./products.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null),
-    fetch("./price-history.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
-  ]).then(([catalog,history])=>{
-    const items=Array.isArray(catalog?.items)?catalog.items:[];
+    fetch("./data/catalog/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch("./data/price-history/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
+  ]).then(async ([catalogManifest,historyManifest])=>{
+    const firstCatalogFile=catalogManifest?.files?.[0]?.file;
+    const firstCatalog=firstCatalogFile?await fetch("./data/catalog/"+encodeURIComponent(firstCatalogFile),{cache:"default"}).then(r=>r.ok?r.json():null).catch(()=>null):null;
+    const historyParts=await Promise.all((historyManifest?.files||[]).map(entry=>fetch("./data/price-history/"+encodeURIComponent(entry.file),{cache:"default"}).then(r=>r.ok?r.json():null).catch(()=>null)));
+    const catalog={items:Array.isArray(firstCatalog?.items)?firstCatalog.items:[]};
+    const history={products:Object.assign({},...historyParts.map(part=>part?.products||{}))};
+    const items=Array.isArray(catalog.items)?catalog.items:[];
     const fresh=items.filter(p=>p&&Number(p.price)>0&&p.currency==="PLN"&&safeUrl(p.productUrl)&&p.updatedAt&&Date.now()-Date.parse(p.updatedAt)>=0&&Date.now()-Date.parse(p.updatedAt)<=72*3600000);
     if(!fresh.length){
       dealRoot.innerHTML='<p class="history-empty">Aktualnie nie ma świeżych ofert z potwierdzoną ceną. Moduł pokaże okazję, gdy katalog otrzyma dane z aktywnego feedu partnerskiego.</p>';
@@ -22,7 +27,7 @@
       dealRoot.innerHTML='<article class="deal-product">'+(image?'<img src="'+esc(image)+'" alt="">':'<span class="deal-icon" aria-hidden="true">🏷️</span>')+'<div><h3>'+esc(product.name)+'</h3><p>'+esc(product.merchant||"Sklep partnerski")+' · cena z '+dateLabel(product.updatedAt)+'</p><p>Wyróżniona oferta z aktualnego katalogu</p><a class="deal-link" href="'+esc(url)+'" target="_blank" rel="sponsored nofollow noopener noreferrer">Sprawdź u sprzedawcy ↗</a></div><strong class="deal-price">'+money(product.price)+'</strong></article>';
     }
     const records=history&&history.products&&typeof history.products==="object"?history.products:{};
-    const cards=Object.entries(records).map(([id,points])=>{
+    const cards=Object.entries(records).slice(0,24).map(([id,points])=>{
       if(!Array.isArray(points)||!points.length)return "";
       const valid=points.filter(p=>Number(p.price)>0&&/^\d{4}-\d{2}-\d{2}$/.test(p.date)).sort((a,b)=>a.date.localeCompare(b.date));
       if(!valid.length)return "";
