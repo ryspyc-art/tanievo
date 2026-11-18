@@ -158,7 +158,10 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertIn('linkType:"search"', self.app)
 
     def test_live_catalog_loader_is_wired_but_api_is_not_enabled(self):
-        self.assertEqual(len(re.findall(r"(?m)^loadLiveCatalog\(\);$", self.app)), 1)
+        self.assertEqual(len(re.findall(r"(?m)^loadLiveCatalog\\(\\);$", self.app)), 1)
+        self.assertIn("categoryFiles", self.app)
+        self.assertIn("loadLiveCategoryNames", self.app)
+        self.assertIn("Wybierz kategorię", self.app)
         self.assertIn('CENEO_API_PUBLICATION_APPROVED', (ROOT / "scripts" / "update_ceneo.py").read_text(encoding="utf-8"))
 
     def test_privacy_policy_is_linked(self):
