@@ -18,7 +18,7 @@ class PriceHistoryTests(unittest.TestCase):
             history = root / "price-history.json"
             now = datetime(2026, 11, 18, 12, tzinfo=timezone.utc)
             fresh = {"id":"p1","name":"Produkt","price":123.45,"currency":"PLN",
-                     "updatedAt":"2026-11-18T10:00:00+00:00","merchant":"Sklep"}
+                     "updatedAt":"2026-11-18T10:00:00+00:00","merchant":"Sklep","image":"https://cdn.example.com/product.jpg"}
             catalog.write_text(json.dumps({"items":[fresh,
                 {**fresh,"id":"old","updatedAt":"2026-11-10T10:00:00+00:00"},
                 {**fresh,"id":"usd","currency":"USD"}]}), encoding="utf-8")
@@ -29,6 +29,7 @@ class PriceHistoryTests(unittest.TestCase):
             self.assertEqual(list(data["products"]), ["p1"])
             self.assertEqual(len(data["products"]["p1"]), 1)
             self.assertEqual(data["products"]["p1"][0]["price"], 123.45)
+            self.assertEqual(data["products"]["p1"][0]["image"], "https://cdn.example.com/product.jpg")
 
 if __name__ == "__main__":
     unittest.main()
