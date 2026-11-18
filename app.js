@@ -332,9 +332,17 @@ const grid = document.getElementById("productGrid");
 const search = document.getElementById("searchInput");
 const sort = document.getElementById("sortSelect");
 const favoritesToggle = document.getElementById("favoritesToggle");
+const loadMoreButton=document.createElement("button");
+loadMoreButton.type="button";
+loadMoreButton.className="load-more-products";
+loadMoreButton.textContent="Pobierz kolejne 1000 produktów";
+loadMoreButton.hidden=true;
+grid.insertAdjacentElement("afterend",loadMoreButton);
+loadMoreButton.addEventListener("click",loadNextLiveCategoryPage);
 let catalogManifest = null;
 const loadedCatalogFiles = new Set();
 const catalogFilePromises = new Map();
+let activeLiveCategoryNames = [];
 let catalogCategories = [...new Set(products.map(p => p.category))].sort((a,b) => a.localeCompare(b,"pl"));
 let category = "Wszystkie";
 let activeCategoryMatches = null;
@@ -566,18 +574,46 @@ function normalizeLiveItems(items,fetchedAt){
 }
 async function loadLiveCategoryNames(names){
   if(!catalogManifest?.categoryFiles)return 0;
+  activeLiveCategoryNames=[...names];
   const wanted=new Set(names.map(categoryMatchKey));
-  const entries=Object.entries(catalogManifest.categoryFiles).filter(([name])=>wanted.has(categoryMatchKey(name))).flatMap(([,files])=>files||[]);
-  const pending=[...new Map(entries.map(entry=>[entry.file,entry])).values()].filter(entry=>!loadedCatalogFiles.has(entry.file));
-  const counts=await Promise.all(pending.map(entry=>{
+  const selected=Object.entries(catalogManifest.categoryFiles)
+    .filter(([name])=>wanted.has(categoryMatchKey(name)))
+    .map(([,files])=>(files||[]).find(entry=>!loadedCatalogFiles.has(entry.file)))
+    .filter(Boolean);
+  const counts=await Promise.all(selected.map(entry=>{
     if(catalogFilePromises.has(entry.file))return catalogFilePromises.get(entry.file);
-    const task=fetch("./data/catalog/"+encodeURIComponent(entry.file),{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Nie udało się pobrać "+entry.file);return response.json();})
-      .then(payload=>{const normalized=normalizeLiveItems(Array.isArray(payload.items)?payload.items:[],catalogManifest.generatedAt);const ids=new Set(products.map(product=>String(product.id)));products.push(...normalized.filter(product=>!ids.has(String(product.id))));loadedCatalogFiles.add(entry.file);return normalized.length;})
+    const task=fetch("./data/catalog/"+encodeURIComponent(entry.file),{cache:"force-cache"})
+      .then(response=>{if(!response.ok)throw new Error("Nie udało się pobrać "+entry.file);return response.json();})
+      .then(payload=>{
+        const normalized=normalizeLiveItems(Array.isArray(payload.items)?payload.items:[],catalogManifest.generatedAt);
+        const ids=new Set(products.map(product=>String(product.id)));
+        products.push(...normalized.filter(product=>!ids.has(String(product.id))));
+        loadedCatalogFiles.add(entry.file);
+        return normalized.length;
+      })
       .finally(()=>catalogFilePromises.delete(entry.file));
     catalogFilePromises.set(entry.file,task);return task;
   }));
-  liveCatalog=true;buildCategoryNavigation();render();return counts.reduce((sum,count)=>sum+count,0);
+  liveCatalog=true;
+  buildCategoryNavigation();
+  render();
+  updateLoadMoreButton();
+  return counts.reduce((sum,count)=>sum+count,0);
 }
+async function loadNextLiveCategoryPage(){
+  if(!activeLiveCategoryNames.length)return;
+  await loadLiveCategoryNames(activeLiveCategoryNames);
+}
+function updateLoadMoreButton(){
+  if(!loadMoreButton||!catalogManifest?.categoryFiles)return;
+  const wanted=new Set(activeLiveCategoryNames.map(categoryMatchKey));
+  const remaining=Object.entries(catalogManifest.categoryFiles)
+    .filter(([name])=>wanted.has(categoryMatchKey(name)))
+    .some(([,files])=>(files||[]).some(entry=>!loadedCatalogFiles.has(entry.file)));
+  loadMoreButton.hidden=!remaining;
+  loadMoreButton.textContent="Pobierz kolejne 1000 produktów";
+}
+
 async function loadLiveCatalog(){
   try{
     const response=await fetch("./data/catalog/manifest.json",{cache:"no-store"});if(!response.ok)return;
