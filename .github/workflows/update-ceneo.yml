@@ -1,6 +1,9 @@
 name: Aktualizacja ofert partnerskich
 
 on:
+  push:
+    branches: [main]
+    paths: [".catalog-rebuild"]
   workflow_dispatch:
   schedule:
     - cron: '17 5 * * *'
