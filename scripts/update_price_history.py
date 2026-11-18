@@ -6,6 +6,7 @@ from pathlib import Path
 
 CATALOG = Path("products.json")
 HISTORY = Path("price-history.json")
+HISTORY_SHARDS = Path("data/price-history")
 RETENTION_DAYS = 365
 
 
@@ -21,7 +22,16 @@ def update_history(now=None):
     today = now.date().isoformat()
     catalog = load_json(CATALOG, {})
     items = catalog.get("items", []) if isinstance(catalog, dict) else []
-    history = load_json(HISTORY, {"version": 1, "products": {}})
+    history = load_json(HISTORY, None)
+    if history is None:
+        manifest = load_json(HISTORY_SHARDS / "manifest.json", {})
+        merged = {}
+        for entry in manifest.get("files", []) if isinstance(manifest, dict) else []:
+            part = load_json(HISTORY_SHARDS / str(entry.get("file", "")), {})
+            records = part.get("products", {}) if isinstance(part, dict) else {}
+            if isinstance(records, dict):
+                merged.update(records)
+        history = {"version": 1, "products": merged}
     products = history.get("products", {}) if isinstance(history, dict) else {}
     if not isinstance(products, dict):
         products = {}
