@@ -161,6 +161,7 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertEqual(self.app.splitlines().count("loadLiveCatalog();"), 1)
         self.assertIn("categoryFiles", self.app)
         self.assertIn("loadLiveCategoryNames", self.app)
+        self.assertIn("Pobierz kolejne 1000 produktów", self.app)
         self.assertIn("Wybierz kategorię", self.app)
         self.assertIn('CENEO_API_PUBLICATION_APPROVED', (ROOT / "scripts" / "update_ceneo.py").read_text(encoding="utf-8"))
 
