@@ -775,6 +775,7 @@ document.addEventListener("click", async event => {
   } else {
     category=chip.dataset.category||"Wszystkie";activeCategoryMatches=null;
     if(category!=="Wszystkie"&&catalogManifest)await loadLiveCategoryNames([category]);
+    else {activeLiveCategoryNames=[];updateLoadMoreButton();}
   }
 
   document.querySelectorAll(".chip").forEach(item => {
@@ -807,6 +808,8 @@ if (clearSearch && search) clearSearch.addEventListener("click", () => {
 document.getElementById("resetFilters").addEventListener("click", () => {
   category = "Wszystkie";
   activeCategoryMatches = null;
+  activeLiveCategoryNames = [];
+  updateLoadMoreButton();
   favoritesOnly = false;
   search.value = "";
   sort.value = "recommended";
