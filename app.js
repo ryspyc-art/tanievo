@@ -386,7 +386,7 @@ function getLinkedProductsForTile(tile){
   return products.filter(product=>matches.has(categoryMatchKey(product.category))&&hasActiveProductLink(product));
 }
 function buildCategoryNavigation(){
-  catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
+  catalogCategories=[...new Set([...products.map(p=>p.category),...Object.keys(catalogManifest?.categories||{})])].sort((a,b)=>a.localeCompare(b,"pl"));
   if(category !== "Wszystkie" && !catalogCategories.includes(category)) category = "Wszystkie";
   const chips=document.getElementById("categoryChips");
   if(chips)chips.innerHTML=["Wszystkie",...catalogCategories].map(name=>{
