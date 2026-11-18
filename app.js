@@ -332,6 +332,9 @@ const grid = document.getElementById("productGrid");
 const search = document.getElementById("searchInput");
 const sort = document.getElementById("sortSelect");
 const favoritesToggle = document.getElementById("favoritesToggle");
+let catalogManifest = null;
+const loadedCatalogFiles = new Set();
+const catalogFilePromises = new Map();
 let catalogCategories = [...new Set(products.map(p => p.category))].sort((a,b) => a.localeCompare(b,"pl"));
 let category = "Wszystkie";
 let activeCategoryMatches = null;
@@ -373,11 +376,14 @@ function hasActiveProductLink(product){
   const url=String(product.productUrl || "").trim();
   return product.linkType !== "paused" && url.toLowerCase().startsWith("https://");
 }
+function getLiveCategoryCount(matches){
+  if(!catalogManifest?.categories)return null;
+  const keys=new Set(matches);
+  return Object.entries(catalogManifest.categories).reduce((sum,[name,count])=>sum+(keys.has(categoryMatchKey(name))?(Number(count)||0):0),0);
+}
 function getLinkedProductsForTile(tile){
   const matches=new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
-  return products.filter(product =>
-    matches.has(categoryMatchKey(product.category)) && hasActiveProductLink(product)
-  );
+  return products.filter(product=>matches.has(categoryMatchKey(product.category))&&hasActiveProductLink(product));
 }
 function buildCategoryNavigation(){
   catalogCategories=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"pl"));
@@ -390,7 +396,8 @@ function buildCategoryNavigation(){
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
     const linkedProducts=getLinkedProductsForTile(tile);
-    const n=linkedProducts.length;
+    const liveCount=getLiveCategoryCount(getTileCategoryMatches(tile).map(categoryMatchKey));
+    const n=liveCount===null?linkedProducts.length:liveCount;
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
 
@@ -401,9 +408,9 @@ function buildCategoryNavigation(){
     tile.dataset.productCount=String(n);
   });
   const statusCount=document.getElementById("catalogStatusCount");
-  if(statusCount)statusCount.textContent=products.length;
+  if(statusCount)statusCount.textContent=catalogManifest?.count??products.length;
   const note=document.querySelector(".demo-note");
-  if(note)note.textContent=products.length+" produktów w katalogu";
+  if(note)note.textContent=catalogManifest?Number(catalogManifest.count).toLocaleString("pl-PL")+" produktów — wybierz kategorię, aby pobrać jej oferty":products.length+" produktów w katalogu";
   const categoryGrid=document.querySelector(".category-grid");
   if(categoryGrid){
     const visibleTiles=categoryGrid.querySelectorAll("[data-category-jump]:not([hidden])").length;
@@ -551,66 +558,39 @@ async function loadAmazonOffers() {
   }
 }
 
-async function loadLiveCatalog() {
-  try {
-    const manifestResponse = await fetch("./data/catalog/manifest.json", {cache:"no-store"});
-    if (!manifestResponse.ok) return;
-    const manifest = await manifestResponse.json();
-    if (!Array.isArray(manifest.files) || !manifest.files.length) return;
-    const chunks = await Promise.all(manifest.files.map(async entry => {
-      const response = await fetch("./data/catalog/" + encodeURIComponent(entry.file), {cache:"default"});
-      if (!response.ok) throw new Error("Brak części katalogu: " + entry.file);
-      const payload = await response.json();
-      return Array.isArray(payload.items) ? payload.items : [];
-    }));
-    const items = chunks.flat();
-    const payload = {fetchedAt: manifest.generatedAt};
-    if (!Array.isArray(items) || !items.length) return;
-    const now = Date.now();
-    const maxAgeMs = 72 * 60 * 60 * 1000;
-    const normalized = items.filter(item => {
-      if (!item || !item.updatedAt) return false;
-      const updated = Date.parse(item.updatedAt);
-      return Number.isFinite(updated) && now - updated >= 0 && now - updated <= maxAgeMs;
-    }).filter(item =>
-      item && (typeof item.id === "string" || Number.isInteger(item.id)) &&
-      typeof item.name === "string" && Number.isFinite(Number(item.price)) &&
-      Number(item.price) > 0 && safeProductUrl(item.productUrl)
-    ).map(item => ({
-      id: String(item.id),
-      name: item.name,
-      category: normalizeCategory(typeof item.category === "string" ? item.category : "Inne"),
-      price: Number(item.price),
-      store: typeof item.merchant === "string" ? item.merchant : "Sklep partnerski",
-      productUrl: item.productUrl,
-      image: item.image || "",
-      updatedAt: item.updatedAt || payload.fetchedAt || "",
-      availability: typeof item.availability === "string" ? item.availability : "Sprawdź u sprzedawcy",
-      linkType: "affiliate",
-      icon: "🛍️"
-    }));
-    if (!normalized.length) return;
-    const existingIds = new Set(products.map(product => String(product.id)));
-    products = [...products, ...normalized.filter(product => !existingIds.has(String(product.id)))];
-    liveCatalog = true;
-    if(category !== "Wszystkie" && !products.some(product => normalizeCategory(product.category) === normalizeCategory(category))) category = "Wszystkie";
-    const note = document.querySelector(".demo-note");
-    if (note) note.textContent = "Oferty partnerskie • " + normalized.length + " aktualnych produktów";
-    // Odśwież kategorie bez kasowania wyboru użytkownika.
+function normalizeLiveItems(items,fetchedAt){
+  const now=Date.now(),maxAgeMs=72*60*60*1000;
+  return items.filter(item=>{if(!item||!item.updatedAt)return false;const updated=Date.parse(item.updatedAt);return Number.isFinite(updated)&&now-updated>=0&&now-updated<=maxAgeMs;})
+    .filter(item=>(typeof item.id==="string"||Number.isInteger(item.id))&&typeof item.name==="string"&&Number.isFinite(Number(item.price))&&Number(item.price)>0&&safeProductUrl(item.productUrl))
+    .map(item=>({id:String(item.id),name:item.name,category:normalizeCategory(typeof item.category==="string"?item.category:"Inne"),price:Number(item.price),store:typeof item.merchant==="string"?item.merchant:"Sklep partnerski",productUrl:item.productUrl,image:item.image||"",updatedAt:item.updatedAt||fetchedAt||"",availability:typeof item.availability==="string"?item.availability:"Sprawdź u sprzedawcy",linkType:"affiliate",icon:"🛍️"}));
+}
+async function loadLiveCategoryNames(names){
+  if(!catalogManifest?.categoryFiles)return 0;
+  const wanted=new Set(names.map(categoryMatchKey));
+  const entries=Object.entries(catalogManifest.categoryFiles).filter(([name])=>wanted.has(categoryMatchKey(name))).flatMap(([,files])=>files||[]);
+  const pending=[...new Map(entries.map(entry=>[entry.file,entry])).values()].filter(entry=>!loadedCatalogFiles.has(entry.file));
+  const counts=await Promise.all(pending.map(entry=>{
+    if(catalogFilePromises.has(entry.file))return catalogFilePromises.get(entry.file);
+    const task=fetch("./data/catalog/"+encodeURIComponent(entry.file),{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Nie udało się pobrać "+entry.file);return response.json();})
+      .then(payload=>{const normalized=normalizeLiveItems(Array.isArray(payload.items)?payload.items:[],catalogManifest.generatedAt);const ids=new Set(products.map(product=>String(product.id)));products.push(...normalized.filter(product=>!ids.has(String(product.id))));loadedCatalogFiles.add(entry.file);return normalized.length;})
+      .finally(()=>catalogFilePromises.delete(entry.file));
+    catalogFilePromises.set(entry.file,task);return task;
+  }));
+  liveCatalog=true;buildCategoryNavigation();render();return counts.reduce((sum,count)=>sum+count,0);
+}
+async function loadLiveCatalog(){
+  try{
+    const response=await fetch("./data/catalog/manifest.json",{cache:"no-store"});if(!response.ok)return;
+    const manifest=await response.json();if(!manifest?.categoryFiles||!manifest?.categories)return;
+    catalogManifest=manifest;liveCatalog=true;
+    catalogCategories=[...new Set([...products.map(p=>p.category),...Object.keys(manifest.categories)])].sort((a,b)=>a.localeCompare(b,"pl"));
     buildCategoryNavigation();
-    ["price-asc", "price-desc", "discount"].forEach(value => {
-      const option = sort.querySelector('option[value="' + value + '"]');
-      if (option) option.hidden = false;
-    });
-    const discountOption = sort.querySelector('option[value="discount"]');
-    if (discountOption) discountOption.hidden = true;
-    if (sort.value === "discount") sort.value = "recommended";
-    const disclaimer = document.querySelector(".disclaimer");
-    if (disclaimer) disclaimer.textContent = "Ceny i dostępność mogą się zmieniać. Przed zakupem sprawdź aktualne warunki u sprzedawcy. Linki partnerskie mogą przynieść stronie prowizję.";
-    render();
-  } catch (error) {
-    console.warn("Nie udało się pobrać katalogu live; pozostaje katalog demonstracyjny.", error);
-  }
+    ["price-asc","price-desc","discount"].forEach(value=>{const option=sort.querySelector('option[value="'+value+'"]');if(option)option.hidden=false;});
+    const discountOption=sort.querySelector('option[value="discount"]');if(discountOption)discountOption.hidden=true;
+    if(sort.value==="discount")sort.value="recommended";
+    const disclaimer=document.querySelector(".disclaimer");if(disclaimer)disclaimer.textContent="Oferty są pobierane z katalogu partnerów dopiero po wybraniu kategorii. Ceny i dostępność potwierdź u sprzedawcy.";
+    const status=document.getElementById("catalogStatus");if(status)status.textContent="Katalog zawiera "+Number(manifest.count).toLocaleString("pl-PL")+" produktów. Wybierz kategorię, aby pobrać tylko potrzebne oferty.";
+  }catch(error){console.warn("Nie udało się pobrać manifestu katalogu; pozostaje katalog lokalny.",error);}
 }
 
 function money(value) {
@@ -732,7 +712,7 @@ function render() {
 
 // Jedna obsługa kategorii w fazie capture: obejmuje kafelki strony i chipy katalogu,
 // także po przebudowaniu ich przez katalog dodatkowy lub live.
-document.addEventListener("click", event => {
+document.addEventListener("click", async event => {
   const target = event.target && typeof event.target.closest === "function"
     ? event.target
     : event.composedPath?.().find(node => node && typeof node.closest === "function");
@@ -747,18 +727,18 @@ document.addEventListener("click", event => {
   if (favoritesToggle) favoritesToggle.setAttribute("aria-pressed", "false");
 
   if (tile) {
-    const matches = new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
-    const matchingProducts = products.filter(product => matches.has(categoryMatchKey(product.category)));
-    activeCategoryMatches = [...new Set(matchingProducts.map(product => normalizeCategory(product.category)))];
-    category = activeCategoryMatches[0] || "Wszystkie";
-    const label = tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump || "Wybrana kategoria";
-    const status = document.getElementById("catalogStatus");
-    if (status) status.textContent = matchingProducts.length
-      ? label + " — " + matchingProducts.length + " produktów."
-      : label + " — brak produktów w katalogu.";
+    const matches=new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
+    const names=catalogManifest?Object.keys(catalogManifest.categories).filter(name=>matches.has(categoryMatchKey(name))):[];
+    if(names.length)await loadLiveCategoryNames(names);
+    const matchingProducts=products.filter(product=>matches.has(categoryMatchKey(product.category)));
+    activeCategoryMatches=[...new Set(matchingProducts.map(product=>normalizeCategory(product.category)))];
+    category=activeCategoryMatches[0]||"Wszystkie";
+    const label=tile.querySelector("strong")?.textContent.trim()||tile.dataset.categoryJump||"Wybrana kategoria";
+    const total=getLiveCategoryCount([...matches]),status=document.getElementById("catalogStatus");
+    if(status)status.textContent=(total??matchingProducts.length).toLocaleString("pl-PL")+" produktów w kategorii „"+label+"”.";
   } else {
-    category = chip.dataset.category || "Wszystkie";
-    activeCategoryMatches = null;
+    category=chip.dataset.category||"Wszystkie";activeCategoryMatches=null;
+    if(category!=="Wszystkie"&&catalogManifest)await loadLiveCategoryNames([category]);
   }
 
   document.querySelectorAll(".chip").forEach(item => {
@@ -771,7 +751,10 @@ document.addEventListener("click", event => {
   if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
 }, true);
 
-if (search) search.addEventListener("input", render);
+if(search)search.addEventListener("input",()=>{
+  if(catalogManifest&&category==="Wszystkie"&&search.value.trim().length>=2){const status=document.getElementById("catalogStatus");if(status)status.textContent="Wybierz kategorię, aby przeszukać jej pełny katalog bez pobierania wszystkich 165 tys. ofert.";}
+  render();
+});
 sort.addEventListener("change", render);
 favoritesToggle.addEventListener("click", () => {
   favoritesOnly = !favoritesOnly;
