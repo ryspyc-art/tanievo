@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+products.json
+price-history.json
