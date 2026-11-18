@@ -701,3 +701,29 @@ body{
 .coupon-page{max-width:1000px;min-height:65vh;margin:0 auto;padding:64px 24px}.coupon-page-head{text-align:center;max-width:720px;margin:0 auto 38px}.coupon-page-head h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1.8px;margin:12px 0}.coupon-page-head p{color:#647067;line-height:1.7;font-size:14px}
 .coupon-empty{max-width:650px;margin:0 auto;padding:34px 24px;text-align:center;background:#fff;border:1px solid #e2e9dc;border-radius:16px}.coupon-empty-icon{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 15px;border-radius:16px;background:#edf5df;color:#537b25;font-size:34px;font-weight:900}.coupon-empty h2{margin:0 0 8px;font-size:21px}.coupon-empty p{margin:0 auto;max-width:480px;color:#687568;font-size:13px;line-height:1.65}.site-footer{padding:22px;text-align:center;color:#758174;font-size:12px;border-top:1px solid #e2e9dc}
 @media(max-width:600px){.coupon-hub{padding:22px 18px}.coupon-stamp{width:86px;height:86px;flex-basis:86px}.coupon-stamp span{font-size:30px}.coupon-stamp b{font-size:10px}.coupon-stamp small{font-size:5px}.coupon-copy p{font-size:12px}.coupon-cta{font-size:11px}}
+
+
+/* Nowe moduły: okazja dnia i historia cen */
+.deal-hub,.history-hub{padding:34px max(5vw,22px);background:#f7f9f4;border-bottom:1px solid #e1e9dc}
+.deal-heading,.history-heading{max-width:1180px;margin:0 auto 18px}
+.deal-heading{display:flex;justify-content:space-between;align-items:center;gap:18px}
+.deal-kicker{display:block;color:#648f25;font-size:10px;font-weight:900;letter-spacing:1.7px}
+.deal-heading h2,.history-heading h2{margin:6px 0;font-size:clamp(24px,3vw,34px);color:#17271e;letter-spacing:-.8px}
+.deal-heading p,.history-heading p{margin:0;color:#647067;font-size:13px;line-height:1.6}
+.deal-badge{padding:8px 11px;border:1px solid #cfe0b8;border-radius:999px;color:#496d25;font-size:9px;font-weight:900;white-space:nowrap}
+.deal-card,.history-card{max-width:1180px;margin:0 auto;padding:18px;background:#fff;border:1px solid #e0e8da;border-radius:14px;box-shadow:0 8px 24px #1c35200b}
+.deal-product{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:16px;align-items:center}
+.deal-product img,.deal-product .deal-icon{width:84px;height:84px;object-fit:contain;border-radius:10px;background:#f2f5ee;display:grid;place-items:center;font-size:35px}
+.deal-product h3{margin:0 0 5px;font-size:17px;color:#17271e}.deal-product p{margin:3px 0;color:#687568;font-size:12px;line-height:1.5}
+.deal-price{font-size:21px;font-weight:900;color:#1d3427;white-space:nowrap}
+.deal-link{display:inline-flex;margin-top:8px;padding:10px 14px;border-radius:8px;background:#193326;color:white;font-size:12px;font-weight:800}
+.history-card{min-height:90px}
+.history-empty{color:#687568;font-size:13px;line-height:1.6}
+.history-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.history-item{padding:12px;border:1px solid #e5ebdf;border-radius:10px;min-width:0}
+.history-item h3{font-size:13px;margin:0 0 5px;color:#24372b}
+.history-item p{font-size:11px;color:#69766a;margin:4px 0}
+.history-item svg{width:100%;height:64px;overflow:visible}
+.history-item .history-current{font-size:17px;font-weight:900;color:#1d3427}
+.history-footnote{max-width:1180px;margin:12px auto 0;color:#7b867a;font-size:10px;line-height:1.5}
+@media(max-width:600px){.deal-hub,.history-hub{padding:24px 18px}.deal-heading{align-items:flex-start}.deal-product{grid-template-columns:64px minmax(0,1fr);gap:11px}.deal-product img,.deal-product .deal-icon{width:64px;height:64px}.deal-price{grid-column:2;font-size:19px}.deal-badge{font-size:8px;padding:7px 8px}.deal-product h3{font-size:14px}}
