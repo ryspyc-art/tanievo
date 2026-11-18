@@ -34,10 +34,10 @@ def category_for(value):
     n = str(value).lower()
     if any(x in n for x in ("motoryzacja", "samochod", "motocykl", "opon", "auto parts")): return "Motoryzacja"
     if any(x in n for x in ("akcesoria do telefonów", "telefon komórk", "smartfon")): return "Telefony"
-    if any(x in n for x in ("elektronika użytkowa", "elektronika samochodowa", "komputer", "elektronika")): return "Elektronika"
+    if any(x in n for x in ("elektronika użytkowa", "elektronika samochodowa", "komputer", "computer", "electronics", "elektronika")): return "Elektronika"
     if any(x in n for x in ("światła i oświetlenie", "oświetlenie", "lampy", "żarówk", "latarki")): return "Oświetlenie"
     if "sprzęt agd" in n or any(x in n for x in ("odkurzacz", "ekspres do kawy", "czajnik", "blender", "mikser")): return "AGD"
-    if any(x in n for x in ("sport i rozrywka", "jazda na rowerze", "wędkowanie", "fitness", "turyst", "outdoor")): return "Sport i outdoor"
+    if any(x in n for x in ("sport i rozrywka", "jazda na rowerze", "wędkowanie", "fitness", "turyst", "outdoor", "trekking", "sport")): return "Sport i outdoor"
     if any(x in n for x in ("zabawki i hobby", "zabawki", "klocki", "modele i pojazdy")): return "Zabawki"
     if any(x in n for x in ("uroda i zdrowie", "pielęgnacja", "akcesoria kosmetyczne")): return "Uroda"
     if any(x in n for x in ("sprzęt dla zwierząt", "artykuły dla zwierząt", "zwierzę", "pies", "kot")): return "Dla zwierząt"
