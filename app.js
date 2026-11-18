@@ -335,7 +335,7 @@ const favoritesToggle = document.getElementById("favoritesToggle");
 const loadMoreButton=document.createElement("button");
 loadMoreButton.type="button";
 loadMoreButton.className="load-more-products";
-loadMoreButton.textContent="Pobierz kolejne 1000 produktów";
+loadMoreButton.textContent="Pobierz kolejną porcję produktów";
 loadMoreButton.hidden=true;
 grid.insertAdjacentElement("afterend",loadMoreButton);
 loadMoreButton.addEventListener("click",loadNextLiveCategoryPage);
@@ -611,7 +611,7 @@ function updateLoadMoreButton(){
     .filter(([name])=>wanted.has(categoryMatchKey(name)))
     .some(([,files])=>(files||[]).some(entry=>!loadedCatalogFiles.has(entry.file)));
   loadMoreButton.hidden=!remaining;
-  loadMoreButton.textContent="Pobierz kolejne 1000 produktów";
+  loadMoreButton.textContent="Pobierz kolejną porcję produktów";
 }
 
 async function loadLiveCatalog(){
