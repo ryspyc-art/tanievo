@@ -34,7 +34,8 @@
       const latest=valid[valid.length-1],values=valid.map(p=>Number(p.price)),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
       const coords=values.map((v,i)=>{const x=4+(i/(Math.max(1,values.length-1)))*192,y=54-((v-min)/span)*44;return x.toFixed(1)+","+y.toFixed(1)}).join(" ");
       const name=latest.name||id;
-      return '<article class="history-item"><h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p></article>';
+      const image=safeUrl(latest.image);
+      return '<article class="history-item">'+(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p></article>';
     }).filter(Boolean);
     historyRoot.innerHTML=cards.length?'<div class="history-list">'+cards.join("")+'</div>':'<p class="history-empty">Brak zapisanych pomiarów. Historia zacznie się tworzyć automatycznie po kolejnych aktualizacjach feedu. Nie pokazujemy przykładowych ani wymyślonych cen.</p>';
   }).catch(()=>{
