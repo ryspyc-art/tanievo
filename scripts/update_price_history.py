@@ -67,7 +67,10 @@ def update_history(now=None):
         if not isinstance(points, list):
             points = products[product_id] = []
         points[:] = [point for point in points if isinstance(point, dict) and point.get("date", "") >= cutoff]
+        image = str(item.get("image", "")).strip()
         point = {"date": today, "price": price, "name": name, "merchant": str(item.get("merchant", ""))}
+        if image.startswith("https://"):
+            point["image"] = image
         existing = next((i for i, old in enumerate(points) if old.get("date") == today), None)
         if existing is None:
             points.append(point)
