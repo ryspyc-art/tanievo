@@ -6,6 +6,7 @@ Feed access is disabled unless AWIN_FEED_ALLOWED_HOSTS is configured.
 Product links and image URLs are independently restricted.
 """
 import csv
+import gzip
 import hashlib
 import io
 import json
@@ -30,14 +31,19 @@ def first(row, *keys):
 
 
 def category_for(value):
-    n = value.lower()
-    if any(x in n for x in ("electronics", "computer", "phone", "audio", "elektron", "komputer", "telefon")):
-        return "Elektronika"
-    if any(x in n for x in ("sport", "outdoor", "trekking", "fitness")):
-        return "Sport"
-    if any(x in n for x in ("fashion", "clothing", "apparel", "moda", "odzież")):
-        return "Moda"
-    return "Dom"
+    n = str(value).lower()
+    if any(x in n for x in ("motoryzacja", "samochod", "motocykl", "opon", "auto parts")): return "Motoryzacja"
+    if any(x in n for x in ("akcesoria do telefonów", "telefon komórk", "smartfon")): return "Telefony"
+    if any(x in n for x in ("elektronika użytkowa", "elektronika samochodowa", "komputer", "elektronika")): return "Elektronika"
+    if any(x in n for x in ("światła i oświetlenie", "oświetlenie", "lampy", "żarówk", "latarki")): return "Oświetlenie"
+    if "sprzęt agd" in n or any(x in n for x in ("odkurzacz", "ekspres do kawy", "czajnik", "blender", "mikser")): return "AGD"
+    if any(x in n for x in ("sport i rozrywka", "jazda na rowerze", "wędkowanie", "fitness", "turyst", "outdoor")): return "Sport i outdoor"
+    if any(x in n for x in ("zabawki i hobby", "zabawki", "klocki", "modele i pojazdy")): return "Zabawki"
+    if any(x in n for x in ("uroda i zdrowie", "pielęgnacja", "akcesoria kosmetyczne")): return "Uroda"
+    if any(x in n for x in ("sprzęt dla zwierząt", "artykuły dla zwierząt", "zwierzę", "pies", "kot")): return "Dla zwierząt"
+    if any(x in n for x in ("narzędzia", "warsztat", "wiertarka", "szlifierka")): return "Narzędzia"
+    if any(x in n for x in ("dom i ogród", "ulepszanie domu", "wyposażenie domu", "meble", "kuchnia", "łazienk")): return "Dom"
+    return "Inne"
 
 
 def allowed_hosts(variable):
@@ -79,6 +85,11 @@ def fetch_feed(url):
         raw = response.read(MAX_FEED_BYTES + 1)
     if len(raw) > MAX_FEED_BYTES:
         raise RuntimeError("Feed Awin przekracza limit 25 MB.")
+    if raw[:2] == bytes((31, 139)):
+        with gzip.GzipFile(fileobj=io.BytesIO(raw)) as compressed:
+            raw = compressed.read(250 * 1024 * 1024 + 1)
+        if len(raw) > 250 * 1024 * 1024:
+            raise RuntimeError("Rozpakowany feed Awin przekracza limit 250 MB.")
     return raw
 
 
