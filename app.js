@@ -700,7 +700,7 @@ function render() {
   });
 
   const count = list.length;
-  document.getElementById("resultCount").textContent = `${count} ${count === 1 ? "produkt" : count < 5 ? "produkty" : "produktów"}`;
+  document.getElementById("resultCount").textContent = count > 120 ? `Wyświetlono 120 z ${count.toLocaleString("pl-PL")} produktów. Zawęź wyszukiwanie lub kategorię.` : `${count} ${count === 1 ? "produkt" : count < 5 ? "produkty" : "produktów"}`;
   document.getElementById("emptyState").hidden = count !== 0;
   grid.hidden = count === 0;
   favoritesToggle.setAttribute("aria-pressed", String(favoritesOnly));
