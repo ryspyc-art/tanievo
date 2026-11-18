@@ -35,14 +35,12 @@
       const coords=values.map((v,i)=>{const x=4+(i/(Math.max(1,values.length-1)))*192,y=54-((v-min)/span)*44;return x.toFixed(1)+","+y.toFixed(1)}).join(" ");
       const name=latest.name||id;
       const image=safeUrl(latest.image);
-      // Starszy zapis historii nie zawierał adresu oferty. Dla feedu AliExpress
-      // kierujemy wtedy do wyszukiwania dokładnej nazwy zamiast pozostawiać martwą kartę.
+      // W starszych rekordach historii brakowało productUrl. Dla AliExpress
+      // użyj wyszukiwania dokładnej nazwy, aby karta nadal prowadziła do oferty.
       const historyUrl=safeUrl(latest.productUrl||latest.url) ||
         (/aliexpress/i.test(String(latest.merchant||"")) ? "https://www.aliexpress.com/w/wholesale-"+encodeURIComponent(name)+".html" : "");
-      const cardLink=historyUrl
-        ? '<a class="history-card-link" href="'+esc(historyUrl)+'" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Otwórz produkt: '+esc(name)+'"></a>'
-        : "";
-      return '<article class="history-item">'+cardLink+(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p></article>';
+      const cardContent=(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p>';
+      return '<article class="history-item">'+(historyUrl?'<a class="history-card-link" href="'+esc(historyUrl)+'" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Otwórz produkt: '+esc(name)+'">'+cardContent+'</a>':cardContent)+'</article>';
     }).filter(Boolean);
     historyRoot.innerHTML=cards.length?'<div class="history-list">'+cards.join("")+'</div>':'<p class="history-empty">Brak zapisanych pomiarów. Historia zacznie się tworzyć automatycznie po kolejnych aktualizacjach feedu. Nie pokazujemy przykładowych ani wymyślonych cen.</p>';
   }).catch(()=>{
