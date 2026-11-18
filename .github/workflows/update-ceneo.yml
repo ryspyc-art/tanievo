@@ -24,7 +24,7 @@ jobs:
           python3 -m py_compile scripts/update_ceneo.py scripts/update_awin.py
           python3 -m unittest discover -s tests -v
 
-      - name: Pobierz produkty z Ceneo (jeśli skonfigurowano dostęp)
+      - name: Pobierz produkty z feedu Awin (jeśli skonfigurowano dostęp)\n        env:\n          AWIN_FEED_URL: ${{ secrets.AWIN_FEED_URL }}\n          AWIN_FEED_ALLOWED_HOSTS: ${{ vars.AWIN_FEED_ALLOWED_HOSTS }}\n          AWIN_ALLOWED_PRODUCT_HOSTS: ${{ vars.AWIN_ALLOWED_PRODUCT_HOSTS }}\n          AWIN_ALLOWED_IMAGE_HOSTS: ${{ vars.AWIN_ALLOWED_IMAGE_HOSTS }}\n        run: python3 scripts/update_awin.py\n\n      - name: Zapisz historię cen\n        run: python3 scripts/update_price_history.py\n\n      - name: Pobierz produkty z Ceneo (jeśli skonfigurowano dostęp)
         env:
           CENEO_API_KEY: ${{ secrets.CENEO_API_KEY }}
           CENEO_PARTNER_ID: ${{ secrets.CENEO_PARTNER_ID }}
@@ -37,9 +37,9 @@ jobs:
           if [ -f products.json ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add products.json
+            git add products.json price-history.json
             if ! git diff --cached --quiet; then
-              git commit -m "Aktualizacja katalogu ofert partnerskich"
+              git commit -m "Aktualizacja katalogu i historii cen"
               git push
             else
               echo "Brak zmian w katalogu."
