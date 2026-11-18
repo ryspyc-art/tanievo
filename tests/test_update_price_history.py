@@ -22,7 +22,7 @@ class PriceHistoryTests(unittest.TestCase):
             catalog.write_text(json.dumps({"items":[fresh,
                 {**fresh,"id":"old","updatedAt":"2026-11-10T10:00:00+00:00"},
                 {**fresh,"id":"usd","currency":"USD"}]}), encoding="utf-8")
-            with patch.object(updater, "CATALOG", catalog), patch.object(updater, "HISTORY", history):
+            with patch.object(updater, "CATALOG", catalog), patch.object(updater, "HISTORY", history), patch.object(updater, "HISTORY_SHARDS", root / "empty-shards"):
                 self.assertEqual(updater.update_history(now), 1)
                 self.assertEqual(updater.update_history(now), 0)
             data=json.loads(history.read_text(encoding="utf-8"))
