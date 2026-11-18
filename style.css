@@ -727,3 +727,20 @@ body{
 .history-item .history-current{font-size:17px;font-weight:900;color:#1d3427}
 .history-footnote{max-width:1180px;margin:12px auto 0;color:#7b867a;font-size:10px;line-height:1.5}
 @media(max-width:600px){.deal-hub,.history-hub{padding:24px 18px}.deal-heading{align-items:flex-start}.deal-product{grid-template-columns:64px minmax(0,1fr);gap:11px}.deal-product img,.deal-product .deal-icon{width:64px;height:64px}.deal-price{grid-column:2;font-size:19px}.deal-badge{font-size:8px;padding:7px 8px}.deal-product h3{font-size:14px}}
+
+
+.load-more-products{
+  display:block;
+  width:min(100% - 32px, 320px);
+  margin:22px auto 8px;
+  padding:13px 18px;
+  border:1px solid var(--line, #d8dee8);
+  border-radius:12px;
+  background:var(--surface, #fff);
+  color:var(--text, #172033);
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+.load-more-products[hidden]{display:none}
+.load-more-products:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
