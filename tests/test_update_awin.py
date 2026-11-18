@@ -20,7 +20,16 @@ class AwinImporterTests(unittest.TestCase):
         self.assertEqual(awin.category_for("computer accessories"), "Elektronika")
 
     def test_maps_sport_category(self):
-        self.assertEqual(awin.category_for("trekking backpack"), "Sport")
+        self.assertEqual(awin.category_for("trekking backpack"), "Sport i outdoor")
+
+    def test_maps_polish_automotive_category(self):
+        self.assertEqual(awin.category_for("Motoryzacja oraz części i akcesoria"), "Motoryzacja")
+
+    def test_maps_polish_appliances_category(self):
+        self.assertEqual(awin.category_for("Sprzęt AGD, odkurzacze"), "AGD")
+
+    def test_maps_polish_lighting_category(self):
+        self.assertEqual(awin.category_for("Światła i oświetlenie, lampy LED"), "Oświetlenie")
 
     def test_url_requires_exact_allowlisted_https_host(self):
         hosts = {"feed.example"}

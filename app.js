@@ -582,7 +582,8 @@ async function loadLiveCatalog() {
       icon: "🛍️"
     }));
     if (!normalized.length) return;
-    products = normalized;
+    const existingIds = new Set(products.map(product => String(product.id)));
+    products = [...products, ...normalized.filter(product => !existingIds.has(String(product.id)))];
     liveCatalog = true;
     if(category !== "Wszystkie" && !products.some(product => normalizeCategory(product.category) === normalizeCategory(category))) category = "Wszystkie";
     const note = document.querySelector(".demo-note");
