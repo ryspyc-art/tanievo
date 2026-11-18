@@ -20,7 +20,7 @@ class AwinImporterTests(unittest.TestCase):
         self.assertEqual(awin.category_for("computer accessories"), "Elektronika")
 
     def test_maps_sport_category(self):
-        self.assertEqual(awin.category_for("trekking backpack"), "Sport")
+        self.assertEqual(awin.category_for("trekking backpack"), "Sport i outdoor")
 
     def test_maps_polish_automotive_category(self):
         self.assertEqual(awin.category_for("Motoryzacja oraz części i akcesoria"), "Motoryzacja")
