@@ -2,6 +2,8 @@ name: Aktualizacja ofert partnerskich
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *'
 
 permissions:
   contents: read
@@ -19,12 +21,22 @@ jobs:
       - name: Pobierz repozytorium
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Sprawdź składnię i testy importera
+      - name: Sprawdź składnię i testy importerów
         run: |
-          python3 -m py_compile scripts/update_ceneo.py scripts/update_awin.py
+          python3 -m py_compile scripts/update_ceneo.py scripts/update_awin.py scripts/update_price_history.py
           python3 -m unittest discover -s tests -v
+          node --check app.js
+          node --check price-features.js
 
-      - name: Pobierz produkty z feedu Awin (jeśli skonfigurowano dostęp)\n        env:\n          AWIN_FEED_URL: ${{ secrets.AWIN_FEED_URL }}\n          AWIN_FEED_ALLOWED_HOSTS: ${{ vars.AWIN_FEED_ALLOWED_HOSTS }}\n          AWIN_ALLOWED_PRODUCT_HOSTS: ${{ vars.AWIN_ALLOWED_PRODUCT_HOSTS }}\n          AWIN_ALLOWED_IMAGE_HOSTS: ${{ vars.AWIN_ALLOWED_IMAGE_HOSTS }}\n        run: python3 scripts/update_awin.py\n\n      - name: Zapisz historię cen\n        run: python3 scripts/update_price_history.py\n\n      - name: Pobierz produkty z Ceneo (jeśli skonfigurowano dostęp)
+      - name: Pobierz produkty z feedu Awin (jeśli skonfigurowano dostęp)
+        env:
+          AWIN_FEED_URL: ${{ secrets.AWIN_FEED_URL }}
+          AWIN_FEED_ALLOWED_HOSTS: ${{ vars.AWIN_FEED_ALLOWED_HOSTS }}
+          AWIN_ALLOWED_PRODUCT_HOSTS: ${{ vars.AWIN_ALLOWED_PRODUCT_HOSTS }}
+          AWIN_ALLOWED_IMAGE_HOSTS: ${{ vars.AWIN_ALLOWED_IMAGE_HOSTS }}
+        run: python3 scripts/update_awin.py
+
+      - name: Pobierz produkty z Ceneo (wyłącznie po zatwierdzeniu integracji)
         env:
           CENEO_API_KEY: ${{ secrets.CENEO_API_KEY }}
           CENEO_PARTNER_ID: ${{ secrets.CENEO_PARTNER_ID }}
@@ -32,18 +44,17 @@ jobs:
           CENEO_SEARCH_TERMS: ${{ vars.CENEO_SEARCH_TERMS }}
         run: python3 scripts/update_ceneo.py
 
-      - name: Zapisz zaktualizowany katalog
+      - name: Zapisz dzienną historię cen
+        run: python3 scripts/update_price_history.py
+
+      - name: Zapisz zaktualizowany katalog i historię
         run: |
-          if [ -f products.json ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add products.json price-history.json
-            if ! git diff --cached --quiet; then
-              git commit -m "Aktualizacja katalogu i historii cen"
-              git push
-            else
-              echo "Brak zmian w katalogu."
-            fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add products.json price-history.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Aktualizacja katalogu i historii cen"
+            git push
           else
-            echo "Brak skonfigurowanych feedów. Katalog demonstracyjny pozostaje bez zmian."
+            echo "Brak zmian w katalogu i historii cen."
           fi
