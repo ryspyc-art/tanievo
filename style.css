@@ -755,3 +755,32 @@ body{
 .polska-promo-link:hover img{filter:brightness(1.035)}
 .polska-promo-note{margin:13px 4px 2px;color:#fff;font-size:clamp(11px,1.5vw,13px);font-weight:750;letter-spacing:.15px}
 @media(max-width:600px){.polska-promo{width:calc(100% - 20px);margin:16px auto 22px;padding:9px;border-radius:14px}.polska-promo-link{width:100%;border-radius:8px}.polska-promo-note{font-size:10px;line-height:1.5}}
+
+
+/* Polska kampania promocyjna Tanievo */
+.polska-promo{position:relative;isolation:isolate;width:min(100% - 32px,1180px);margin:clamp(18px,3vw,34px) auto 30px;padding:clamp(20px,3vw,34px);border:1px solid #d9e0e9;border-radius:20px;background:linear-gradient(120deg,#0e1726 0%,#17263b 60%,#253247 100%);color:#fff;box-shadow:0 18px 45px #10182718;overflow:hidden}
+.polska-promo:before{content:"";position:absolute;z-index:-1;top:0;right:0;width:34%;height:7px;background:linear-gradient(to bottom,#fff 0 50%,#d71920 50% 100%)}
+.polska-promo-topline{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px;color:#fff;font-size:10px;font-weight:900;letter-spacing:2px}
+.polska-promo-topline span{font-size:19px;line-height:1}
+.polska-promo-main{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:24px}
+.polska-promo-copy{max-width:680px}
+.polska-promo-kicker{display:inline-block;padding:7px 10px;border-left:4px solid #d71920;background:#ffffff12;color:#f3f6fa;font-size:9px;font-weight:900;letter-spacing:1.4px}
+.polska-promo-copy h2{margin:17px 0 12px;color:#fff;font-size:clamp(29px,4.2vw,48px);line-height:1.04;letter-spacing:-1.7px}
+.polska-promo-copy h2 em{color:#ff4249;font-style:normal}
+.polska-promo-copy p{max-width:540px;margin:0;color:#d5dce6;font-size:14px;line-height:1.7}
+.polska-promo-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:23px 0 14px}
+.polska-promo-button{display:inline-flex;align-items:center;justify-content:center;gap:15px;padding:14px 19px;border-radius:9px;background:#d71920;color:#fff;font-size:12px;font-weight:900;box-shadow:0 8px 22px #d7192038;transition:transform .18s,background .18s}
+.polska-promo-button:hover{background:#f02630;transform:translateY(-2px)}
+.polska-promo-button span{font-size:19px}
+.polska-promo-secondary{color:#fff;font-size:11px;font-weight:800;text-decoration:underline;text-decoration-color:#d71920;text-underline-offset:5px}
+.polska-promo-copy>small{display:block;color:#aeb8c7;font-size:9px;line-height:1.6}
+.polska-promo-art{position:relative;min-height:245px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:20px;border:1px solid #ffffff24;border-radius:16px;background:radial-gradient(ellipse at 50% 40%,#42536b 0%,#1d2b40 58%,#121d2e 100%);overflow:hidden}
+.polska-promo-art:before,.polska-promo-art:after{content:"";position:absolute;left:-8%;width:116%;height:12px;transform:rotate(-9deg);background:linear-gradient(to bottom,#fff 0 50%,#d71920 50% 100%);opacity:.9}
+.polska-promo-art:before{top:17px}.polska-promo-art:after{bottom:17px}
+.polska-promo-flag{font-size:54px;filter:drop-shadow(0 8px 12px #0005)}
+.polska-promo-products{display:flex;align-items:center;justify-content:center;gap:clamp(5px,1.4vw,14px);flex-wrap:wrap}
+.polska-promo-products span{display:grid;place-items:center;width:clamp(42px,5vw,58px);height:clamp(42px,5vw,58px);border-radius:12px;background:#fff;color:#142033;font-size:clamp(23px,3vw,31px);box-shadow:0 7px 18px #0003}
+.polska-promo-art>strong{color:#fff;font-size:clamp(18px,2.3vw,25px);font-weight:950;letter-spacing:2px}
+.polska-promo-art-note{color:#ff5960;font-size:9px;font-weight:900;letter-spacing:1.4px;text-align:center}
+@media(max-width:760px){.polska-promo-main{grid-template-columns:1fr}.polska-promo-art{min-height:190px}.polska-promo-copy h2{font-size:clamp(29px,8vw,42px)}}
+@media(max-width:600px){.polska-promo{width:calc(100% - 20px);margin:15px auto 22px;padding:18px 15px;border-radius:14px}.polska-promo-topline{font-size:8px;letter-spacing:1.2px;margin-bottom:16px}.polska-promo-copy p{font-size:12px}.polska-promo-actions{align-items:stretch;flex-direction:column;gap:13px}.polska-promo-button{width:100%;box-sizing:border-box}.polska-promo-secondary{text-align:center}.polska-promo-art{min-height:170px;padding:16px}.polska-promo-flag{font-size:42px}}
