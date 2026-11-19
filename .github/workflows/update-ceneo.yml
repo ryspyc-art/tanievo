@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Pobierz repozytorium
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
 
       - name: Sprawdź składnię i testy importerów
         run: |
@@ -62,7 +64,17 @@ jobs:
           git add -A data/catalog data/price-history
           if ! git diff --cached --quiet; then
             git commit -m "Aktualizacja katalogu i historii cen (podzielone dane)"
-            git push
+            for attempt in 1 2 3; do
+              git fetch origin main
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                echo "Katalog opublikowany poprawnie."
+                exit 0
+              fi
+              echo "Push odrzucony (próba ${attempt}/3); ponawiam synchronizację."
+            done
+            echo "Nie udało się opublikować katalogu po 3 próbach."
+            exit 1
           else
             echo "Brak zmian w katalogu i historii cen."
           fi
