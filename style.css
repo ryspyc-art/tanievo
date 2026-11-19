@@ -746,3 +746,12 @@ body{
 .load-more-products:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
 
 .history-item{overflow:hidden}.history-product-visual{height:150px;margin:0 0 16px;border-radius:10px;background:#f5f7f3;display:grid;place-items:center;overflow:hidden}.history-product-visual img{display:block;width:100%;height:100%;object-fit:contain;padding:12px}.history-product-placeholder{font-size:48px;color:#89919d}@media(max-width:480px){.history-product-visual{height:135px}}
+
+
+/* Polska kampania promocyjna Tanievo */
+.polska-promo{width:min(100% - 32px,760px);margin:clamp(20px,3vw,36px) auto 30px;padding:clamp(12px,2vw,20px);border:1px solid #dce2ea;border-radius:20px;background:linear-gradient(145deg,#101827 0%,#172337 65%,#281b25 100%);box-shadow:0 16px 42px #10182718;text-align:center;overflow:hidden}
+.polska-promo-link{display:block;width:min(100%,560px);margin:0 auto;border-radius:12px;overflow:hidden;line-height:0;outline-offset:5px}
+.polska-promo-link img{display:block;width:100%;height:auto;object-fit:contain}
+.polska-promo-link:hover img{filter:brightness(1.035)}
+.polska-promo-note{margin:13px 4px 2px;color:#fff;font-size:clamp(11px,1.5vw,13px);font-weight:750;letter-spacing:.15px}
+@media(max-width:600px){.polska-promo{width:calc(100% - 20px);margin:16px auto 22px;padding:9px;border-radius:14px}.polska-promo-link{width:100%;border-radius:8px}.polska-promo-note{font-size:10px;line-height:1.5}}
