@@ -243,6 +243,17 @@ products.push({
   linkType: "affiliate"
 });
 
+// Link afiliacyjny Strefa Motocykli — sklep z wyposażeniem i akcesoriami motocyklowymi.
+products.push({
+  id: "tanievo-strefa-motocykli-001",
+  name: "Strefa Motocykli — akcesoria i wyposażenie motocyklowe",
+  category: "Motoryzacja",
+  store: "Strefa Motocykli · webePartners",
+  icon: "🏍️",
+  productUrl: "https://click.webeh1.com/c/249/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9zdHJlZmFtb3RvY3lrbGkucGw",
+  linkType: "affiliate"
+});
+
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
 // Pozostałe karty zachowują czytelny placeholder zamiast przypadkowej fotografii.
 const verifiedProductImages = {
