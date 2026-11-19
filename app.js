@@ -232,6 +232,17 @@ discoveryProducts.push(...[
 
 products = [...products, ...discoveryProducts];
 
+// Zweryfikowany link afiliacyjny Bizon Mobile — sklep z akcesoriami GSM.
+products.push({
+  id: "tanievo-bizon-mobile-001",
+  name: "Bizon Mobile — akcesoria GSM i mobilne",
+  category: "Telefony",
+  store: "Bizon Mobile · webePartners",
+  icon: "📱",
+  productUrl: "https://webep1.com/c/12930/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9za2xlcC5iaXpvbm1vYmlsZS5wbC8",
+  linkType: "affiliate"
+});
+
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
 // Pozostałe karty zachowują czytelny placeholder zamiast przypadkowej fotografii.
 const verifiedProductImages = {
