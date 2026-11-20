@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Porównaj dwa produkty obok siebie: ceny, parametry, zalety i wady. Wybierz lepszy zakup z narzędziem Tanievo.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://tanievo.pl/porownaj-produkty.html">
+<meta name="theme-color" content="#101827">
+<title>Porównaj dwa produkty – Tanievo</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.compare-tool{max-width:1120px;margin:38px auto;padding:0 18px}.compare-hero{background:#101827;color:#fff;border-radius:20px;padding:30px;margin-bottom:24px}.compare-hero h1{margin:8px 0 12px;font-size:clamp(28px,5vw,42px)}.compare-hero p{color:#d5dbe4;max-width:760px}.compare-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.compare-product{background:#fff;border:1px solid #e3e7ec;border-radius:18px;padding:22px;box-shadow:0 6px 24px #1018270b}.compare-product h2{margin:0 0 16px;font-size:20px;color:#ff7900}.compare-product label{display:block;font-weight:700;margin:12px 0 6px}.compare-product input,.compare-product textarea{box-sizing:border-box;width:100%;border:1px solid #cfd6df;border-radius:10px;padding:12px;font:inherit}.compare-product textarea{min-height:128px;resize:vertical}.compare-actions{display:flex;justify-content:center;margin:22px 0}.compare-actions button{border:0;border-radius:12px;background:#ff7900;color:#101827;font-weight:800;padding:15px 24px;font:inherit;cursor:pointer}.compare-result{display:none;background:#fff;border:1px solid #e3e7ec;border-radius:18px;padding:22px;margin-top:20px}.compare-result.show{display:block}.compare-result h2{margin-top:0}.compare-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.compare-result-card{background:#f3f5f8;border-radius:12px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.compare-verdict{background:#fff3e8;border-left:4px solid #ff7900;padding:14px;border-radius:8px;margin:16px 0}.compare-disclaimer{font-size:13px;color:#596579}.compare-links{display:flex;gap:10px;flex-wrap:wrap}.compare-links input{flex:1;min-width:0}.compare-links a{color:#c85e00;font-weight:700}.@media(max-width:700px){.compare-columns,.compare-result-grid{grid-template-columns:1fr}.compare-hero{padding:22px}}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="index.html" aria-label="Tanievo — strona główna"><span class="brand-mark">T</span><span>Tanievo.pl</span></a><a class="top-cta" href="index.html">← Strona główna</a></header>
+<main class="compare-tool">
+<section class="compare-hero"><span class="deal-kicker">NARZĘDZIE TANIEVO</span><h1>🆚 Porównaj dwa produkty</h1><p>Wpisz nazwy, ceny i najważniejsze parametry. Zestaw produkty obok siebie i sprawdź, który zakup bardziej się opłaca. Wszystko działa w Twojej przeglądarce.</p></section>
+<section class="compare-columns" aria-label="Dane porównywanych produktów">
+<div class="compare-product"><h2>Produkt A</h2><label for="nameA">Nazwa produktu</label><input id="nameA" placeholder="np. Apple AirPods 4"><label for="priceA">Cena (zł)</label><input id="priceA" type="number" min="0" step="0.01" placeholder="np. 599"><label for="specA">Parametry, zalety i wady</label><textarea id="specA" placeholder="ANC, czas pracy, Bluetooth, zalety, wady…"></textarea><label for="urlA">Link do oferty (opcjonalnie)</label><input id="urlA" type="url" placeholder="https://…"></div>
+<div class="compare-product"><h2>Produkt B</h2><label for="nameB">Nazwa produktu</label><input id="nameB" placeholder="np. Samsung Galaxy Buds3 Pro"><label for="priceB">Cena (zł)</label><input id="priceB" type="number" min="0" step="0.01" placeholder="np. 699"><label for="specB">Parametry, zalety i wady</label><textarea id="specB" placeholder="ANC, czas pracy, Bluetooth, zalety, wady…"></textarea><label for="urlB">Link do oferty (opcjonalnie)</label><input id="urlB" type="url" placeholder="https://…"></div>
+</section>
+<div class="compare-actions"><button type="button" id="compareButton">PORÓWNAJ PRODUKTY</button></div>
+<section id="compareResult" class="compare-result" aria-live="polite"></section>
+<p class="compare-disclaimer">Porównanie bazuje na danych wpisanych przez użytkownika. Tanievo nie pobiera automatycznie specyfikacji ani cen — przed zakupem sprawdź je u sprzedawcy.</p>
+</main>
+<script>
+(()=>{const byId=id=>document.getElementById(id);const money=n=>n.toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł';byId('compareButton').addEventListener('click',()=>{const a={name:byId('nameA').value.trim()||'Produkt A',price:Number(byId('priceA').value),spec:byId('specA').value.trim(),url:byId('urlA').value.trim()};const b={name:byId('nameB').value.trim()||'Produkt B',price:Number(byId('priceB').value),spec:byId('specB').value.trim(),url:byId('urlB').value.trim()};const out=byId('compareResult');if(!Number.isFinite(a.price)||!Number.isFinite(b.price)||a.price<=0||b.price<=0){out.className='compare-result show';out.innerHTML='<p>Wpisz prawidłowe ceny obu produktów, aby wykonać porównanie.</p>';return;}const diff=Math.abs(a.price-b.price);let verdict=diff<.01?'Oba produkty mają taką samą wpisaną cenę.':(a.price<b.price?a.name:b.name)+' jest tańszy o '+money(diff)+'.';out.className='compare-result show';const safe=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const link=p=>p.url&&/^https?:\/\//i.test(p.url)?'<p><a target="_blank" rel="noopener noreferrer" href="'+safe(p.url)+'">Otwórz ofertę ↗</a></p>':'';out.innerHTML='<h2>Wynik porównania</h2><div class="compare-verdict">'+safe(verdict)+'</div><div class="compare-result-grid"><div class="compare-result-card"><strong>'+safe(a.name)+'</strong><p><b>'+money(a.price)+'</b></p><p>'+safe(a.spec||'Nie podano dodatkowych parametrów.')+'</p>'+link(a)+'</div><div class="compare-result-card"><strong>'+safe(b.name)+'</strong><p><b>'+money(b.price)+'</b></p><p>'+safe(b.spec||'Nie podano dodatkowych parametrów.')+'</p>'+link(b)+'</div></div><p><b>Różnica w cenie:</b> '+money(diff)+'</p>';out.scrollIntoView({behavior:'smooth',block:'nearest'});});})();
+</script>
+</body>
+</html>
