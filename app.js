@@ -673,6 +673,7 @@ function comparisonPanel(product) {
   const isAppleProduct = /apple|iphone|ipad|airpods|macbook|imac/.test(productLabel);
   const isOutdoorProduct = /outdoor|trekking|turyst|camping|kemping|namiot|plecak|śpiwor|latark|termos|rower|sport/.test(productLabel + " " + categoryLabel);
   const isHomeEnergyProduct = /fotowolta|solar|solarn|pompa ciepła|ogrzewanie domu|grzejnik|panel grzewczy|termowentylator|energia/.test(productLabel + " " + categoryLabel);
+  const isFitnessProduct = /sport|fitness|siłown|trening|hantl|sztang|ławka|obciąż|bieżnia|rower/.test(productLabel + " " + categoryLabel);
   let summary = "Sprawdź aktualne ceny w obu sklepach";
   if (amazon !== null && ceneo !== null) {
     const diff = Math.abs(amazon - ceneo);
@@ -694,6 +695,8 @@ function comparisonPanel(product) {
     ${isAppleProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Lantre · autoryzowany sklep Apple</span><strong>Oferta Apple</strong><a href="https://webep1.com/c/13508/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9pcW8ubGFudHJlLnBsLz9QNTExNzQ5NTdGMDYxMTkxJnJlZGlyPWh0dHBzOi8vbGFudHJlLnBsLw" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Lantre ↗</a></div>` : ""}
     ${isOutdoorProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">RG CAMP · sprzęt outdoor</span><strong>Turystyka i rekreacja</strong><a href="https://webep1.com/c/13574/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly9yZ2NhbXAuZXUv" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do sklepu RG CAMP ↗</a><a href="https://webep1.com/go/4833aa708e" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę partnerską ↗</a></div>` : ""}
     ${isHomeEnergyProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Solve24 · rozwiązania energetyczne</span><strong>Dom i energia</strong><a href="https://webep1.com/c/5400/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly93d3cuc29sdmUyNC5wbA" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Solve24 ↗</a><a href="https://webep1.com/go/103fc5f5a0" target="_blank" rel="sponsored nofollow noopener noreferrer">Zobacz ofertę partnerską ↗</a></div>` : ""}
+    ${isFitnessProduct ? `<div class="comparison-store partner-store"><span class="comparison-store-name">Marbo Sport · sprzęt treningowy</span><strong>Siłownia i trening</strong><a href="https://webep1.com/c/3206/6aecbf4b2777780c42e8ebd9?r=aHR0cHM6Ly93d3cubWFyYm8tc3BvcnQucGw" target="_blank" rel="sponsored nofollow noopener noreferrer">Przejdź do Marbo Sport ↗</a></div>` : ""}
+
     <small>Ceny porównujemy tylko dla zgodnego modelu i wariantu. Kwoty bez świeżego potwierdzenia nie są wyświetlane.</small>
     </div>
   </details>`;
