@@ -27,16 +27,32 @@
       dealRoot.innerHTML='<article class="deal-product">'+(image?'<img src="'+esc(image)+'" alt="">':'<span class="deal-icon" aria-hidden="true">🏷️</span>')+'<div><h3>'+esc(product.name)+'</h3><p>'+esc(product.merchant||"Sklep partnerski")+' · cena z '+dateLabel(product.updatedAt)+'</p><p>Wyróżniona oferta z aktualnego katalogu</p><a class="deal-link" href="'+esc(url)+'" target="_blank" rel="sponsored nofollow noopener noreferrer">Sprawdź u sprzedawcy ↗</a></div><strong class="deal-price">'+money(product.price)+'</strong></article>';
     }
     const records=history&&history.products&&typeof history.products==="object"?history.products:{};
-    const cards=Object.entries(records).slice(0,24).map(([id,points])=>{
-      if(!Array.isArray(points)||!points.length)return "";
-      const valid=points.filter(p=>Number(p.price)>0&&/^\d{4}-\d{2}-\d{2}$/.test(p.date)).sort((a,b)=>a.date.localeCompare(b.date));
+    // Grupuj historię po znormalizowanej nazwie, aby ten sam produkt nie pojawiał się kilka razy.
+    const normalizeProductName=value=>String(value||"").toLocaleLowerCase("pl").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+    const grouped=new Map();
+    Object.entries(records).forEach(([id,points])=>{
+      if(!Array.isArray(points))return;
+      const valid=points.filter(p=>Number(p.price)>0&&/^\d{4}-\d{2}-\d{2}$/.test(p.date));
+      if(!valid.length)return;
+      const label=valid[valid.length-1].name||id;
+      const key=normalizeProductName(label);
+      if(!key)return;
+      if(!grouped.has(key))grouped.set(key,{name:label,points:[]});
+      grouped.get(key).points.push(...valid);
+    });
+    const cards=[...grouped.values()].slice(0,24).map(group=>{
+      // Dla duplikatów z tego samego dnia pokazujemy jedną cenę: najniższą.
+      const byDate=new Map();
+      group.points.forEach(point=>{
+        const current=byDate.get(point.date);
+        if(!current||Number(point.price)<Number(current.price))byDate.set(point.date,point);
+      });
+      const valid=[...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
       if(!valid.length)return "";
       const latest=valid[valid.length-1],values=valid.map(p=>Number(p.price)),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
       const coords=values.map((v,i)=>{const x=4+(i/(Math.max(1,values.length-1)))*192,y=54-((v-min)/span)*44;return x.toFixed(1)+","+y.toFixed(1)}).join(" ");
-      const name=latest.name||id;
+      const name=latest.name||group.name;
       const image=safeUrl(latest.image);
-      // W starszych rekordach historii brakowało productUrl. Dla AliExpress
-      // użyj wyszukiwania dokładnej nazwy, aby karta nadal prowadziła do oferty.
       const historyUrl=safeUrl(latest.productUrl||latest.url) ||
         (/aliexpress/i.test(String(latest.merchant||"")) ? "https://www.aliexpress.com/w/wholesale-"+encodeURIComponent(name)+".html" : "");
       const cardContent=(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p>';
