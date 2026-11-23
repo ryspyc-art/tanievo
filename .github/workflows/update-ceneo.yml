@@ -41,6 +41,7 @@ jobs:
           AWIN_ALLOWED_PRODUCT_HOSTS: ${{ vars.AWIN_ALLOWED_PRODUCT_HOSTS }}
           AWIN_ALLOWED_IMAGE_HOSTS: ${{ vars.AWIN_ALLOWED_IMAGE_HOSTS }}
         run: python3 scripts/update_awin.py
+        continue-on-error: true
 
       - name: Pobierz produkty z Ceneo (wyłącznie po zatwierdzeniu integracji)
         env:
