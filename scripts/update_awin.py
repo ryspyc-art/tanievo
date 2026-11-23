@@ -12,6 +12,8 @@ import io
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone, timedelta
@@ -80,17 +82,53 @@ class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
 
 def fetch_feed(url):
     opener = urllib.request.build_opener(NoRedirectHandler())
-    req = urllib.request.Request(url, headers={"User-Agent": "CenolotFeed/1.0"})
-    with opener.open(req, timeout=90) as response:
-        raw = response.read(MAX_FEED_BYTES + 1)
-    if len(raw) > MAX_FEED_BYTES:
-        raise RuntimeError("Feed Awin przekracza limit 25 MB.")
-    if raw[:2] == bytes((31, 139)):
-        with gzip.GzipFile(fileobj=io.BytesIO(raw)) as compressed:
-            raw = compressed.read(250 * 1024 * 1024 + 1)
-        if len(raw) > 250 * 1024 * 1024:
-            raise RuntimeError("Rozpakowany feed Awin przekracza limit 250 MB.")
-    return raw
+    req = urllib.request.Request(url, headers={"User-Agent": "TanievoCatalog/1.1"})
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            with opener.open(req, timeout=90) as response:
+                raw = response.read(MAX_FEED_BYTES + 1)
+            if len(raw) > MAX_FEED_BYTES:
+                raise RuntimeError("Feed Awin przekracza limit 25 MB.")
+            if raw[:2] == bytes((31, 139)):
+                with gzip.GzipFile(fileobj=io.BytesIO(raw)) as compressed:
+                    raw = compressed.read(250 * 1024 * 1024 + 1)
+                if len(raw) > 250 * 1024 * 1024:
+                    raise RuntimeError("Rozpakowany feed Awin przekracza limit 250 MB.")
+            return raw
+        except urllib.error.HTTPError as exc:
+            last_error = exc
+            print(f"Awin HTTP {exc.code} (próba {attempt}/3).", file=sys.stderr)
+        except (urllib.error.URLError, TimeoutError, OSError, RuntimeError) as exc:
+            last_error = exc
+            print(f"Awin: {type(exc).__name__} (próba {attempt}/3).", file=sys.stderr)
+        if attempt < 3:
+            time.sleep(attempt * 3)
+    raise RuntimeError(f"Pobranie feedu Awin nie powiodło się po 3 próbach: {type(last_error).__name__}")
+
+
+def restore_published_catalog():
+    """Recover the current catalog shards so a temporary feed outage doesn't erase products."""
+    manifest_path = Path("data/catalog/manifest.json")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        items = []
+        for entry in manifest.get("files", []):
+            name = str(entry.get("file", ""))
+            if not name or Path(name).name != name:
+                continue
+            shard = json.loads((manifest_path.parent / name).read_text(encoding="utf-8"))
+            if isinstance(shard.get("items"), list):
+                items.extend(item for item in shard["items"] if isinstance(item, dict))
+        if items:
+            now = datetime.now(timezone.utc).isoformat()
+            OUT.write_text(json.dumps({"source": "Recovered catalog", "fetchedAt": now, "count": len(items), "items": items}, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+            print(f"Zachowano dotychczasowy katalog: {len(items)} produktów z opublikowanych plików.")
+            return True
+    except (OSError, ValueError, TypeError, AttributeError) as exc:
+        print(f"Nie udało się odtworzyć katalogu z plików publikacyjnych: {type(exc).__name__}.", file=sys.stderr)
+    print("Brak katalogu do odtworzenia; nie nadpisuję danych pustym katalogiem.", file=sys.stderr)
+    return False
 
 
 def main():
@@ -108,7 +146,12 @@ def main():
     if not product_hosts:
         raise RuntimeError("Brak AWIN_ALLOWED_PRODUCT_HOSTS — import produktów jest zablokowany.")
 
-    raw = fetch_feed(feed_url)
+    try:
+        raw = fetch_feed(feed_url)
+    except Exception as exc:
+        print(f"OSTRZEŻENIE: Feed Awin chwilowo niedostępny ({type(exc).__name__}); zachowuję poprzedni katalog i kontynuuję workflow.", file=sys.stderr)
+        restore_published_catalog()
+        return 0
     text = raw.decode("utf-8-sig", errors="replace")
     sample = text[:4096]
     try:
