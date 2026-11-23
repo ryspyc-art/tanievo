@@ -147,7 +147,6 @@ def main():
     if OUT.exists():
         try:
             previous = json.loads(OUT.read_text(encoding="utf-8"))
-            cutoff = datetime.now(timezone.utc) - timedelta(hours=72)
             for item in previous.get("items", []):
                 if item.get("source") == "Ceneo":
                     continue
@@ -155,8 +154,9 @@ def main():
                     updated = datetime.fromisoformat(str(item.get("updatedAt", "")).replace("Z", "+00:00"))
                     if updated.tzinfo is None:
                         updated = updated.replace(tzinfo=timezone.utc)
-                    if updated >= cutoff:
-                        products[str(item.get("id"))] = item
+                    # Preserve non-Ceneo items from the existing catalog regardless of age;
+                    # feed outages must not silently remove partner products.
+                    products[str(item.get("id"))] = item
                 except (TypeError, ValueError):
                     continue
         except (ValueError, AttributeError, OSError):
