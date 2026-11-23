@@ -122,7 +122,7 @@ def restore_published_catalog():
                 items.extend(item for item in shard["items"] if isinstance(item, dict))
         if items:
             now = datetime.now(timezone.utc).isoformat()
-            OUT.write_text(json.dumps({"source": "Recovered catalog", "fetchedAt": now, "count": len(items), "items": items}, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+            OUT.write_text(json.dumps({"source": "Recovered catalog", "fetchedAt": now, "count": len(items), "items": items}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             print(f"Zachowano dotychczasowy katalog: {len(items)} produktów z opublikowanych plików.")
             return True
     except (OSError, ValueError, TypeError, AttributeError) as exc:
