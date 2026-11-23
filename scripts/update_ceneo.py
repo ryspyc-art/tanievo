@@ -150,15 +150,9 @@ def main():
             for item in previous.get("items", []):
                 if item.get("source") == "Ceneo":
                     continue
-                try:
-                    updated = datetime.fromisoformat(str(item.get("updatedAt", "")).replace("Z", "+00:00"))
-                    if updated.tzinfo is None:
-                        updated = updated.replace(tzinfo=timezone.utc)
-                    # Preserve non-Ceneo items from the existing catalog regardless of age;
-                    # feed outages must not silently remove partner products.
-                    products[str(item.get("id"))] = item
-                except (TypeError, ValueError):
-                    continue
+                # Preserve non-Ceneo items from the existing catalog regardless of age;
+                # feed outages must not silently remove partner products.
+                products[str(item.get("id"))] = item
         except (ValueError, AttributeError, OSError):
             pass
 
