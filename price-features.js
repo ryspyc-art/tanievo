@@ -30,6 +30,7 @@
     // Grupuj historię po znormalizowanej nazwie, aby ten sam produkt nie pojawiał się kilka razy.
     const normalizeProductName=value=>String(value||"").toLocaleLowerCase("pl").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     const grouped=new Map();
+    const catalogById=new Map(items.map(item=>[String(item.id),item]));
     Object.entries(records).forEach(([id,points])=>{
       if(!Array.isArray(points))return;
       const valid=points.filter(p=>Number(p.price)>0&&/^\d{4}-\d{2}-\d{2}$/.test(p.date));
@@ -37,8 +38,9 @@
       const label=valid[valid.length-1].name||id;
       const key=normalizeProductName(label);
       if(!key)return;
-      if(!grouped.has(key))grouped.set(key,{name:label,points:[]});
+      if(!grouped.has(key))grouped.set(key,{name:label,points:[],ids:[]});
       grouped.get(key).points.push(...valid);
+      grouped.get(key).ids.push(String(id));
     });
     const cards=[...grouped.values()].slice(0,24).map(group=>{
       // Dla duplikatów z tego samego dnia pokazujemy jedną cenę: najniższą.
@@ -52,9 +54,10 @@
       const latest=valid[valid.length-1],values=valid.map(p=>Number(p.price)),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
       const coords=values.map((v,i)=>{const x=4+(i/(Math.max(1,values.length-1)))*192,y=54-((v-min)/span)*44;return x.toFixed(1)+","+y.toFixed(1)}).join(" ");
       const name=latest.name||group.name;
-      const image=safeUrl(latest.image);
-      const historyUrl=safeUrl(latest.productUrl||latest.url) ||
-        (/aliexpress/i.test(String(latest.merchant||"")) ? "https://www.aliexpress.com/w/wholesale-"+encodeURIComponent(name)+".html" : "");
+      const currentProduct=group.ids.map(id=>catalogById.get(id)).find(p=>p&&Number(p.price)>0&&p.currency==="PLN"&&safeUrl(p.productUrl)&&p.updatedAt&&Date.now()-Date.parse(p.updatedAt)>=0&&Date.now()-Date.parse(p.updatedAt)<=72*3600000);
+      const image=safeUrl(currentProduct?.image)||safeUrl(latest.image);
+      // Historia nie może kierować do starych linków ani generowanych wyszukiwań. Link tylko z aktualnego katalogu (72 h). 
+      const historyUrl=safeUrl(currentProduct?.productUrl);
       const cardContent=(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p>';
       return '<article class="history-item">'+(historyUrl?'<a class="history-card-link" href="'+esc(historyUrl)+'" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Otwórz produkt: '+esc(name)+'">'+cardContent+'</a>':cardContent)+'</article>';
     }).filter(Boolean);
