@@ -254,6 +254,18 @@ products.push({
   linkType: "affiliate"
 });
 
+// Partner afiliacyjny BabyOno — produkty dla niemowląt i dzieci.
+products.push({
+  id: "tanievo-babyono-001",
+  name: "BabyOno — akcesoria dla niemowląt i dzieci",
+  category: "Dla dzieci",
+  store: "BabyOno · webePartners",
+  icon: "🍼",
+  productUrl: "https://click.webeh1.com/go/00e5aba9eb",
+  linkType: "affiliate"
+});
+
+
 // Zweryfikowane zdjęcia produktów — przypisujemy tylko do zgodnych modeli.
 // Pozostałe karty zachowują czytelny placeholder zamiast przypadkowej fotografii.
 const verifiedProductImages = {
