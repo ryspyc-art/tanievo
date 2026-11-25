@@ -441,7 +441,7 @@ const categoryAliases={
   "Latarki LED":["Oświetlenie","Elektronika"],
   "Akumulatory 18650":["Elektronika"],
   "Ogrzewanie domu":["Dom"],
-  "Zdrowie i uroda":["Uroda"]
+  "Zdrowie i uroda":["Uroda"],
   "Elektronika i wiele więcej!":["Elektronika","Komputery","RTV","Telefony","Gaming"]
 };
 function getTileCategoryMatches(tile){
