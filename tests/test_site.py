@@ -157,6 +157,24 @@ class SiteIntegrityTests(unittest.TestCase):
         self.assertEqual(discovery_ids, [f"{number:03d}" for number in range(11, 51)])
         self.assertIn('linkType:"search"', self.app)
 
+    def test_category_tiles_map_to_live_catalog_categories(self):
+        # Tiles use user-friendly labels; aliases must map them to manifest categories.
+        expected_mappings = [
+            '"Telewizory i RTV":["Elektronika"]',
+            '"Rowery":["Sport i outdoor"]',
+            '"Uroda i stylizacja":["Uroda"]',
+            '"Miksery i blendery":["AGD"]',
+            '"Oleje i płyny samochodowe":["Motoryzacja"]',
+            '"Warsztat i majsterkowanie":["Narzędzia"]',
+            '"Modelarstwo":["Zabawki"]',
+            '"Komputery i akcesoria":["Elektronika"]',
+            '"Kamery i monitoring":["Elektronika"]',
+            '"Ogrzewanie domu":["Dom"]',
+        ]
+        for mapping in expected_mappings:
+            with self.subTest(mapping=mapping):
+                self.assertIn(mapping, self.app)
+
     def test_live_catalog_loader_is_wired_but_api_is_not_enabled(self):
         self.assertEqual(self.app.splitlines().count("loadLiveCatalog();"), 1)
         self.assertIn("categoryFiles", self.app)
