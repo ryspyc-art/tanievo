@@ -806,7 +806,7 @@ function render() {
 
   if (liveCatalog && sort.value === "price-asc") list.sort((a,b) => a.price - b.price);
   if (liveCatalog && sort.value === "price-desc") list.sort((a,b) => b.price - a.price);
-  if (liveCatalog && sort.value === "discount") list.sort((a,b) => a.price - b.price);
+  if (liveCatalog && sort.value === "discount") { list = list.filter(product => Number.isFinite(product.discount)); list.sort((a,b) => b.discount - a.discount); }
 
   grid.innerHTML = list.slice(0, 120).map(product => {
     const safeName = escapeHTML(product.name);
