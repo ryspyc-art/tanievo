@@ -801,3 +801,24 @@ body{
 .acer-second-banner-media{position:relative;z-index:1;display:block;flex:0 1 320px;max-width:320px;width:100%}
 .acer-second-banner-media img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px}
 @media(max-width:600px){.acer-second-banner-media{max-width:100%}}
+
+/* Mobile: compact homepage to reduce endless scrolling; desktop remains unchanged */
+@media(max-width:600px){
+  .comparison-hub,
+  .how#porownania,
+  .benefit-strip,
+  .ceneo-banner-wrap,
+  .buying-guide-banner,
+  .black-week-banner,
+  .buyer-checklist,
+  .how#jak-dziala{display:none!important}
+  .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .category-tile{padding:12px 10px;min-height:unset}
+  .category-footnote,.history-footnote{font-size:11px;line-height:1.45}
+  .acer-second-banner{padding:14px 15px;gap:10px;margin:18px 0}
+  .acer-second-banner .promo-copy h2{font-size:20px;margin:5px 0}
+  .acer-second-banner .promo-copy p{font-size:12px}
+  .acer-second-banner .promo-copy small{font-size:9px}
+  .acer-second-banner-media{max-width:100%}
+  .share-section{padding:18px 14px;margin-top:18px}
+}
