@@ -642,12 +642,12 @@ async function loadAmazonOffers() {
 }
 
 function normalizeOfferNameKey(value){
-  return String(value||"").toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+  return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 }
 function isUsableImportedOffer(item){
   if(!item||typeof item.name!=="string")return false;
   const name=item.name.trim();
-  if(name.length<8||name.length>180||/[\\u0000-\\u001f]/.test(name))return false;
+  if(name.length<8||name.length>180||/[\u0000-\u001f]/.test(name))return false;
   if(!item.image||!safeProductUrl(item.image))return false;
   if(!safeProductUrl(item.productUrl))return false;
   if(!Number.isFinite(Number(item.price))||Number(item.price)<1||Number(item.price)>100000)return false;
@@ -656,18 +656,6 @@ function isUsableImportedOffer(item){
 }
 function normalizeLiveItems(items,fetchedAt){
   const now=Date.now(),maxAgeMs=72*60*60*1000,seenNames=new Set(products.map(p=>normalizeOfferNameKey(p.name)));
-  const categoryForName=name=>{
-    const n=normalizeOfferNameKey(name);
-    if(/smartfon|telefon|iphone|galaxy [aszm]|redmi note|pixel [0-9]/.test(n))return "Telefony";
-    if(/telewizor| tv |qled|oled|soundbar/.test(" "+n+" "))return "RTV";
-    if(/opon|wycieracz|akumulator samoch|samochod|motocykl|kask|olej silnik/.test(n))return "Motoryzacja";
-    if(/wiertark|wkretark|szlifierk|narzedzi|klucz nasadow|spawark/.test(n))return "Narzędzia";
-    if(/pies|psa|kot|karma|smycz|legowisk/.test(n))return "Dla zwierząt";
-    if(/lamp|zarowk|oswiet|latark/.test(n))return "Oświetlenie";
-    if(/lego|zabaw|klock|pluszak|lalka/.test(n))return "Zabawki";
-    if(/ekspres do kaw|frytkownic|odkurzacz|toster|czajnik|blender|robot sprz/.test(n))return "AGD";
-    return normalizeCategory(typeof itemCategory==="string"?itemCategory:"Inne");
-  };
   const accepted=[];
   for(const item of items){
     if(!item||!item.updatedAt)continue;
