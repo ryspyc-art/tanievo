@@ -763,7 +763,10 @@ function render() {
     const matchesCategory = category === "Wszystkie" || (activeCategoryMatches ? activeCategoryMatches.includes(normalizeCategory(product.category)) : product.category === category);
     const matchesSearch = !search || (product.name + " " + product.category).toLocaleLowerCase("pl").includes(search.value.trim().toLocaleLowerCase("pl"));
     const matchesFavorites = !favoritesOnly || favorites.includes(String(product.id));
-    return matchesCategory && matchesSearch && matchesFavorites;
+    // Search-only discovery entries stay out of the default "All" view.
+    const showSearchEntries = category !== "Wszystkie" || Boolean(search && search.value.trim());
+    const matchesOfferType = product.linkType !== "search" || showSearchEntries;
+    return matchesCategory && matchesSearch && matchesFavorites && matchesOfferType;
   });
 
   if (liveCatalog && sort.value === "price-asc") list.sort((a,b) => a.price - b.price);
