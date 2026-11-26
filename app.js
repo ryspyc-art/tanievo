@@ -765,7 +765,9 @@ function render() {
     const matchesFavorites = !favoritesOnly || favorites.includes(String(product.id));
     // Search-only discovery entries stay out of the default "All" view.
     const showSearchEntries = category !== "Wszystkie" || Boolean(search && search.value.trim());
-    const matchesOfferType = product.linkType !== "search" || showSearchEntries;
+    const hasProductUrl = typeof product.productUrl === "string" && product.productUrl.trim().length > 0;
+    const isSearchOnly = product.linkType === "search" || !hasProductUrl;
+    const matchesOfferType = !isSearchOnly || showSearchEntries;
     return matchesCategory && matchesSearch && matchesFavorites && matchesOfferType;
   });
 
