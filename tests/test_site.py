@@ -31,6 +31,10 @@ class SiteIntegrityTests(unittest.TestCase):
         cls.parser.feed(cls.html)
         cls.app = (ROOT / "app.js").read_text(encoding="utf-8")
 
+    def test_discount_sort_uses_real_discount_percentages(self):
+        self.assertIn('list = list.filter(product => Number.isFinite(product.discount));', self.app)
+        self.assertIn('list.sort((a,b) => b.discount - a.discount);', self.app)
+
     def test_no_duplicate_ids(self):
         self.assertEqual(len(self.parser.ids), len(set(self.parser.ids)))
 
