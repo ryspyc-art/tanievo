@@ -795,3 +795,9 @@ body{
 .history-card-cta{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;color:#e56b00;text-decoration:underline;text-underline-offset:3px}
 .history-item{cursor:pointer;transition:transform .18s,box-shadow .18s}
 .history-item:hover{transform:translateY(-2px);box-shadow:0 10px 25px #17253610}
+
+/* Drugi baner partnerski Acer — umieszczony przy dole strony */
+.acer-second-banner{margin-top:28px;margin-bottom:28px}
+.acer-second-banner-media{position:relative;z-index:1;display:block;flex:0 1 320px;max-width:320px;width:100%}
+.acer-second-banner-media img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px}
+@media(max-width:600px){.acer-second-banner-media{max-width:100%}}
