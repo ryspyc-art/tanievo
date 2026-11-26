@@ -56,7 +56,7 @@
       const name=latest.name||group.name;
       const currentProduct=group.ids.map(id=>catalogById.get(id)).find(p=>p&&Number(p.price)>0&&p.currency==="PLN"&&safeUrl(p.productUrl)&&p.updatedAt&&Date.now()-Date.parse(p.updatedAt)>=0&&Date.now()-Date.parse(p.updatedAt)<=72*3600000);
       const image=safeUrl(currentProduct?.image)||safeUrl(latest.image);
-      // Historia nie może kierować do starych linków ani generowanych wyszukiwań. Link tylko z aktualnego katalogu (72 h). 
+      // Preferuj aktualny link z katalogu (72 h); jeśli go brak, karta zawsze prowadzi do wyszukiwania produktu na Amazon. 
       const historyUrl=safeUrl(currentProduct?.productUrl)||("https://www.amazon.pl/s?k="+encodeURIComponent(name)+"&tag=tanievo-21");
       const cardContent=(image?'<div class="history-product-visual"><img src="'+esc(image)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></div>':'<div class="history-product-visual history-product-placeholder" aria-hidden="true">📦</div>')+'<h3>'+esc(name)+'</h3><p class="history-current">'+money(latest.price)+'</p><p>'+valid.length+' pomiarów · '+dateLabel(valid[0].date)+' – '+dateLabel(latest.date)+'</p><svg viewBox="0 0 200 64" role="img" aria-label="Wykres historii cen"><polyline points="'+coords+'" fill="none" stroke="#6f9c35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Zakres zapisanych cen: '+money(min)+' – '+money(max)+'</p><span class="history-card-cta">'+(currentProduct?"Sprawdź ofertę produktu ↗":"Znajdź produkt w sklepie ↗")+'</span>';
       return '<article class="history-item"><a class="history-card-link" href="'+esc(historyUrl)+'" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Otwórz produkt: '+esc(name)+'">'+cardContent+'</a></article>';
