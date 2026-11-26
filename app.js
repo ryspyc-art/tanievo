@@ -799,7 +799,8 @@ function render() {
     const hasProductUrl = typeof product.productUrl === "string" && product.productUrl.trim().length > 0;
     // Entries without a product destination are not treated as real offers; hide them from category browsing too.
     const isSearchOnly = product.linkType === "search" || !hasProductUrl;
-    const matchesOfferType = !isSearchOnly;
+    const hasImage = typeof product.image === "string" && product.image.trim().length > 0 && safeImage(product.image);
+    const matchesOfferType = !isSearchOnly && hasImage;
     return matchesCategory && matchesSearch && matchesFavorites && matchesOfferType;
   });
 
@@ -943,6 +944,13 @@ grid.addEventListener("error", event => {
   const card = image.closest(".product-visual");
   if (!card || image.dataset.fallbackApplied === "true") return;
   image.dataset.fallbackApplied = "true";
+  // Broken or blocked image: hide the card instead of showing a generic placeholder.
+  const failedProductCard = image.closest(".product-card");
+  if (failedProductCard) {
+    failedProductCard.hidden = true;
+    failedProductCard.dataset.imageUnavailable = "true";
+    return;
+  }
   const productName = image.alt || "Produkt";
   const cardCategory = card.parentElement?.querySelector(".product-category")?.textContent || "";
   const product = products.find(item => item.name === productName);
