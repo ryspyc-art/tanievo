@@ -924,6 +924,16 @@ grid.addEventListener("error", event => {
   image.replaceWith(fallback);
 }, true);
 
+// Kliknięcie w dowolne miejsce karty produktu otwiera ofertę; kontrolki zachowują własne działanie.
+grid.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || target.closest("a,button,details,summary,input,select")) return;
+  const card = target.closest(".product-card");
+  if (!card) return;
+  const link = card.querySelector(".product-title-link");
+  if (link && link.href) window.location.assign(link.href);
+});
+
 grid.addEventListener("click", event => {
   const button = event.target.closest("[data-fav]");
   if (!button) return;
