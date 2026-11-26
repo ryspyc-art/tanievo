@@ -641,11 +641,55 @@ async function loadAmazonOffers() {
   }
 }
 
+function normalizeOfferNameKey(value){
+  return String(value||"").toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+}
+function isUsableImportedOffer(item){
+  if(!item||typeof item.name!=="string")return false;
+  const name=item.name.trim();
+  if(name.length<8||name.length>180||/[\\u0000-\\u001f]/.test(name))return false;
+  if(!item.image||!safeProductUrl(item.image))return false;
+  if(!safeProductUrl(item.productUrl))return false;
+  if(!Number.isFinite(Number(item.price))||Number(item.price)<1||Number(item.price)>100000)return false;
+  // Only keep imported offers with a recognized Polish-facing merchant label.
+  return typeof item.merchant==="string"&&item.merchant.trim()==="AliExpress PL";
+}
 function normalizeLiveItems(items,fetchedAt){
-  const now=Date.now(),maxAgeMs=72*60*60*1000;
-  return items.filter(item=>{if(!item||!item.updatedAt)return false;const updated=Date.parse(item.updatedAt);return Number.isFinite(updated)&&now-updated>=0&&now-updated<=maxAgeMs;})
-    .filter(item=>(typeof item.id==="string"||Number.isInteger(item.id))&&typeof item.name==="string"&&Number.isFinite(Number(item.price))&&Number(item.price)>0&&safeProductUrl(item.productUrl))
-    .map(item=>({id:String(item.id),name:item.name,category:normalizeCategory(typeof item.category==="string"?item.category:"Inne"),price:Number(item.price),store:typeof item.merchant==="string"?item.merchant:"Sklep partnerski",productUrl:item.productUrl,image:item.image||"",updatedAt:item.updatedAt||fetchedAt||"",availability:typeof item.availability==="string"?item.availability:"Sprawdź u sprzedawcy",linkType:"affiliate",icon:"🛍️"}));
+  const now=Date.now(),maxAgeMs=72*60*60*1000,seenNames=new Set(products.map(p=>normalizeOfferNameKey(p.name)));
+  const categoryForName=name=>{
+    const n=normalizeOfferNameKey(name);
+    if(/smartfon|telefon|iphone|galaxy [aszm]|redmi note|pixel [0-9]/.test(n))return "Telefony";
+    if(/telewizor| tv |qled|oled|soundbar/.test(" "+n+" "))return "RTV";
+    if(/opon|wycieracz|akumulator samoch|samochod|motocykl|kask|olej silnik/.test(n))return "Motoryzacja";
+    if(/wiertark|wkretark|szlifierk|narzedzi|klucz nasadow|spawark/.test(n))return "Narzędzia";
+    if(/pies|psa|kot|karma|smycz|legowisk/.test(n))return "Dla zwierząt";
+    if(/lamp|zarowk|oswiet|latark/.test(n))return "Oświetlenie";
+    if(/lego|zabaw|klock|pluszak|lalka/.test(n))return "Zabawki";
+    if(/ekspres do kaw|frytkownic|odkurzacz|toster|czajnik|blender|robot sprz/.test(n))return "AGD";
+    return normalizeCategory(typeof itemCategory==="string"?itemCategory:"Inne");
+  };
+  const accepted=[];
+  for(const item of items){
+    if(!item||!item.updatedAt)continue;
+    const updated=Date.parse(item.updatedAt);
+    if(!Number.isFinite(updated)||now-updated<0||now-updated>maxAgeMs||!isUsableImportedOffer(item))continue;
+    const nameKey=normalizeOfferNameKey(item.name);
+    if(!nameKey||seenNames.has(nameKey))continue;
+    seenNames.add(nameKey);
+    const originalCategory=typeof item.category==="string"?item.category:"Inne";
+    const n=normalizeOfferNameKey(item.name);
+    let category=normalizeCategory(originalCategory);
+    if(/smartfon|telefon|iphone|galaxy [aszm]|redmi note|pixel [0-9]/.test(n))category="Telefony";
+    else if(/telewizor|qled|oled|soundbar/.test(n))category="Elektronika";
+    else if(/opon|wycierac|akumulator samoch|samochod|motocykl|kask|olej silnik/.test(n))category="Motoryzacja";
+    else if(/wiertark|wkretark|szlifierk|narzedzi|klucz nasadow|spawark/.test(n))category="Narzędzia";
+    else if(/pies|psa|kot|karma|smycz|legowisk/.test(n))category="Dla zwierząt";
+    else if(/lamp|zarowk|oswiet|latark/.test(n))category="Oświetlenie";
+    else if(/lego|zabaw|klock|pluszak|lalka/.test(n))category="Zabawki";
+    else if(/ekspres do kaw|frytkownic|odkurzacz|toster|czajnik|blender|robot sprz/.test(n))category="AGD";
+    accepted.push({id:String(item.id),name:item.name.trim(),category,price:Number(item.price),store:item.merchant,productUrl:item.productUrl,image:item.image,updatedAt:item.updatedAt||fetchedAt||"",availability:typeof item.availability==="string"?item.availability:"Sprawdź u sprzedawcy",linkType:"affiliate",icon:"🛍️"});
+  }
+  return accepted;
 }
 async function loadLiveCategoryNames(names){
   if(!catalogManifest?.categoryFiles)return 0;
