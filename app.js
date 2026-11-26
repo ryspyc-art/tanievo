@@ -438,7 +438,7 @@ const categoryAliases={
   "Akcesoria do wykrywaczy":["Inne"],
   "Ładowarki i zasilacze":["Elektronika"],
   "Akumulatory AA i AAA":["Elektronika"],
-  "Latarki LED":["Oświetlenie","Elektronika"],
+  "Latarki LED":["Oświetlenie"],
   "Akumulatory 18650":["Elektronika"],
   "Ogrzewanie domu":["Dom"],
   "Zdrowie i uroda":["Uroda"],
