@@ -764,7 +764,6 @@ function render() {
     const matchesSearch = !search || (product.name + " " + product.category).toLocaleLowerCase("pl").includes(search.value.trim().toLocaleLowerCase("pl"));
     const matchesFavorites = !favoritesOnly || favorites.includes(String(product.id));
     // Search-only discovery entries stay out of the default "All" view.
-    const showSearchEntries = category !== "Wszystkie" || Boolean(search && search.value.trim());
     const hasProductUrl = typeof product.productUrl === "string" && product.productUrl.trim().length > 0;
     // Entries without a product destination are not treated as real offers; hide them from category browsing too.
     const isSearchOnly = product.linkType === "search" || !hasProductUrl;
