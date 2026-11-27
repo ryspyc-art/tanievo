@@ -822,3 +822,10 @@ body{
   .acer-second-banner-media{max-width:100%}
   .share-section{padding:18px 14px;margin-top:18px}
 }
+
+/* Winter tire promotion: make the time-limited campaign prominent near the top */
+.tanievo-winter-tires{border:2px solid #ff7900;background:linear-gradient(135deg,#10233e 0%,#183b66 58%,#0e1726 100%);box-shadow:0 10px 28px rgba(0,0,0,.22);margin-top:14px;margin-bottom:30px}
+.tanievo-winter-tires .promo-kicker{color:#ffb347}
+.tanievo-winter-tires .promo-copy h2{font-size:clamp(25px,3.3vw,38px)}
+.tanievo-winter-tires .winter-codes>div{border:1px solid #ff7900;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+@media(max-width:600px){.tanievo-winter-tires{margin-top:12px;padding:18px 15px}.tanievo-winter-tires .winter-codes{grid-template-columns:1fr!important}}
