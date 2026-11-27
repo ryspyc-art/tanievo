@@ -43,7 +43,7 @@ def main():
     validate(data)
     removed = prune_expired(data) if args.prune else 0
     if removed:
-        DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Coupon data valid; {len(data.get('coupons', []))} remaining; removed {removed} expired.")
 
 if __name__ == "__main__":
