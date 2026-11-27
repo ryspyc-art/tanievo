@@ -478,15 +478,21 @@ function buildCategoryNavigation(){
   }).join("");
   document.querySelectorAll("[data-category-jump]").forEach(tile=>{
     const key=tile.querySelector("strong")?.textContent.trim() || tile.dataset.categoryJump;
-    const linkedProducts=getLinkedProductsForTile(tile);
-    const liveCount=getLiveCategoryCount(getTileCategoryMatches(tile).map(categoryMatchKey));
-    const n=liveCount===null?linkedProducts.length:liveCount;
+    const matches=new Set(getTileCategoryMatches(tile).map(categoryMatchKey));
+    const matchingProducts=products.filter(product=>matches.has(categoryMatchKey(product.category)));
+    const liveCount=getLiveCategoryCount([...matches]);
+    const n=liveCount===null?matchingProducts.length:liveCount;
+    const imageProduct=matchingProducts.find(product=>safeImage(product.image));
     const countLabel=tile.querySelector("small");
     if(countLabel)countLabel.textContent=n+(n===1?" produkt":n<5?" produkty":" produktów");
-
-    // Ukrywamy kafelki katalogu bez produktów, aby nie prowadzić do pustych wyników.
     const isCatalogTile=Boolean(tile.closest(".category-grid"));
-    tile.hidden=isCatalogTile && n===0;
+    // Kafelki pokazujemy tylko wtedy, gdy mają produkty i rzeczywiste zdjęcie produktu.
+    tile.hidden=isCatalogTile && (n===0 || !imageProduct);
+    const symbol=tile.querySelector(".category-symbol");
+    if(symbol&&imageProduct){
+      symbol.innerHTML='<img src="'+escapeHTML(imageProduct.image)+'" alt="" loading="lazy" decoding="async">';
+      symbol.classList.add("category-photo");
+    }
     tile.setAttribute("aria-label",key+": "+(countLabel?.textContent || (n+" produktów")));
     tile.dataset.productCount=String(n);
   });
@@ -500,7 +506,6 @@ function buildCategoryNavigation(){
     categoryGrid.setAttribute("aria-label","Dostępne kategorie: "+visibleTiles);
   }
 }
-
 function loadFavorites() {
   try {
     const value = JSON.parse(localStorage.getItem("tanievoFavorites") || localStorage.getItem("lowcaFavorites") || localStorage.getItem("cenolotFavorites") || "[]");
